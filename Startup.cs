@@ -66,6 +66,12 @@ namespace Fazilat
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "account",
+                    areaName: "Account",
+                    pattern: "Account/{action=Index}/{id?}",
+                    defaults: new { controller = "Home" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
