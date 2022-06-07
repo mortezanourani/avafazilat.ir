@@ -39,25 +39,49 @@ namespace Fazilat.Areas.Account.Controllers
             return View();
         }
 
-        public IActionResult Register()
+        public IActionResult Login()
         {
-            RegisterModel model = new RegisterModel();
-            return View(model);
+            LoginModel loginModel = new LoginModel();
+            return View(loginModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model)
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View(loginModel);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View(loginModel);
+        }
+
+        public IActionResult Register()
+        {
+            RegisterModel registerModel = new RegisterModel();
+            return View(registerModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterModel registerModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(registerModel);
             }
 
             var user = new ApplicationUser();
-            await _userStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
+            await _userStore.SetUserNameAsync(user, registerModel.Email, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, registerModel.Email, CancellationToken.None);
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
             {
                 var role = await _roleManager.FindByNameAsync("User");
@@ -74,7 +98,7 @@ namespace Fazilat.Areas.Account.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
-            return View(model);
+            return View(registerModel);
         }
     }
 }
