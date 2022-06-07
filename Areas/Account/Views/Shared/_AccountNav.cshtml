@@ -1,0 +1,11 @@
+﻿<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        @Html.ActionLink("Profile", "Index", "Home", new { @area = "Account" }, new {@class = "nav-link" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Email", "Email", "Home", new { @area = "Account" }, new {@class = "nav-link" })
+    </li>
+    <li class="nav-item">
+        @Html.ActionLink("Change Password", "ChangePassword", "Home", new { @area = "Account" }, new {@class = "nav-link" })
+    </li>
+</ul>
