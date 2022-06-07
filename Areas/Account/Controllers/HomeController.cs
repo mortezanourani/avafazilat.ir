@@ -63,6 +63,13 @@ namespace Fazilat.Areas.Account.Controllers
             return View(loginModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
+
         public IActionResult Register()
         {
             RegisterModel registerModel = new RegisterModel();
