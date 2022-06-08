@@ -41,8 +41,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public IActionResult Login()
         {
-            LoginModel loginModel = new LoginModel();
-            return View(loginModel);
+            return View();
         }
 
         [HttpPost]
@@ -72,8 +71,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public IActionResult Register()
         {
-            RegisterModel registerModel = new RegisterModel();
-            return View(registerModel);
+            return View();
         }
 
         [HttpPost]
@@ -106,6 +104,43 @@ namespace Fazilat.Areas.Account.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
             return View(registerModel);
+        }
+
+        public IActionResult ChangePassword()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(PasswordModel passwordModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(passwordModel);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, passwordModel.CurrentPassword, passwordModel.NewPassword);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(passwordModel);
         }
     }
 }

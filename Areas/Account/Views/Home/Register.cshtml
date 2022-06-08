@@ -11,7 +11,6 @@
             <h2>Create a new account.</h2>
             <hr />
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
                 @Html.LabelFor(m => m.Email)
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
@@ -38,3 +37,7 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
