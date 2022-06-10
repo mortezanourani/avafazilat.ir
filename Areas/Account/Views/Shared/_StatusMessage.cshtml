@@ -1,0 +1,9 @@
+﻿@if(TempData.TryGetValue("StatusMessage", out var statusMessage))
+{
+    var statusMessageClass = statusMessage.ToString().StartsWith("Error")
+        ? "danger"
+        : "success";
+    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+        @statusMessage
+    </div>
+}

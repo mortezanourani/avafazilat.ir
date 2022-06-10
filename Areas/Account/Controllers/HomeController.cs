@@ -127,13 +127,15 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                TempData.Add("StatusMessage", "Error: User not found. Make sure you typed your username correctly.");
+                return RedirectToAction("Login");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, passwordModel.CurrentPassword, passwordModel.NewPassword);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                TempData.Add("StatusMessage", "Password has been changed.");
+                return RedirectToAction();
             }
 
             foreach (var error in result.Errors)
