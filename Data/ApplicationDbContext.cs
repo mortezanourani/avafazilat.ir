@@ -15,6 +15,8 @@ namespace Fazilat.Data
         {
         }
 
+        public virtual DbSet<UserInformation> Information { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -66,6 +68,11 @@ namespace Fazilat.Data
             modelBuilder.Entity<ApplicationUser>(b =>
             {
                 b.ToTable("User");
+
+                b.HasOne(u => u.Information)
+                    .WithOne(i => i.User)
+                    .HasForeignKey<UserInformation>(ui => ui.UserId)
+                    .IsRequired();
 
                 b.HasData(
                     new ApplicationUser()
@@ -125,6 +132,31 @@ namespace Fazilat.Data
             modelBuilder.Entity<IdentityUserToken<string>>(b =>
             {
                 b.ToTable("UserToken");
+            });
+
+            modelBuilder.Entity<UserInformation>(b =>
+            {
+                b.HasKey(e => e.UserId);
+
+                b.Property(e => e.NationalCode)
+                    .HasColumnType("nvarchar(10)")
+                    .HasMaxLength(10);
+
+                b.Property(e => e.FirstName)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256);
+
+                b.Property(e => e.LastName)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256);
+
+                b.Property(e => e.BirthDate)
+                    .HasColumnType("date");
+
+                b.HasIndex(e => e.NationalCode)
+                    .IsUnique();
+
+                b.ToTable("UserInformation");
             });
         }
     }
