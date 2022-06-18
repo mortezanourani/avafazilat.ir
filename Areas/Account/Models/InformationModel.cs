@@ -6,6 +6,7 @@ using Fazilat.Models;
 using System;
 
 #nullable disable
+#pragma warning disable
 namespace Fazilat.Areas.Account.Models
 {
     public class InformationModel : UserInformation
@@ -35,5 +36,7 @@ namespace Fazilat.Areas.Account.Models
         [RegularExpression("^[0-9]*$", ErrorMessage = "Enter valid number.")]
         [Range(1300, 1500, ErrorMessage = "Enter valid number.")]
         public int Year { get; set; }
+
+        public IFormFile BirthCertificateFile { get; set; }
     }
 }

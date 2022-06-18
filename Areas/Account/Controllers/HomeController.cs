@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.IO;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -173,19 +175,22 @@ namespace Fazilat.Areas.Account.Controllers
             }
 
             PersianCalendar persianCalendar = new PersianCalendar();
-            DateTime birthDate = (DateTime) userInfo.BirthDate;
-            var day = persianCalendar.GetDayOfMonth(birthDate);
-            var month = persianCalendar.GetMonth(birthDate);
-            var year = persianCalendar.GetYear(birthDate);
+            DateTime birthDate = (userInfo.BirthDate != null)
+                ? (DateTime)userInfo.BirthDate
+                : DateTime.Now;
+            var birthDateDay = persianCalendar.GetDayOfMonth(birthDate);
+            var birthDateMonth = persianCalendar.GetMonth(birthDate);
+            var birthDateYear = persianCalendar.GetYear(birthDate);
 
             InformationModel personalInfo = new InformationModel()
             {
                 NationalCode = userInfo.NationalCode,
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
-                Day = day,
-                Month = month,
-                Year = year
+                Day = birthDateDay,
+                Month = birthDateMonth,
+                Year = birthDateYear,
+                BirthCertificate = userInfo.BirthCertificate,
             };
             return View(personalInfo);
         }
@@ -207,6 +212,23 @@ namespace Fazilat.Areas.Account.Controllers
                 personalInfo.Day,
                 0, 0, 0, 0);
 
+            if (personalInfo.BirthCertificateFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await personalInfo.BirthCertificateFile.CopyToAsync(memoryStream);
+                    if(memoryStream.Length < 524288)
+                    {
+                        personalInfo.BirthCertificate = memoryStream.ToArray();
+                    }
+                    else
+                    {
+                        TempData.Add("StatusMessage", "Error: The file is too large.");
+                        return View();
+                    }
+                }
+            }
+
             var userInfo = new UserInformation()
             {
                 UserId = user.Id,
@@ -214,6 +236,7 @@ namespace Fazilat.Areas.Account.Controllers
                 FirstName = personalInfo.FirstName,
                 LastName = personalInfo.LastName,
                 BirthDate = birthDate,
+                BirthCertificate = personalInfo.BirthCertificate
             };
 
             try
@@ -228,8 +251,6 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData.Add("StatusMessage", exception.Message);
                 return RedirectToAction();
             }
-
-            return View();
         }
     }
 }

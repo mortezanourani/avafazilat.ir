@@ -1,4 +1,5 @@
-﻿@model InformationModel
+﻿@using System;
+@model InformationModel
 @{
     ViewData["Title"] = "Personal Information";
 }
@@ -7,7 +8,7 @@
 <partial name="_StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="personal-information-form" method="post">
+        <form id="personal-information-form" method="post" enctype="multipart/form-data">
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             <div class="form-floating">
                 @Html.LabelFor(m => m.NationalCode, new { @class = "form-label" })
@@ -26,11 +27,22 @@
             </div>
             <div class="form-floating">
                 @Html.LabelFor(m => m.BirthDate, new { @class = "form-label" })
-                @*<input asp-for=BirthDate type="date" class="form-control" />*@
                 @Html.TextBoxFor(m => m.Year, new { @class = "form-control" })
                 @Html.TextBoxFor(m => m.Month, new { @class = "form-control" })
                 @Html.TextBoxFor(m => m.Day, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating">
+                @Html.LabelFor(m => m.BirthCertificate, new { @class = "form-label" })
+                @if(Model.BirthCertificate != null)
+                {
+                    @Html.HiddenFor(m => m.BirthCertificate)
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.BirthCertificate)" class="col" />
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.BirthCertificateFile)
+                }
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Update Information</button>
         </form>
