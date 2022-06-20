@@ -37,6 +37,15 @@ namespace Fazilat.Areas.Account.Models
         [Range(1300, 1500, ErrorMessage = "Enter valid number.")]
         public int Year { get; set; }
 
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Enter valid number.")]
+        [StringLength(11, ErrorMessage = "The {0} must has {1} max character length.", MinimumLength = 11)]
+        [Range(9000000000, 9399999999, ErrorMessage = "Enter valid number.")]
+        public string PhoneNumber { get; set; }
+
+        [RegularExpression("^[آ-یای]+$", ErrorMessage = "Invalid province name.")]
+        [StringLength(100, ErrorMessage = "The {0} must has {1} max character length.", MinimumLength = 4)]
+        public string Province { get; set; }
+
         public IFormFile BirthCertificateFile { get; set; }
     }
 }

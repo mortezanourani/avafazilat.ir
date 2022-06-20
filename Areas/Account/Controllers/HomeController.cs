@@ -182,6 +182,8 @@ namespace Fazilat.Areas.Account.Controllers
             var birthDateMonth = persianCalendar.GetMonth(birthDate);
             var birthDateYear = persianCalendar.GetYear(birthDate);
 
+            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
             InformationModel personalInfo = new InformationModel()
             {
                 NationalCode = userInfo.NationalCode,
@@ -190,6 +192,8 @@ namespace Fazilat.Areas.Account.Controllers
                 Day = birthDateDay,
                 Month = birthDateMonth,
                 Year = birthDateYear,
+                PhoneNumber = phoneNumber,
+                Province = userInfo.Province,
                 BirthCertificate = userInfo.BirthCertificate,
             };
             return View(personalInfo);
@@ -229,6 +233,8 @@ namespace Fazilat.Areas.Account.Controllers
                 }
             }
 
+
+
             var userInfo = new UserInformation()
             {
                 UserId = user.Id,
@@ -236,11 +242,13 @@ namespace Fazilat.Areas.Account.Controllers
                 FirstName = personalInfo.FirstName,
                 LastName = personalInfo.LastName,
                 BirthDate = birthDate,
+                Province = personalInfo.Province,
                 BirthCertificate = personalInfo.BirthCertificate
             };
 
             try
             {
+                await _userManager.SetPhoneNumberAsync(user, personalInfo.PhoneNumber);
                 _context.Attach(userInfo).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 TempData.Add("StatusMessage", "Information updated successfully.");
