@@ -46,7 +46,7 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Login");
             }
 
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public IActionResult Login()
@@ -65,7 +65,7 @@ namespace Fazilat.Areas.Account.Controllers
             var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -106,7 +106,7 @@ namespace Fazilat.Areas.Account.Controllers
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Dashboard");
             }
 
             foreach(var error in result.Errors)
