@@ -16,6 +16,7 @@ namespace Fazilat.Data
         }
 
         public virtual DbSet<UserInformation> Information { get; set; }
+        public virtual DbSet<EducationalFile> EducationalFiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,6 +73,11 @@ namespace Fazilat.Data
                 b.HasOne(u => u.Information)
                     .WithOne(i => i.User)
                     .HasForeignKey<UserInformation>(ui => ui.UserId)
+                    .IsRequired();
+
+                b.HasOne(u => u.EducationalFile)
+                    .WithOne(ef => ef.User)
+                    .HasForeignKey<EducationalFile>(uef => uef.UserId)
                     .IsRequired();
 
                 b.HasData(
@@ -157,6 +163,21 @@ namespace Fazilat.Data
                     .IsUnique();
 
                 b.ToTable("UserInformation");
+            });
+
+            modelBuilder.Entity<EducationalFile>(b =>
+            {
+                b.HasKey(e => e.UserId);
+
+                b.Property(e => e.Grade)
+                    .HasColumnType("nvarchar(2)")
+                    .HasMaxLength(2);
+
+                b.Property(e => e.LastAvg)
+                    .HasColumnType("nvarchar(5)")
+                    .HasMaxLength(4);
+
+                b.ToTable("UserEducationalFile");
             });
         }
     }

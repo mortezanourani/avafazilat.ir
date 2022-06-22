@@ -1,0 +1,49 @@
+﻿@model EducationalFileModel
+@{
+    ViewData["Title"] = "Educational";
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="educational-file-form" method="post" enctype="multipart/form-data">
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            <div class="form-floating">
+                @Html.LabelFor(m => m.Grade, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Grade, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Grade, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating">
+                @Html.LabelFor(m => m.LastAvg, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.LastAvg, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastAvg, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating">
+                @Html.LabelFor(m => m.RegistrationFormFile, new { @class = "form-label" })
+                @if(Model.RegistrationFormFileName != null)
+                {
+                    @Html.HiddenFor(m => m.RegistrationFormFileName)
+                    <img class="col" src="/images/@Model.RegistrationFormFileName" />
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.RegistrationFormFile, new { @class = "form-control" })
+                }
+                @Html.ValidationMessageFor(m => m.RegistrationFormFile, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating">
+                @Html.LabelFor(m => m.LastWorkbookFile, new { @class = "form-label" })
+                @Html.EditorFor(m => m.LastWorkbookFile, new { @class = "form-control" })
+                @Html.HiddenFor(m => m.LastWorkbookFileName)
+                <img class="col" src="/images/@Model.LastWorkbookFileName" />
+                @Html.ValidationMessageFor(m => m.LastWorkbookFile, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
