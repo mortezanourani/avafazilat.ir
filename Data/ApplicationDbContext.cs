@@ -17,6 +17,8 @@ namespace Fazilat.Data
 
         public virtual DbSet<UserInformation> Information { get; set; }
         public virtual DbSet<EducationalFile> EducationalFiles { get; set; }
+        public virtual DbSet<Curriculum> Curricula { get; set; }
+        public virtual DbSet<CurriculumItem> CurriculumItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -78,6 +80,11 @@ namespace Fazilat.Data
                 b.HasOne(u => u.EducationalFile)
                     .WithOne(ef => ef.User)
                     .HasForeignKey<EducationalFile>(uef => uef.UserId)
+                    .IsRequired();
+
+                b.HasMany(u => u.Curriculums)
+                    .WithOne(c => c.User)
+                    .HasForeignKey(uc => uc.UserId)
                     .IsRequired();
 
                 b.HasData(
@@ -178,6 +185,36 @@ namespace Fazilat.Data
                     .HasMaxLength(4);
 
                 b.ToTable("UserEducationalFile");
+            });
+
+            modelBuilder.Entity<Curriculum>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.StartDate)
+                    .HasColumnType("date")
+                    .HasDefaultValue(DateTime.Now.Date);
+
+                b.HasMany(c => c.Items)
+                    .WithOne(i => i.Curriculum)
+                    .HasForeignKey(ci => ci.CurriculumId)
+                    .IsRequired();
+
+                b.ToTable("Curriculum");
+            });
+
+            modelBuilder.Entity<CurriculumItem>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.Title)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256);
+
+                b.Property(e => e.Accomplished)
+                    .HasDefaultValue(false);
+
+                b.ToTable("CurriculumItem");
             });
         }
     }
