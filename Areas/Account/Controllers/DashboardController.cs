@@ -1,9 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Fazilat.Areas.Account.Models;
@@ -116,6 +119,32 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData.Add("StatusMessage", string.Format("Error: {0}", exception.Message));
             }
             return RedirectToAction();
+        }
+
+        public async Task<IActionResult> Curriculum()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<CurriculumItem> curriculum = new List<CurriculumItem>();
+
+            var lastCurriculum = _context.Curricula
+                .FirstOrDefault(c => c.UserId == user.Id);
+            if (lastCurriculum != null)
+            {
+                if (!TempData.ContainsKey("CurriculumDate"))
+                {
+                    DateTime startDate = lastCurriculum.StartDate.Value;
+                    PersianCalendar persianCalendar = new PersianCalendar();
+                    var curriculumDate = string.Format("{0}/{1}/{2}",
+                        persianCalendar.GetYear(startDate),
+                        persianCalendar.GetMonth(startDate),
+                        persianCalendar.GetDayOfMonth(startDate));
+                    TempData.Add("CurriculumDate", curriculumDate);
+                }
+                curriculum = await _context.CurriculumItems
+                    .Where(ci => ci.CurriculumId == lastCurriculum.Id)
+                    .ToListAsync();
+            }
+            return View(curriculum);
         }
 
         private readonly string path = Path.GetFullPath("wwwroot/images");

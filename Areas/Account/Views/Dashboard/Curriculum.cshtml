@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Fazilat.Models.CurriculumItem>
+@{
+    ViewData["Title"] = "Curriculum";
+}
+
+<div class="row">
+    <h3 class="col-md border rounded-lg shadow-sm m-1 p-3 alert-warning">
+        @TempData.FirstOrDefault(t => t.Key == "CurriculumDate").Value
+    </h3>
+</div>
+<div class="row">
+@foreach(var curriculumItem in Model)
+{
+    <div class="col-md shadow-sm border rounded-lg p-3 m-1">
+        <h4>@curriculumItem.Title</h4>
+        <p>@curriculumItem.Topics</p>
+        <a asp-area="Account" asp-controller="Dashboard" asp-action="CurriculumItem" asp-route-id="@curriculumItem.Id">Report</a>
+    </div>
+}
+</div>
