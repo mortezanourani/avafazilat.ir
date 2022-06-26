@@ -4,8 +4,9 @@
 }
 
 <div class="row">
-    <h3 class="col-md border rounded-lg shadow-sm m-1 p-3 alert-warning">
-        @TempData.FirstOrDefault(t => t.Key == "CurriculumDate").Value
+    <h3 class="col-md border rounded-lg shadow-sm m-1 p-3 alert-success">
+        @TempData.FirstOrDefault(t => t.Key == "CurriculumTitle").Value
+        (@TempData.FirstOrDefault(t => t.Key == "CurriculumDate").Value)
     </h3>
 </div>
 <div class="row">

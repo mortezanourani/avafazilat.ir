@@ -121,15 +121,21 @@ namespace Fazilat.Areas.Account.Controllers
             return RedirectToAction();
         }
 
-        public async Task<IActionResult> Curriculum()
+        public async Task<IActionResult> Curriculum(string id)
         {
             var user = await _userManager.GetUserAsync(User);
             List<CurriculumItem> curriculum = new List<CurriculumItem>();
 
-            var lastCurriculum = _context.Curricula
-                .FirstOrDefault(c => c.UserId == user.Id);
+            var lastCurriculum = (id == null)
+                ? _context.Curricula.FirstOrDefault(c => c.UserId == user.Id)
+                : _context.Curricula.FirstOrDefault(c => c.Id == id);
+
             if (lastCurriculum != null)
             {
+                if (!TempData.ContainsKey("CurriculumTitle"))
+                {
+                    TempData.Add("CurriculumTitle", lastCurriculum.Title);
+                }
                 if (!TempData.ContainsKey("CurriculumDate"))
                 {
                     DateTime startDate = lastCurriculum.StartDate.Value;

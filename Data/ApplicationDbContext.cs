@@ -191,9 +191,15 @@ namespace Fazilat.Data
             {
                 b.HasKey(e => e.Id);
 
+                b.Property(e => e.Title)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256)
+                    .IsRequired();
+
                 b.Property(e => e.StartDate)
                     .HasColumnType("date")
-                    .HasDefaultValue(DateTime.Now.Date);
+                    .HasDefaultValue(DateTime.Now.Date)
+                    .IsRequired();
 
                 b.HasMany(c => c.Items)
                     .WithOne(i => i.Curriculum)
