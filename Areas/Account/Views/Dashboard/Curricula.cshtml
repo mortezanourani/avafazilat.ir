@@ -1,0 +1,21 @@
+﻿@using System.Globalization
+@model IEnumerable<Fazilat.Models.Curriculum>
+@{
+    ViewData["Title"] = "Curricula";
+}
+
+<div class="row">
+@foreach(var curriculum in Model)
+{
+    PersianCalendar persianCalendar = new PersianCalendar();
+    var startDate = String.Format("{0}/{1}/{2}",
+        persianCalendar.GetYear(curriculum.StartDate).ToString(),
+        persianCalendar.GetMonth(curriculum.StartDate).ToString(),
+        persianCalendar.GetDayOfMonth(curriculum.StartDate).ToString());
+    <div class="col-md shadow-sm border rounded-lg p-3 m-1">
+        <h4>@curriculum.Title</h4>
+        <p>@startDate</p>
+        <a asp-area="Account" asp-controller="Dashboard" asp-action="Curriculum" asp-route-id="@curriculum.Id">View</a>
+    </div>
+}
+</div>

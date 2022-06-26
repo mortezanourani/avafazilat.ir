@@ -121,6 +121,15 @@ namespace Fazilat.Areas.Account.Controllers
             return RedirectToAction();
         }
 
+        public async Task<IActionResult> Curricula()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            List<Curriculum> curricula = await _context.Curricula
+                .Where(c => c.UserId == user.Id)
+                .ToListAsync();
+            return View(curricula);
+        }
+
         public async Task<IActionResult> Curriculum(string id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -138,7 +147,7 @@ namespace Fazilat.Areas.Account.Controllers
                 }
                 if (!TempData.ContainsKey("CurriculumDate"))
                 {
-                    DateTime startDate = lastCurriculum.StartDate.Value;
+                    DateTime startDate = lastCurriculum.StartDate;
                     PersianCalendar persianCalendar = new PersianCalendar();
                     var curriculumDate = string.Format("{0}/{1}/{2}",
                         persianCalendar.GetYear(startDate),
