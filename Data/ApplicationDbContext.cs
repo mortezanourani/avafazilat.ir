@@ -18,7 +18,7 @@ namespace Fazilat.Data
         public virtual DbSet<UserInformation> Information { get; set; }
         public virtual DbSet<EducationalFile> EducationalFiles { get; set; }
         public virtual DbSet<Curriculum> Curricula { get; set; }
-        public virtual DbSet<CurriculumItem> CurriculumItems { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -201,7 +201,7 @@ namespace Fazilat.Data
                     .HasDefaultValue(DateTime.Now.Date)
                     .IsRequired();
 
-                b.HasMany(c => c.Items)
+                b.HasMany(c => c.Courses)
                     .WithOne(i => i.Curriculum)
                     .HasForeignKey(ci => ci.CurriculumId)
                     .IsRequired();
@@ -209,7 +209,7 @@ namespace Fazilat.Data
                 b.ToTable("Curriculum");
             });
 
-            modelBuilder.Entity<CurriculumItem>(b =>
+            modelBuilder.Entity<Course>(b =>
             {
                 b.HasKey(e => e.Id);
 
@@ -220,7 +220,7 @@ namespace Fazilat.Data
                 b.Property(e => e.Accomplished)
                     .HasDefaultValue(false);
 
-                b.ToTable("CurriculumItem");
+                b.ToTable("Course");
             });
         }
     }

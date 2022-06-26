@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Fazilat.Models.CurriculumItem>
+﻿@model IEnumerable<Fazilat.Models.Course>
 @{
     ViewData["Title"] = "Curriculum";
 }
@@ -10,12 +10,12 @@
     </h3>
 </div>
 <div class="row">
-@foreach(var curriculumItem in Model)
+@foreach(var course in Model)
 {
     <div class="col-md shadow-sm border rounded-lg p-3 m-1">
-        <h4>@curriculumItem.Title</h4>
-        <p>@curriculumItem.Topics</p>
-        <a asp-area="Account" asp-controller="Dashboard" asp-action="CurriculumItem" asp-route-id="@curriculumItem.Id">Report</a>
+        <h4>@course.Title</h4>
+        <p>@course.Topics</p>
+        <a asp-area="Account" asp-controller="Dashboard" asp-action="Course" asp-route-id="@course.Id">Report</a>
     </div>
 }
 </div>

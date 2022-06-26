@@ -13,6 +13,6 @@ namespace Fazilat.Models
         public string Description { get; set; }
         public string UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual ICollection<CurriculumItem> Items { get; set; }
+        public virtual ICollection<Course> Courses { get; set; }
     }
 }

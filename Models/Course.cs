@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 #nullable disable
 namespace Fazilat.Models
 {
-    public class CurriculumItem
+    public class Course
     {
         public string Id { get; set; }
         public string Title { get; set; }

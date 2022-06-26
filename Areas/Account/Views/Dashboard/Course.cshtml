@@ -1,0 +1,42 @@
+﻿@model Fazilat.Models.Course
+@{
+    ViewData["Title"] = "Course";
+}
+
+<h4>@Html.DisplayFor(m => m.Title)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Course" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Title" />
+            <input type="hidden" asp-for="Topics" />
+            <input type="hidden" asp-for="CurriculumId" />
+            <div class="form-group">
+                @Html.DisplayFor(m => m.Topics)
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Accomplished" /> کامل مطالعه شد.
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descritpion" class="control-label"></label>
+                <textarea asp-for="Descritpion" class="form-control"></textarea>
+                <span asp-validation-for="Descritpion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary w-100" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-area="Account" asp-controller="Dashboard" asp-action="Curriculum" asp-route-id="@Model.CurriculumId">Back to Curriculum</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

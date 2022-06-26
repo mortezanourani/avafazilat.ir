@@ -123,6 +123,11 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Curricula()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             var user = await _userManager.GetUserAsync(User);
             List<Curriculum> curricula = await _context.Curricula
                 .Where(c => c.UserId == user.Id)
@@ -132,8 +137,13 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Curriculum(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
             var user = await _userManager.GetUserAsync(User);
-            List<CurriculumItem> curriculum = new List<CurriculumItem>();
+            List<Course> curriculum = new List<Course>();
 
             var lastCurriculum = (id == null)
                 ? _context.Curricula.FirstOrDefault(c => c.UserId == user.Id)
@@ -155,11 +165,44 @@ namespace Fazilat.Areas.Account.Controllers
                         persianCalendar.GetDayOfMonth(startDate));
                     TempData.Add("CurriculumDate", curriculumDate);
                 }
-                curriculum = await _context.CurriculumItems
+                curriculum = await _context.Courses
                     .Where(ci => ci.CurriculumId == lastCurriculum.Id)
                     .ToListAsync();
             }
             return View(curriculum);
+        }
+
+        public async Task<IActionResult> Course(string id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            return View(course);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Course(Course formCollection)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(formCollection);
+            }
+
+            try
+            {
+                _context.Courses.Update(formCollection);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Curriculum", new { id = formCollection.CurriculumId });
+            }
+            catch(Exception exception)
+            {
+                TempData.Add("StatusMessage", string.Format("Error: {0}", exception.Message));
+                return View(formCollection);
+            }
         }
 
         private readonly string path = Path.GetFullPath("wwwroot/images");
