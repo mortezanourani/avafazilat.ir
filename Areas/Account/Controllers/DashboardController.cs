@@ -210,12 +210,19 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
+            List<Message> messages = new List<Message>();
+
             var user = await _userManager.GetUserAsync(User);
             TempData["User"] = user.Id;
             var adviser = _context.Advisers
                 .FirstOrDefault(a => a.StudentId == user.Id);
             if (adviser != null)
             {
+                messages = await _context.Messages
+                    .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
+                    .OrderBy(m => m.Created)
+                    .ToListAsync();
+
                 TempData["Adviser"] = adviser.AdviserId;
             }
             else
@@ -223,11 +230,6 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData["Adviser"] = string.Empty;
                 TempData["StatusMessage"] = "Error: There is no adviser accepted you.";
             }
-
-            var messages = await _context.Messages
-                .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
-                .OrderBy(m => m.Created)
-                .ToListAsync();
 
             return View(messages);
         }

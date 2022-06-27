@@ -24,7 +24,7 @@
 
     <div class="rounded-lg mb-2 @messageClass">
         <p class="col-md mb-0">
-            @Html.DisplayFor(m => message.Text)
+            @Html.Raw(message.Text.Replace("\n", "</br>"))
         </p>
         <p class="col-md mb-0 text-info text-sm">@created</p>
     </div>
