@@ -20,6 +20,7 @@ namespace Fazilat.Data
         public virtual DbSet<Curriculum> Curricula { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<Adviser> Advisers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -250,6 +251,23 @@ namespace Fazilat.Data
                     .IsRequired();
 
                 b.ToTable("Message");
+            });
+
+            modelBuilder.Entity<Adviser>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.AdviserId)
+                    .HasColumnType("nvarchar(450)")
+                    .HasMaxLength(450)
+                    .IsRequired();
+
+                b.Property(e => e.StudentId)
+                    .HasColumnType("nvarchar(450)")
+                    .HasMaxLength(450)
+                    .IsRequired();
+
+                b.ToTable("Adviser");
             });
         }
     }

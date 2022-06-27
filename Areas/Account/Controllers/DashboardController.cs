@@ -205,6 +205,58 @@ namespace Fazilat.Areas.Account.Controllers
             }
         }
 
+        public async Task<IActionResult> Message()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            TempData["User"] = user.Id;
+            var adviser = _context.Advisers
+                .FirstOrDefault(a => a.StudentId == user.Id);
+            if (adviser != null)
+            {
+                TempData["Adviser"] = adviser.AdviserId;
+            }
+            else
+            {
+                TempData["Adviser"] = string.Empty;
+                TempData["StatusMessage"] = "Error: There is no adviser accepted you.";
+            }
+
+            var messages = await _context.Messages
+                .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
+                .OrderBy(m => m.Created)
+                .ToListAsync();
+
+            return View(messages);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Message(Message formCollection)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(formCollection);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            Message message = new Message()
+            {
+                Id = Guid.NewGuid().ToString(),
+                SenderId = user.Id,
+                ReceiverId = formCollection.ReceiverId,
+                Text = formCollection.Text,
+                Created = DateTime.Now,
+            };
+            await _context.Messages.AddAsync(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction();
+        }
+
         private readonly string path = Path.GetFullPath("wwwroot/images");
 
         private void DeleteFile(string fileName)
