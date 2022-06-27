@@ -151,24 +151,22 @@ namespace Fazilat.Areas.Account.Controllers
 
             if (lastCurriculum != null)
             {
-                if (!TempData.ContainsKey("CurriculumTitle"))
-                {
-                    TempData.Add("CurriculumTitle", lastCurriculum.Title);
-                }
-                if (!TempData.ContainsKey("CurriculumDate"))
-                {
-                    DateTime startDate = lastCurriculum.StartDate;
-                    PersianCalendar persianCalendar = new PersianCalendar();
-                    var curriculumDate = string.Format("{0}/{1}/{2}",
-                        persianCalendar.GetYear(startDate),
-                        persianCalendar.GetMonth(startDate),
-                        persianCalendar.GetDayOfMonth(startDate));
-                    TempData.Add("CurriculumDate", curriculumDate);
-                }
+                PersianCalendar persianCalendar = new PersianCalendar();
+                TempData["StatusMessage"] = string.Format("{0} [{1}/{2:00}/{3:00}]",
+                    lastCurriculum.Title,
+                    persianCalendar.GetYear(lastCurriculum.StartDate),
+                    persianCalendar.GetMonth(lastCurriculum.StartDate),
+                    persianCalendar.GetDayOfMonth(lastCurriculum.StartDate));
+
                 curriculum = await _context.Courses
                     .Where(ci => ci.CurriculumId == lastCurriculum.Id)
                     .ToListAsync();
             }
+            else
+            {
+                TempData["StatusMessage"] = "Error: There is no curriculum for you.";
+            }
+
             return View(curriculum);
         }
 
