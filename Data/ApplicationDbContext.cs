@@ -19,6 +19,7 @@ namespace Fazilat.Data
         public virtual DbSet<EducationalFile> EducationalFiles { get; set; }
         public virtual DbSet<Curriculum> Curricula { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,6 +86,12 @@ namespace Fazilat.Data
                 b.HasMany(u => u.Curriculums)
                     .WithOne(c => c.User)
                     .HasForeignKey(uc => uc.UserId)
+                    .IsRequired();
+
+                b.HasMany(u => u.Messages)
+                    .WithOne(m => m.Sender)
+                    .HasForeignKey(um => um.SenderId)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
                 b.HasData(
@@ -221,6 +228,28 @@ namespace Fazilat.Data
                     .HasDefaultValue(false);
 
                 b.ToTable("Course");
+            });
+
+            modelBuilder.Entity<Message>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.SenderId)
+                    .IsRequired();
+
+                b.Property(e => e.ReceiverId)
+                    .IsRequired();
+
+                b.Property(e => e.Text)
+                    .HasColumnType("text")
+                    .IsRequired();
+
+                b.Property(e => e.Created)
+                    .HasColumnType("datetime")
+                    .HasDefaultValue(DateTime.Now.Date)
+                    .IsRequired();
+
+                b.ToTable("Message");
             });
         }
     }
