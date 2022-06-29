@@ -78,6 +78,12 @@ namespace Fazilat
                     pattern: "Dashboard/{action=Index}/{id?}",
                     defaults: new { controller = "Dashboard" });
 
+                endpoints.MapAreaControllerRoute(
+                    name: "administrator",
+                    areaName: "Account",
+                    pattern: "Administrator/{action=Index}/{id?}",
+                    defaults: new { controller = "Administrator" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
