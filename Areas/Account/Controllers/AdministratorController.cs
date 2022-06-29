@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using Fazilat.Data;
 using Fazilat.Models;
+using Fazilat.Areas.Account.Models;
 
 namespace Fazilat.Areas.Account.Controllers
 {
@@ -53,6 +54,8 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Adviser", new { id = string.Empty });
             }
 
+            var viewModel = new AdviserModel();
+
             var adviserRole = await _context.Roles
                 .FirstOrDefaultAsync(r => r.Name == "Adviser");
             var adviserRoleId = adviserRole.Id;
@@ -62,7 +65,15 @@ namespace Fazilat.Areas.Account.Controllers
                 .Select(ur => ur.UserId)
                 .ToListAsync();
 
-            var accounts = await _context.Users
+            viewModel.Advisers = await _context.Users
+                .Include(u => u.Information)
+                .Where(u => u.Id != admin.Id)
+                .Where(u => u.Information.NationalCode != null)
+                .Where(u => advisers.Contains(u.Id))
+                .OrderBy(u => u.Information.LastName)
+                .ToListAsync();
+
+            viewModel.Users = await _context.Users
                 .Include(u => u.Information)
                 .Where(u => u.Id != admin.Id)
                 .Where(u => u.Information.NationalCode != null)
@@ -70,12 +81,12 @@ namespace Fazilat.Areas.Account.Controllers
                 .OrderBy(u => u.Information.LastName)
                 .ToListAsync();
 
-            if (accounts.Count == 0)
+            if (viewModel.Advisers.Count == 0 && viewModel.Users.Count == 0)
             {
                 TempData["StatusMessage"] = "Error: There is no other completed account.";
             }
 
-            return View(accounts);
+            return View(viewModel);
         }
     }
 }
