@@ -1,37 +1,37 @@
 ﻿@model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "ثبت نام";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-black text-center">@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+<div class="row d-flex justify-content-center">
+    <div class="col-md-4 text-right m-3 mt-2 bg-white border rounded-lg shadow">
         <form id="registerForm" asp-route-returnUrl="/" method="post">
-            <h2>Create a new account.</h2>
+            <h6 class="text-center mt-3 alert alert-info">به خانواده آوای فضیلت بپیوندید</h6>
             <hr />
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            <div class="form-floating">
+            <div class="form-floating mt-4">
                 @Html.LabelFor(m => m.Email)
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
             </div>
-            <div class="form-floating">
+            <div class="form-floating mt-3">
                 @Html.LabelFor(m => m.Password)
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
-            <div class="form-floating">
+            <div class="form-floating mt-3">
                 @Html.LabelFor(m => m.ConfirmPassword)
                 @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger mb-3" })
             </div>
-            <div>
-                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+            <div class="form-floating mt-3">
+                <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">ثبت نام</button>
             </div>
-            <div>
+            <div class="mt-4">
                 <p>
-                    <a id="login" asp-area="Account" asp-controller="Home" asp-action="Login">Already registered? Login here.</a>
+                    <a id="login" asp-area="Account" asp-controller="Home" asp-action="Login">آوای فضیلتی هستید؟ وارد شوید.</a>
                 </p>
             </div>
         </form>

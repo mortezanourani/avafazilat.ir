@@ -1,6 +1,7 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿@import url(/fonts/font.css);
 
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -60,7 +61,9 @@ html {
 
 body {
   /* Margin bottom by footer height */
+  direction: rtl;
   margin-bottom: 60px;
+  font-family: IRANSansX !important;
 }
 .footer {
   position: absolute;
@@ -68,4 +71,44 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+.text-thin {
+    font-weight: 100;
+}
+
+.text-UltraLight {
+    font-weight: 200;
+}
+
+.text-light {
+    font-weight: 300;
+}
+
+.text-regular {
+    font-weight: 400;
+}
+
+.text-medium {
+    font-weight: 500;
+}
+
+.text-demibold {
+    font-weight: 600;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+
+.text-extrabold {
+    font-weight: 800;
+}
+
+.text-black {
+    font-weight: 900;
+}
+
+.ltr {
+    direction: ltr;
 }

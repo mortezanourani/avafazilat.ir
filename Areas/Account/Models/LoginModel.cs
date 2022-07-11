@@ -7,13 +7,15 @@ namespace Fazilat.Areas.Account.Models
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "نام کاربری")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "رمز عبور")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "مرا به خاطر بسپار")]
         public bool RememberMe { get; set; }
     }
 }
