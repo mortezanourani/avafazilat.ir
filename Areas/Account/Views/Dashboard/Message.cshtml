@@ -6,38 +6,40 @@
     var adviserId = TempData.FirstOrDefault(d => d.Key == "Adviser").Value.ToString();
 }
 
-<partial name="_StatusMessage" />
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="border rounded-lg bg-white box-shadow p-3">
+            @foreach (var message in Model) {
+                var messageClass = (message.SenderId == userId)
+                    ? "text-right alert-info ml-5"
+                    : "text-left alert-secondary mr-5";
 
-@foreach (var message in Model) {
-    var messageClass = (message.SenderId == userId)
-        ? "alert-success text-right"
-        : "alert-warning text-left";
+                PersianCalendar persianCalendar = new PersianCalendar();
+                var mC = message.Created;
+                var created = String.Format("{0}/{1:00}/{2:00} {3}:{4}",
+                    persianCalendar.GetYear(mC),
+                    persianCalendar.GetMonth(mC),
+                    persianCalendar.GetDayOfMonth(mC),
+                    persianCalendar.GetHour(mC).ToString(),
+                    persianCalendar.GetMinute(mC).ToString());
 
-    PersianCalendar persianCalendar = new PersianCalendar();
-    var mC = message.Created;
-    var created = String.Format("{0}/{1:00}/{2:00} {3}:{4}",
-        persianCalendar.GetYear(mC),
-        persianCalendar.GetMonth(mC),
-        persianCalendar.GetDayOfMonth(mC),
-        persianCalendar.GetHour(mC).ToString(),
-        persianCalendar.GetMinute(mC).ToString());
-
-    <div class="rounded-lg mb-2 @messageClass">
-        <p class="col-md mb-0">
-            @Html.Raw(message.Text.Replace("\n", "</br>"))
-        </p>
-        <p class="col-md mb-0 text-info text-sm">@created</p>
-    </div>
-}
-<div class="row">
-    <div class="col-md">
-        <form id="message-form" method="post">
-            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-            <input name="ReceiverId" value="@adviserId" hidden />
-            <div class="form-floating">
-                <textarea name="Text" class="form-control mb-2" placeholder="Write message." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
+                    <div class="alert @messageClass">
+                        <p class="col-md mb-0">
+                            @Html.Raw(message.Text.Replace("\n", "</br>"))
+                        </p>
+                        <p class="col-md mb-0 text-info text-sm">@created</p>
+                    </div>
+            }
+            <form id="message-form" method="post">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <input name="ReceiverId" value="@adviserId" hidden />
+                <div class="form-floating">
+                    <textarea name="Text" class="form-control mb-2" placeholder="Write message." required></textarea>
+                </div>
+                <div class="form-floating text-left">
+                    <button type="submit" class="btn btn-primary">ارسال</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>

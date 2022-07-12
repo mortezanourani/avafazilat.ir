@@ -111,7 +111,7 @@ namespace Fazilat.Areas.Account.Controllers
                 await _context.SaveChangesAsync();
                 if (!TempData.ContainsKey("StatusMessage"))
                 {
-                    TempData.Add("StatusMessage", "Information updated successfully.");
+                    TempData.Add("StatusMessage", "پرونده تحصیلی شما با موفقیت به روز رسانی شد.");
                 }
             }
             catch (Exception exception)
@@ -228,7 +228,7 @@ namespace Fazilat.Areas.Account.Controllers
             else
             {
                 TempData["Adviser"] = string.Empty;
-                TempData["StatusMessage"] = "Error: There is no adviser accepted you.";
+                TempData["StatusMessage"] = "Error: مشاوری برای شما تعیین نشده است. جهت تعیین مشاور با دفتر موسسه آوای فضیلت تماس حاصل نمایید.";
             }
 
             return View(messages);

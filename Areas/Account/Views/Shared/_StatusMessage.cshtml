@@ -3,7 +3,12 @@
     var statusMessageClass = statusMessage.ToString().StartsWith("Error")
         ? "danger"
         : "success";
-    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
-        @statusMessage
+
+    int index = statusMessage.ToString().IndexOf("Error: ");
+    var messageText = (index < 0) 
+        ? statusMessage.ToString() 
+        : statusMessage.ToString().Remove(index, 7);
+    <div class="alert alert-@statusMessageClass text-right" role="alert">
+        @messageText
     </div>
 }

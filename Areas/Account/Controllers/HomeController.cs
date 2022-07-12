@@ -68,7 +68,7 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Index", "Dashboard");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
             return View(loginModel);
         }
 
@@ -137,14 +137,14 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                TempData.Add("StatusMessage", "Error: User not found. Make sure you typed your username correctly.");
+                TempData.Add("StatusMessage", "Error: نام کاربری وارد شده یافت نشد. شما در حال فعالیت برای تغییر رمز عبور فرد دیگری هستید.");
                 return RedirectToAction("Login");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, passwordModel.CurrentPassword, passwordModel.NewPassword);
             if (result.Succeeded)
             {
-                TempData.Add("StatusMessage", "Password has been changed.");
+                TempData.Add("StatusMessage", "رمز عبور با موفقیت تغییر کرد.");
                 return RedirectToAction();
             }
 
@@ -227,7 +227,7 @@ namespace Fazilat.Areas.Account.Controllers
                     }
                     else
                     {
-                        TempData.Add("StatusMessage", "Error: The file is too large.");
+                        TempData.Add("StatusMessage", "Error: حجم فایل انتخاب شده بیش از حد مجاز است.");
                         return View();
                     }
                 }
@@ -251,7 +251,7 @@ namespace Fazilat.Areas.Account.Controllers
                 await _userManager.SetPhoneNumberAsync(user, personalInfo.PhoneNumber);
                 _context.Attach(userInfo).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-                TempData.Add("StatusMessage", "Information updated successfully.");
+                TempData.Add("StatusMessage", "مشخصات فردی با موفقیت به روز رسانی شد.");
                 return RedirectToAction();
             }
             catch (Exception exception)

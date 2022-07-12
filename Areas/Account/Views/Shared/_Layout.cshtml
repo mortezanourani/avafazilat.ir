@@ -2,17 +2,21 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Manage your account</h1>
-
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
+<div class="text-right alert border rounded-lg bg-white box-shadow overflow-hidden">
+    <h1>@ViewData["Title"]</h1>
+    <h6>مدیریت حساب کاربری</h6>
+</div>
+<hr />
+<partial name="_StatusMessage" />
+<div class="container">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 p-0 overflow-hidden">
             <partial name="_AccountNav" />
         </div>
-        <div class="col-md-9">
-            @RenderBody()
+        <div class="col-md-9 pl-0">
+            <div class="container p-3 border rounded-lg text-right">
+                @RenderBody()
+            </div>
         </div>
     </div>
 </div>
