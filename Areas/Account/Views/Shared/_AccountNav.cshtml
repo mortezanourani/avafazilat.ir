@@ -1,23 +1,29 @@
-﻿<ul class="nav nav-pills flex-column text-right p-0">
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("پنل کاربری", "Index", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("تغییر رمزعبور", "ChangePassword", "Home", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("مشخصات فردی", "PersonalInfo", "Home", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("پرونده تحصیلی", "EducationalFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("برنامه مطالعاتی", "Curricula", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("پیام ها", "Message", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-    <li class="nav-item mb-2 border rounded-lg bg-white box-shadow">
-        @Html.ActionLink("مشاوران", "Adviser", "Administrator", new { @area = "Account" }, new {@class = "nav-link" })
-    </li>
-</ul>
+﻿<div class="border rounded-lg bg-white box-shadow mb-2 p-3">
+    <ul class="nav nav-pills flex-column text-right p-0">
+        <li class="nav-item mb-3 border rounded-lg">
+            @Html.ActionLink("برنامه مطالعاتی", "Curricula", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
+        </li>
+        <li class="nav-item mb-3 border rounded-lg">
+            @Html.ActionLink("پیام ها", "Message", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
+        </li>
+        <li class="nav-item mb-3 border rounded-lg">
+            @Html.ActionLink("پرونده تحصیلی", "EducationalFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
+        </li>
+        <li class="nav-item mb-3 border rounded-lg">
+            @Html.ActionLink("مشخصات فردی", "PersonalInfo", "Home", new { @area = "Account" }, new {@class = "nav-link" })
+        </li>
+        <li class="nav-item border rounded-lg">
+            @Html.ActionLink("تغییر رمزعبور", "ChangePassword", "Home", new { @area = "Account" }, new {@class = "nav-link" })
+        </li>
+    </ul>
+</div>
+@if (User.IsInRole("Administrator"))
+{
+    <div class="border rounded-lg bg-white box-shadow mb-3 p-3">
+        <ul class="nav nav-pills flex-column text-right p-0">
+            <li class="nav-item border rounded-lg">
+                @Html.ActionLink("مشاوران", "Adviser", "Administrator", new { @area = "Account" }, new {@class = "nav-link" })
+            </li>
+        </ul>
+    </div>
+}

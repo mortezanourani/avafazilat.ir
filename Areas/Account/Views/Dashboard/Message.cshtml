@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @model IEnumerable<Fazilat.Models.Message>
 @{
-    ViewData["Title"] = "Message";
+    ViewData["Title"] = "پیام ها";
     var userId = TempData.FirstOrDefault(d => d.Key == "User").Value.ToString();
     var adviserId = TempData.FirstOrDefault(d => d.Key == "Adviser").Value.ToString();
 }
@@ -11,8 +11,8 @@
         <div class="border rounded-lg bg-white box-shadow p-3">
             @foreach (var message in Model) {
                 var messageClass = (message.SenderId == userId)
-                    ? "text-right alert-info ml-5"
-                    : "text-left alert-secondary mr-5";
+                    ? "alert-info ml-5"
+                    : "alert-secondary mr-5";
 
                 PersianCalendar persianCalendar = new PersianCalendar();
                 var mC = message.Created;
@@ -24,17 +24,21 @@
                     persianCalendar.GetMinute(mC).ToString());
 
                     <div class="alert @messageClass">
-                        <p class="col-md mb-0">
+                        <p class="mb-0">
                             @Html.Raw(message.Text.Replace("\n", "</br>"))
                         </p>
-                        <p class="col-md mb-0 text-info text-sm">@created</p>
+                        <p class="w-100 mt-2 mb-0 text-sm-left text-secondary ltr">
+                            <small>
+                                <small>@created</small>
+                            </small>
+                        </p>
                     </div>
             }
             <form id="message-form" method="post">
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                 <input name="ReceiverId" value="@adviserId" hidden />
                 <div class="form-floating">
-                    <textarea name="Text" class="form-control mb-2" placeholder="Write message." required></textarea>
+                    <textarea name="Text" class="form-control mb-2" placeholder="متن پیام" required></textarea>
                 </div>
                 <div class="form-floating text-left">
                     <button type="submit" class="btn btn-primary">ارسال</button>
