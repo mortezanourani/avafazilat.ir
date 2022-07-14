@@ -112,3 +112,8 @@ body {
 .ltr {
     direction: ltr;
 }
+
+.about p {
+    line-height: 2rem;
+    margin: 0;
+}
