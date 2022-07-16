@@ -6,9 +6,10 @@ namespace Fazilat.Areas.Account.Models
     public class LoginModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "نام کاربری")]
-        public string Email { get; set; }
+        [Display(Name = "کد ملی یا شماره همراه")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا نام کاربری را به شکل درستی وارد نمایید.")]
+        [StringLength(11, ErrorMessage = "تعداد ارقام وارد شده غیر مجاز است.", MinimumLength = 10)]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

@@ -10,7 +10,9 @@
         <form id="personal-information-form" method="post" enctype="multipart/form-data">
             <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
                 @Html.LabelFor(m => m.NationalCode, new { @class = "form-label" })
-                @Html.TextBoxFor(m => m.NationalCode, new { @class = "form-control ltr" })
+                <span class="form-control ltr text-left">
+                    @Html.DisplayFor(m => m.NationalCode)
+                </span>
                 @Html.ValidationMessageFor(m => m.NationalCode, "", new { @class = "text-danger" })
             </div>
             <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">

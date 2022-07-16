@@ -22,6 +22,19 @@ body {
     color: #f0ffd7;
 }
 
+.border-success {
+    border-color: #5a8a35 !important;
+}
+
+.bg-success {
+    background-color: #5a8a35 !important;
+}
+
+.btn-success {
+    border-color: #5a8a35 !important;
+    background-color: #5a8a35 !important;
+}
+
 hr {
     border-color: #28a745 !important;
 }

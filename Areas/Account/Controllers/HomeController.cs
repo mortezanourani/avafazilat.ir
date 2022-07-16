@@ -62,7 +62,18 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(loginModel);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(loginModel.Email, loginModel.Password, loginModel.RememberMe, false);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u =>
+                u.PhoneNumber == loginModel.Username
+                || u.UserName == loginModel.Username);
+            if(user == null)
+            {
+                TempData["StatusMessage"] = "Error: کاربری با این مشخصات یافت نشد.";
+                return View(loginModel);
+            }
+            var username = user.UserName;
+
+            var result = await _signInManager.PasswordSignInAsync(username, loginModel.Password, loginModel.RememberMe, false);
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Dashboard");
@@ -92,9 +103,19 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(registerModel);
             }
 
+            var userByUserName = await _context.Users
+                .FirstOrDefaultAsync(u => u.UserName == registerModel.NationalCode);
+            var userByPhoneNumber = await _context.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == registerModel.PhoneNumber);
+            if(userByUserName != null || userByPhoneNumber != null)
+            {
+                TempData["StatusMessage"] = "Error: کاربری با این مشخصات در سامانه حاضر است.";
+                return View(registerModel);
+            }
+
             var user = new ApplicationUser();
-            await _userStore.SetUserNameAsync(user, registerModel.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, registerModel.Email, CancellationToken.None);
+            await _userManager.SetUserNameAsync(user, registerModel.NationalCode);
+            await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
 
             var result = await _userManager.CreateAsync(user, registerModel.Password);
             if (result.Succeeded)
@@ -106,7 +127,7 @@ namespace Fazilat.Areas.Account.Controllers
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("PersonalInfo", "Home");
             }
 
             foreach(var error in result.Errors)
@@ -182,11 +203,12 @@ namespace Fazilat.Areas.Account.Controllers
             var birthDateMonth = persianCalendar.GetMonth(birthDate);
             var birthDateYear = persianCalendar.GetYear(birthDate);
 
+            string nationalCode = await _userManager.GetUserNameAsync(user);
             string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             InformationModel personalInfo = new InformationModel()
             {
-                NationalCode = userInfo.NationalCode,
+                NationalCode = nationalCode,
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
                 Day = birthDateDay,
@@ -233,12 +255,9 @@ namespace Fazilat.Areas.Account.Controllers
                 }
             }
 
-
-
             var userInfo = new UserInformation()
             {
                 UserId = user.Id,
-                NationalCode = personalInfo.NationalCode,
                 FirstName = personalInfo.FirstName,
                 LastName = personalInfo.LastName,
                 BirthDate = birthDate,

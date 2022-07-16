@@ -12,8 +12,6 @@ namespace Fazilat.Areas.Account.Models
     public class InformationModel : UserInformation
     {
         [Display(Name = "کد ملی")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "National code is invalid.")]
-        [StringLength(10, ErrorMessage = "The {0} must has {1} digits.", MinimumLength = 10)]
         public string NationalCode { get; set; }
 
         [Display(Name = "نام")]

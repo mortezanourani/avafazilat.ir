@@ -63,7 +63,6 @@ namespace Fazilat.Areas.Account.Controllers
 
             var advisers = await _context.Users
                 .Include(u => u.Information)
-                .Where(u => u.Information.NationalCode != null)
                 .Where(u => advisersList.Contains(u.Id))
                 .OrderBy(u => u.Information.LastName)
                 .ToListAsync();
@@ -117,7 +116,6 @@ namespace Fazilat.Areas.Account.Controllers
 
             var users = await _context.Users
                 .Include(u => u.Information)
-                .Where(u => u.Information.NationalCode != null)
                 .Where(u => usersList.Contains(u.Id))
                 .Where(u => !advisersList.Contains(u.Id))
                 .OrderBy(u => u.Information.LastName)

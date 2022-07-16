@@ -13,10 +13,10 @@
                 @Html.DisplayNameFor(model => model.Information.FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Information.NationalCode)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th></th>
         </tr>
@@ -31,10 +31,10 @@
                 @Html.DisplayFor(modelItem => item.Information.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Information.NationalCode)
+                @Html.DisplayFor(modelItem => item.UserName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
                 <a class="text-success" asp-action="Users" asp-route-id="@item.Id">ارتقا</a>

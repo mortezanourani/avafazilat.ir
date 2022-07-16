@@ -32,6 +32,7 @@ namespace Fazilat.Data
             var adminRoleId = Guid.NewGuid().ToString();
             var managerRoleId = Guid.NewGuid().ToString();
             var adviserRoleId = Guid.NewGuid().ToString();
+            var parentRoleId = Guid.NewGuid().ToString();
             var userRoleId = Guid.NewGuid().ToString();
 
             modelBuilder.Entity<IdentityRole>(b =>
@@ -59,6 +60,12 @@ namespace Fazilat.Data
                     },
                     new IdentityRole
                     {
+                        Id = parentRoleId,
+                        Name = "Parent",
+                        NormalizedName = "PARENT"
+                    },
+                    new IdentityRole
+                    {
                         Id = userRoleId,
                         Name = "User",
                         NormalizedName = "USER"
@@ -72,7 +79,14 @@ namespace Fazilat.Data
 
             modelBuilder.Entity<ApplicationUser>(b =>
             {
-                b.ToTable("User");
+                b.HasIndex(u => u.UserName)
+                    .IsUnique();
+
+                b.HasIndex(u => u.PhoneNumber)
+                    .IsUnique();
+
+                b.HasIndex(u => u.Email)
+                    .IsUnique();
 
                 b.HasOne(u => u.Information)
                     .WithOne(i => i.User)
@@ -95,17 +109,19 @@ namespace Fazilat.Data
                     .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
+                b.ToTable("User");
+
                 b.HasData(
                     new ApplicationUser()
                     {
                         Id = adminUserId,
-                        UserName = "mortizanourani@gmail.com",
-                        NormalizedUserName = "MORTIZANOURANI@GMAIL.COM",
-                        Email = "mortizanourani@gmail.com",
-                        NormalizedEmail = "MORTIZANOURANI@GMAIL.COM",
+                        UserName = "2709863431",
+                        NormalizedUserName = "2709863431",
+                        Email = "mortezanourani@gmail.com",
+                        NormalizedEmail = "MORTEZANOURANI@GMAIL.COM",
                         EmailConfirmed = true,
                         PasswordHash = adminPasswordHash,
-                        PhoneNumber = "+989116069878",
+                        PhoneNumber = "09116069878",
                         PhoneNumberConfirmed = true,
                         AccessFailedCount = 0,
                         LockoutEnabled = false,
@@ -159,10 +175,6 @@ namespace Fazilat.Data
             {
                 b.HasKey(e => e.UserId);
 
-                b.Property(e => e.NationalCode)
-                    .HasColumnType("nvarchar(10)")
-                    .HasMaxLength(10);
-
                 b.Property(e => e.FirstName)
                     .HasColumnType("nvarchar(256)")
                     .HasMaxLength(256);
@@ -173,9 +185,6 @@ namespace Fazilat.Data
 
                 b.Property(e => e.BirthDate)
                     .HasColumnType("date");
-
-                b.HasIndex(e => e.NationalCode)
-                    .IsUnique();
 
                 b.ToTable("UserInformation");
             });

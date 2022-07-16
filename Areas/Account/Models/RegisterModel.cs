@@ -7,9 +7,17 @@ namespace Fazilat.Areas.Account.Models
     public class RegisterModel
     {
         [Required]
-        [EmailAddress(ErrorMessage = "پست الکترونیک را به صورت صحیح وارد نمایید.")]
-        [Display(Name = "پست الکترونیک")]
-        public string Email { get; set; }
+        [Display(Name = "کد ملی")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا کد ملی خود را به شکل درستی وارد نمایید.")]
+        [StringLength(10, ErrorMessage = "کد ملی می باید به صورت 10 رقمی و بدون خط فاصله وارد شود.", MinimumLength = 10)]
+        public string NationalCode { get; set; }
+
+        [Required]
+        [Display(Name = "شماره همراه")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا شماره همراه خود را به شکل درست وارد نمایید.")]
+        [StringLength(11, ErrorMessage = "شماره همراه باید به صورت 11 رقمی و بدون کد کشور وارد شود.", MinimumLength = 11)]
+        [Range(9000000000, 9399999999, ErrorMessage = "شماره همراه وارد شده نامعتبر است.")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "رمز عبور باید رشته ای از اعداد و حروف با طول حداقل 6 کارکتر باشد.", MinimumLength = 6)]

@@ -7,8 +7,6 @@ namespace Fazilat.Models
     public class UserInformation
     {
         public string UserId { get; set; }
-        [Display(Name = "کد ملی")]
-        public string NationalCode { get; set; }
         [Display(Name = "نام")]
         public string FirstName { get; set; }
         [Display(Name = "نام خانوادگی")]

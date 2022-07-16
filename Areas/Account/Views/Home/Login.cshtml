@@ -4,18 +4,18 @@
 }
 
 <h1 class="text-black text-center">@ViewData["Title"]</h1>
-<partial name="_StatusMessage" />
 <div class="row d-flex justify-content-center">
     <div class="col-md-4 text-right m-3 mt-2 bg-white border border-success rounded-lg shadow">
         <section>
             <form id="account" method="post">
-                <h6 class="text-center mt-3 alert alert-info">به آوای فضیلت خوش آمدید</h6>
+                <h6 class="text-center mt-3 alert alert-success">به آوای فضیلت خوش آمدید</h6>
                 <hr />
+                <partial name="_StatusMessage" />
                 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
                 <div class="form-floating mt-4">
-                    @Html.LabelFor(m => m.Email)
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control ltr" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    @Html.LabelFor(m => m.Username)
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control ltr" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-floating mt-3">
                     @Html.LabelFor(m => m.Password)

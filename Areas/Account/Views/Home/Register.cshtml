@@ -4,17 +4,22 @@
 }
 
 <h1 class="text-black text-center">@ViewData["Title"]</h1>
-
 <div class="row d-flex justify-content-center">
     <div class="col-md-4 text-right m-3 mt-2 bg-white border border-success rounded-lg shadow">
         <form id="registerForm" asp-route-returnUrl="/" method="post">
-            <h6 class="text-center mt-3 alert alert-info">به خانواده آوای فضیلت بپیوندید</h6>
+            <h6 class="text-center mt-3 alert alert-success">به خانواده آوای فضیلت بپیوندید</h6>
             <hr />
+            <partial name="_StatusMessage" />
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             <div class="form-floating mt-4">
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control ltr" })
-                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                @Html.LabelFor(m => m.NationalCode)
+                @Html.TextBoxFor(m => m.NationalCode, new { @class = "form-control ltr" })
+                @Html.ValidationMessageFor(m => m.NationalCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating mt-4">
+                @Html.LabelFor(m => m.PhoneNumber)
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control ltr" })
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
             </div>
             <div class="form-floating mt-3">
                 @Html.LabelFor(m => m.Password)
