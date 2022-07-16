@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Fazilat.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "کاربران";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Information.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Information.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Information.NationalCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class="alert-info">
+            <td>
+                @Html.DisplayFor(modelItem => item.Information.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Information.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Information.NationalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                <a class="text-success" asp-action="Users" asp-route-id="@item.Id">ارتقا</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

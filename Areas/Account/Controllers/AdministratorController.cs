@@ -28,11 +28,9 @@ namespace Fazilat.Areas.Account.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Adviser(string id)
+        public async Task<IActionResult> Advisers(string id)
         {
-            var admin = await _userManager.GetUserAsync(User);
-
-            if (id != null)
+            if (!string.IsNullOrEmpty(id))
             {
                 var adviser = await _context.Users
                     .Include(u => u.Information)
@@ -41,52 +39,95 @@ namespace Fazilat.Areas.Account.Controllers
                 {
                     try
                     {
-                        await _userManager.AddToRoleAsync(adviser, "Adviser");
-                        TempData["StatusMessage"] = string.Format("{0} {1} promoted to adviser.",
+                        await _userManager.RemoveFromRoleAsync(adviser, "Adviser");
+                        TempData["StatusMessage"] = string.Format("{0} {1} از فهرست مشاوران خارج شد.",
                             adviser.Information.FirstName, adviser.Information.LastName);
                     }
                     catch (Exception exception)
                     {
-                        TempData["StatusMessage"] = string.Format("Error: {0}.",
+                        TempData["StatusMessage"] = string.Format("Error: {0}",
                             exception.Message);
                     }
                 }
-                return RedirectToAction("Adviser", new { id = string.Empty });
+                return RedirectToAction("Advisers", new { id = string.Empty });
             }
-
-            var viewModel = new AdviserModel();
 
             var adviserRole = await _context.Roles
                 .FirstOrDefaultAsync(r => r.Name == "Adviser");
             var adviserRoleId = adviserRole.Id;
 
-            var advisers = await _context.UserRoles
+            var advisersList = await _context.UserRoles
                 .Where(ur => ur.RoleId == adviserRoleId)
                 .Select(ur => ur.UserId)
                 .ToListAsync();
 
-            viewModel.Advisers = await _context.Users
+            var advisers = await _context.Users
                 .Include(u => u.Information)
-                .Where(u => u.Id != admin.Id)
                 .Where(u => u.Information.NationalCode != null)
-                .Where(u => advisers.Contains(u.Id))
+                .Where(u => advisersList.Contains(u.Id))
                 .OrderBy(u => u.Information.LastName)
                 .ToListAsync();
 
-            viewModel.Users = await _context.Users
-                .Include(u => u.Information)
-                .Where(u => u.Id != admin.Id)
-                .Where(u => u.Information.NationalCode != null)
-                .Where(u => !advisers.Contains(u.Id))
-                .OrderBy(u => u.Information.LastName)
-                .ToListAsync();
-
-            if (viewModel.Advisers.Count == 0 && viewModel.Users.Count == 0)
+            if (advisers == null)
             {
-                TempData["StatusMessage"] = "Error: There is no other completed account.";
+                TempData["StatusMessage"] = "Error: هیچ مشاوری در سامانه حضور ندارد.";
+            }
+            return View(advisers);
+        }
+
+        public async Task<IActionResult> Users(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var user = await _context.Users
+                    .Include(u => u.Information)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+                if (user != null)
+                {
+                    try
+                    {
+                        await _userManager.AddToRoleAsync(user, "Adviser");
+                        TempData["StatusMessage"] = string.Format("{0} {1} به فهرست مشاوران اضافه شد.",
+                            user.Information.FirstName, user.Information.LastName);
+                    }
+                    catch (Exception exception)
+                    {
+                        TempData["StatusMessage"] = string.Format("Error: {0}",
+                            exception.Message);
+                    }
+                }
+                return RedirectToAction("Users", new { id = string.Empty });
             }
 
-            return View(viewModel);
+            var adviserRole = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == "Adviser");
+            var adviserRoleId = adviserRole.Id;
+            var advisersList = await _context.UserRoles
+                .Where(ur => ur.RoleId == adviserRoleId)
+                .Select(ur => ur.UserId)
+                .ToListAsync();
+
+            var userRole = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == "User");
+            var userRoleId = userRole.Id;
+            var usersList = await _context.UserRoles
+                .Where(ur => ur.RoleId == userRoleId)
+                .Select(ur => ur.UserId)
+                .ToListAsync();
+
+            var users = await _context.Users
+                .Include(u => u.Information)
+                .Where(u => u.Information.NationalCode != null)
+                .Where(u => usersList.Contains(u.Id))
+                .Where(u => !advisersList.Contains(u.Id))
+                .OrderBy(u => u.Information.LastName)
+                .ToListAsync();
+
+            if (users == null)
+            {
+                TempData["StatusMessage"] = "Error: هیچ کاربری در سامانه ثبت نام نکرده است.";
+            }
+            return View(users);
         }
     }
 }

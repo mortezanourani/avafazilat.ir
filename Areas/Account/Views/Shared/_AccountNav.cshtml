@@ -1,15 +1,15 @@
 ﻿<div class="border rounded-lg bg-white box-shadow mb-2 p-3">
     <ul class="nav nav-pills flex-column text-right p-0">
-        <li class="nav-item mb-3 border rounded-lg">
+        <li class="nav-item mb-2 border rounded-lg">
             @Html.ActionLink("برنامه مطالعاتی", "Curricula", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
         </li>
-        <li class="nav-item mb-3 border rounded-lg">
+        <li class="nav-item mb-2 border rounded-lg">
             @Html.ActionLink("پیام ها", "Message", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
         </li>
-        <li class="nav-item mb-3 border rounded-lg">
+        <li class="nav-item mb-2 border rounded-lg">
             @Html.ActionLink("پرونده تحصیلی", "EducationalFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link" })
         </li>
-        <li class="nav-item mb-3 border rounded-lg">
+        <li class="nav-item mb-2 border rounded-lg">
             @Html.ActionLink("مشخصات فردی", "PersonalInfo", "Home", new { @area = "Account" }, new {@class = "nav-link" })
         </li>
         <li class="nav-item border rounded-lg">
@@ -19,10 +19,13 @@
 </div>
 @if (User.IsInRole("Administrator"))
 {
-    <div class="border rounded-lg bg-white box-shadow mb-3 p-3">
+    <div class="border rounded-lg bg-white box-shadow mb-2 p-3">
         <ul class="nav nav-pills flex-column text-right p-0">
+            <li class="nav-item mb-2 border rounded-lg">
+                @Html.ActionLink("مشاوران", "Advisers", "Administrator", new { @area = "Account" }, new {@class = "nav-link" })
+            </li>
             <li class="nav-item border rounded-lg">
-                @Html.ActionLink("مشاوران", "Adviser", "Administrator", new { @area = "Account" }, new {@class = "nav-link" })
+                @Html.ActionLink("کاربران", "Users", "Administrator", new { @area = "Account" }, new {@class = "nav-link" })
             </li>
         </ul>
     </div>
