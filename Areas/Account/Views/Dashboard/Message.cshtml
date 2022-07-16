@@ -8,10 +8,10 @@
 
 <div class="row d-flex justify-content-center">
     <div class="col-md-6">
-        <div class="border rounded-lg bg-white box-shadow p-3">
+        <div class="border border-success rounded-lg bg-white box-shadow p-3">
             @foreach (var message in Model) {
                 var messageClass = (message.SenderId == userId)
-                    ? "alert-info ml-5"
+                    ? "alert-success ml-5"
                     : "alert-secondary mr-5";
 
                 PersianCalendar persianCalendar = new PersianCalendar();
@@ -41,7 +41,7 @@
                     <textarea name="Text" class="form-control mb-2" placeholder="متن پیام" required></textarea>
                 </div>
                 <div class="form-floating text-left">
-                    <button type="submit" class="btn btn-primary">ارسال</button>
+                    <button type="submit" class="btn btn-success">ارسال</button>
                 </div>
             </form>
         </div>

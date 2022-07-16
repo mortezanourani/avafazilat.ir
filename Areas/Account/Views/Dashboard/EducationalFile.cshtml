@@ -7,12 +7,12 @@
 <div class="row d-flex justify-content-center">
     <div class="col-md-6">
         <form id="educational-file-form" method="post" enctype="multipart/form-data">
-            <div class="form-floating p-3 mb-3 border rounded-lg bg-white box-shadow">
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
                 @Html.LabelFor(m => m.RegistrationFormFile, new { @class = "form-label" })
                 @if(Model.RegistrationFormFileName != null)
                 {
                     @Html.HiddenFor(m => m.RegistrationFormFileName)
-                    <img class="col-md-12 p-0 border rounded-lg" src="/images/@Model.RegistrationFormFileName" />
+                    <img class="col-md-12 p-0 border border-success rounded-lg" src="/images/@Model.RegistrationFormFileName" />
                 }
                 else
                 {
@@ -20,7 +20,7 @@
                 }
                 @Html.ValidationMessageFor(m => m.RegistrationFormFile, "", new { @class = "text-danger" })
             </div>
-            <div class="form-floating p-3 mb-3 border rounded-lg bg-white box-shadow">
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
                 <div class="form-floating mb-4">
                     @Html.LabelFor(m => m.Grade, new { @class = "form-label" })
                     @Html.TextBoxFor(m => m.Grade, new { @class = "form-control" })
@@ -37,12 +37,12 @@
                     @if(Model.LastWorkbookFileName != null)
                     {
                         @Html.HiddenFor(m => m.LastWorkbookFileName)
-                        <img class="col-md-12 p-0 mt-2 border rounded-lg" src="/images/@Model.LastWorkbookFileName" />
+                        <img class="col-md-12 p-0 mt-2 border border-success rounded-lg" src="/images/@Model.LastWorkbookFileName" />
                     }
                     @Html.ValidationMessageFor(m => m.LastWorkbookFile, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">به روز رسانی</button>
+            <button type="submit" class="w-100 btn btn-lg btn-success">به روز رسانی</button>
         </form>
     </div>
 </div>
