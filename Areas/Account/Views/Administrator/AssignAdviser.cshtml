@@ -1,0 +1,39 @@
+﻿@using Fazilat.Models
+@model AdviserAssignmentModel
+@{
+    ViewData["Title"] = "تعیین مشاور";
+}
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <form id="educational-file-form" method="post">
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+                @Html.HiddenFor(m => m.StudentId)
+                @Html.LabelFor(m => m.Student, new { @class = "form-label" })
+                <div class="form-control d-flex justify-content-between">
+                    <span>
+                        @Html.DisplayFor(m => m.Student.Information.FullName)
+                    </span>
+                    <span>
+                        @Html.DisplayFor(m => m.Student.UserName)
+                    </span>
+                </div>
+            </div>
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+                <div class="form-floating">
+                    @Html.LabelFor(m => m.Advisers, new { @class = "form-label" })
+                    @Html.DropDownListFor(m => m.AdviserId, 
+                        new SelectList(Model.Advisers.ToList(), "Id", "Information.FullName", Model.Adviser),
+                        null, new { @class = "form-control" })
+                </div>
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-success">تایید</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

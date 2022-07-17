@@ -37,7 +37,8 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                <a class="text-success" asp-action="Users" asp-route-id="@item.Id">ارتقا</a>
+                <a class="text-success" asp-action="Users" asp-route-id="@item.Id">ارتقا</a> |
+                <a class="text-success" asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a>
             </td>
         </tr>
 }

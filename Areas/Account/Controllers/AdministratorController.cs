@@ -127,5 +127,78 @@ namespace Fazilat.Areas.Account.Controllers
             }
             return View(users);
         }
+
+        public async Task<IActionResult> AssignAdviser(string id)
+        {
+            var student = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            var studentAdviser = await _context.Advisers
+                .FirstOrDefaultAsync(a => a.StudentId == id);
+            if(studentAdviser == null)
+            {
+                studentAdviser = new Adviser()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    StudentId = id,
+                    AdviserId = null,
+                };
+            }
+
+            var adviser = await _context.Users
+                .Include(a => a.Information)
+                .FirstOrDefaultAsync(a => a.Id == studentAdviser.AdviserId);
+
+            var adviserRole = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == "Adviser");
+            var adviserRoleId = adviserRole.Id;
+            var advisersList = await _context.UserRoles
+                .Where(ur => ur.RoleId == adviserRoleId)
+                .Select(ur => ur.UserId)
+                .ToListAsync();
+            var advisers = await _context.Users
+                .Include(u => u.Information)
+                .Where(u => advisersList.Contains(u.Id))
+                .OrderBy(u => u.Information.LastName)
+                .ToListAsync();
+
+            var adviserModel = new AdviserAssignmentModel()
+            {
+                Id = studentAdviser.Id,
+                Student = student,
+                StudentId = student.Id,
+                Adviser = adviser,
+                AdviserId = (adviser == null) ? null: adviser.Id,
+                Advisers = advisers
+            };
+
+            return View(adviserModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignAdviser(AdviserAssignmentModel formCollection)
+        {
+            Adviser adviser = await _context.Advisers
+                .FirstOrDefaultAsync(a => a.Id == formCollection.Id);
+            if(adviser == null)
+            {
+                adviser = new Adviser()
+                {
+                    Id = formCollection.Id,
+                    StudentId = formCollection.StudentId,
+                    AdviserId = formCollection.AdviserId
+                };
+                await _context.AddAsync(adviser);
+            }
+            else
+            {
+                adviser.AdviserId = formCollection.AdviserId;
+                _context.Attach(adviser).State = EntityState.Modified;
+            }
+            await _context.SaveChangesAsync();
+            TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
+            return RedirectToAction("Users");
+        }
     }
 }

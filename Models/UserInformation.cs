@@ -16,6 +16,13 @@ namespace Fazilat.Models
         [Display(Name = "استان محل سکونت")]
         public string Province { get; set; }
         public byte[] BirthCertificate { get; set; }
+        public virtual string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public virtual ApplicationUser User { get; set; }
     }
 }
