@@ -1,13 +1,22 @@
-﻿<div class="border border-success rounded-lg bg-white box-shadow mb-2 p-3">
+﻿@{
+    var administrator = User.IsInRole("Administrator");
+    var adviser = User.IsInRole("Adviser");
+    var parent = User.IsInRole("Parent");
+    var student = User.IsInRole("User");
+}
+<div class="border border-success rounded-lg bg-white box-shadow mb-2 p-3">
     <ul class="nav nav-pills flex-column text-right p-0">
-        @if (!(User.IsInRole("Administrator") || User.IsInRole("Adviser")))
+        @if(!adviser && !administrator)
         {
             <li class="nav-item mb-2 border border-success rounded-lg">
                 @Html.ActionLink("برنامه مطالعاتی", "Curricula", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
             </li>
-            <li class="nav-item mb-2 border border-success rounded-lg">
-                @Html.ActionLink("پیام ها", "Message", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
-            </li>
+            @if (!parent)
+            {
+                <li class="nav-item mb-2 border border-success rounded-lg">
+                    @Html.ActionLink("پیام ها", "Message", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
+                </li>
+            }
             <li class="nav-item mb-2 border border-success rounded-lg">
                 @Html.ActionLink("پرونده تحصیلی", "EducationalFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
             </li>
