@@ -36,10 +36,16 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Login");
             }
 
-            if(User.IsInRole("Adviser") && !User.IsInRole("Administrator"))
+            if (User.IsInRole("Administrator"))
+            {
+                return RedirectToAction("Index", "Administrator");
+            }
+
+            if (User.IsInRole("Adviser"))
             {
                 return RedirectToAction("Index", "Adviser");
             }
+
             return View();
         }
 

@@ -28,76 +28,8 @@ namespace Fazilat.Areas.Account.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Advisers(string id)
+        public async Task<IActionResult> Index()
         {
-            if (!string.IsNullOrEmpty(id))
-            {
-                var adviser = await _context.Users
-                    .Include(u => u.Information)
-                    .FirstOrDefaultAsync(u => u.Id == id);
-                if (adviser != null)
-                {
-                    try
-                    {
-                        await _userManager.RemoveFromRoleAsync(adviser, "Adviser");
-                        TempData["StatusMessage"] = string.Format("{0} {1} از فهرست مشاوران خارج شد.",
-                            adviser.Information.FirstName, adviser.Information.LastName);
-                    }
-                    catch (Exception exception)
-                    {
-                        TempData["StatusMessage"] = string.Format("Error: {0}",
-                            exception.Message);
-                    }
-                }
-                return RedirectToAction("Advisers", new { id = string.Empty });
-            }
-
-            var adviserRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "Adviser");
-            var adviserRoleId = adviserRole.Id;
-
-            var advisersList = await _context.UserRoles
-                .Where(ur => ur.RoleId == adviserRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
-
-            var advisers = await _context.Users
-                .Include(u => u.Information)
-                .Where(u => advisersList.Contains(u.Id))
-                .OrderBy(u => u.Information.LastName)
-                .ToListAsync();
-
-            if (advisers == null)
-            {
-                TempData["StatusMessage"] = "Error: هیچ مشاوری در سامانه حضور ندارد.";
-            }
-            return View(advisers);
-        }
-
-        public async Task<IActionResult> Users(string id)
-        {
-            if (!string.IsNullOrEmpty(id))
-            {
-                var user = await _context.Users
-                    .Include(u => u.Information)
-                    .FirstOrDefaultAsync(u => u.Id == id);
-                if (user != null)
-                {
-                    try
-                    {
-                        await _userManager.AddToRoleAsync(user, "Adviser");
-                        TempData["StatusMessage"] = string.Format("{0} {1} به فهرست مشاوران اضافه شد.",
-                            user.Information.FirstName, user.Information.LastName);
-                    }
-                    catch (Exception exception)
-                    {
-                        TempData["StatusMessage"] = string.Format("Error: {0}",
-                            exception.Message);
-                    }
-                }
-                return RedirectToAction("Users", new { id = string.Empty });
-            }
-
             var adviserRole = await _context.Roles
                 .FirstOrDefaultAsync(r => r.Name == "Adviser");
             var adviserRoleId = adviserRole.Id;
@@ -126,6 +58,84 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData["StatusMessage"] = "Error: هیچ کاربری در سامانه ثبت نام نکرده است.";
             }
             return View(users);
+        }
+
+        public async Task<IActionResult> Advisers()
+        {
+            var adviserRole = await _context.Roles
+                .FirstOrDefaultAsync(r => r.Name == "Adviser");
+            var adviserRoleId = adviserRole.Id;
+
+            var advisersList = await _context.UserRoles
+                .Where(ur => ur.RoleId == adviserRoleId)
+                .Select(ur => ur.UserId)
+                .ToListAsync();
+
+            var advisers = await _context.Users
+                .Include(u => u.Information)
+                .Where(u => advisersList.Contains(u.Id))
+                .OrderBy(u => u.Information.LastName)
+                .ToListAsync();
+
+            if (advisers == null)
+            {
+                TempData["StatusMessage"] = "Error: هیچ مشاوری در سامانه حضور ندارد.";
+            }
+            return View(advisers);
+        }
+
+        public async Task<IActionResult> RoleManager(string id)
+        {
+            var user = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var roles = await _roleManager.Roles
+                .OrderBy(r => r.Name)
+                .Select(r => r.Name)
+                .ToListAsync();
+
+            var roleManagerModel = new RoleManagerModel()
+            {
+                User = user,
+                Role = userRoles.OrderBy(r => r).FirstOrDefault(),
+                Roles = roles
+            };
+
+            return View(roleManagerModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RoleManager(RoleManagerModel formCollection)
+        {
+            var user = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == formCollection.User.Id);
+            if (user == null)
+            {
+                TempData["StatusMessage"] = "کاربری با این مشخصات وجود ندارد.";
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                await _userManager.AddToRoleAsync(user, formCollection.Role);
+                TempData["StatusMessage"] = string.Format("{0} با موفقیت به سطح دسترسی {1} اضافه شد.",
+                    user.Information.FullName, formCollection.Role);
+            }
+            catch (Exception exception)
+            {
+                TempData["StatusMessage"] = string.Format("Error: {0}",
+                    exception.Message);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> AssignAdviser(string id)
