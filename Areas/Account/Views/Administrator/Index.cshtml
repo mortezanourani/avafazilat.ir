@@ -1,19 +1,19 @@
 ﻿@model IEnumerable<Fazilat.Models.ApplicationUser>
 @{
-    ViewData["Title"] = "کاربران";
+    ViewData["Title"] = "فهرست کاربران";
 }
 
+<form id="adviser-search-form" method="post" class="d-flex bg-white border rounded-lg p-3 mb-3">
+    <div class="form-floating w-100 ml-3">
+        <input type="search" name="Search" class="form-control" placeholder="نام، نام خانوادگی، کد ملی یا شماره تماس" />
+    </div>
+    <button type="submit" class="btn btn-success">جستجو</button>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Information.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Information.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model.Information.FullName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
@@ -25,13 +25,7 @@
 @foreach (var item in Model) {
         <tr class="alert-success">
             <td>
-                @Html.DisplayFor(modelItem => item.Information.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Information.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Information.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)

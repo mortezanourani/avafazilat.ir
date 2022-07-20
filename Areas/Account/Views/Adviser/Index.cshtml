@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<Fazilat.Models.ApplicationUser>
 @{
-    ViewData["Title"] = "پیام ها";
+    ViewData["Title"] = "فهرست داوطلبان";
 }
 
+<form id="administrator-search-form" method="post" class="d-flex bg-white border rounded-lg p-3 mb-3">
+    <div class="form-floating w-100 ml-3">
+        <input type="search" name="Search" class="form-control" placeholder="نام، نام خانوادگی، کد ملی یا شماره تماس" />
+    </div>
+    <button type="submit" class="btn btn-success">جستجو</button>
+</form>
 <table class="table">
     <thead>
         <tr>

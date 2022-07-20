@@ -30,58 +30,39 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var adviserRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "Adviser");
-            var adviserRoleId = adviserRole.Id;
-            var advisersList = await _context.UserRoles
-                .Where(ur => ur.RoleId == adviserRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
-
-            var userRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "User");
-            var userRoleId = userRole.Id;
-            var usersList = await _context.UserRoles
-                .Where(ur => ur.RoleId == userRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
-
             var users = await _context.Users
                 .Include(u => u.Information)
-                .Where(u => usersList.Contains(u.Id))
-                .Where(u => !advisersList.Contains(u.Id))
                 .OrderBy(u => u.Information.LastName)
                 .ToListAsync();
 
             if (users == null)
             {
                 TempData["StatusMessage"] = "Error: هیچ کاربری در سامانه ثبت نام نکرده است.";
+                return View();
             }
+
             return View(users);
         }
 
-        public async Task<IActionResult> Advisers()
+        [HttpPost]
+        public ActionResult Index(string Search)
         {
-            var adviserRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "Adviser");
-            var adviserRoleId = adviserRole.Id;
-
-            var advisersList = await _context.UserRoles
-                .Where(ur => ur.RoleId == adviserRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
-
-            var advisers = await _context.Users
+            var result = _context.Users
                 .Include(u => u.Information)
-                .Where(u => advisersList.Contains(u.Id))
-                .OrderBy(u => u.Information.LastName)
-                .ToListAsync();
+                .AsEnumerable()
+                .Where(u => u.UserName == Search
+                    || u.PhoneNumber == Search
+                    || u.Information.FirstName == Search
+                    || u.Information.LastName == Search
+                    || u.Information.FullName == Search)
+                .ToList();
 
-            if (advisers == null)
+            if(result.Count == 0)
             {
-                TempData["StatusMessage"] = "Error: هیچ مشاوری در سامانه حضور ندارد.";
+                TempData["StatusMessage"] = "Error: نتیجه ای یافت نشد.";
+                return RedirectToAction();
             }
-            return View(advisers);
+            return View(result);
         }
 
         public async Task<IActionResult> RoleManager(string id)
@@ -207,8 +188,19 @@ namespace Fazilat.Areas.Account.Controllers
                 _context.Attach(adviser).State = EntityState.Modified;
             }
             await _context.SaveChangesAsync();
-            TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
-            return RedirectToAction("Users");
+
+            var student = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == formCollection.StudentId);
+
+            var studentAdviser = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == formCollection.AdviserId);
+
+            TempData["StatusMessage"] = string.Format("«{0}» به عنوان مشاور تحصیلی «{1}» تعیین شد.",
+                studentAdviser.Information.FullName,
+                student.Information.FullName);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -6,6 +6,15 @@
 }
 <div class="border border-success rounded-lg bg-white box-shadow mb-2 p-3">
     <ul class="nav nav-pills flex-column text-right p-0">
+        <li class="nav-item mb-2 border border-success rounded-lg">
+            @Html.ActionLink("پنل کاربری", "Index", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
+        </li>
+        @if(administrator && adviser)
+        {
+            <li class="nav-item mb-2 border border-success rounded-lg">
+                @Html.ActionLink("پنل کاربری مشاور", "Index", "Adviser", new { @area = "Account" }, new {@class = "nav-link text-success" })
+            </li>
+        }
         @if(!adviser && !administrator)
         {
             <li class="nav-item mb-2 border border-success rounded-lg">
@@ -29,16 +38,3 @@
         </li>
     </ul>
 </div>
-@if (User.IsInRole("Administrator"))
-{
-    <div class="border border-success rounded-lg bg-success box-shadow mb-2 p-3">
-        <ul class="nav nav-pills flex-column text-right p-0">
-            <li class="nav-item mb-2 bg-white border border-success rounded-lg">
-                @Html.ActionLink("مشاوران", "Advisers", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-success" })
-            </li>
-            <li class="nav-item bg-white border border-success rounded-lg">
-                @Html.ActionLink("کاربران", "Users", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-success" })
-            </li>
-        </ul>
-    </div>
-}
