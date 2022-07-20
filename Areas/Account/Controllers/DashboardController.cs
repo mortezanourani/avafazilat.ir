@@ -16,6 +16,7 @@ using Fazilat.Data;
 namespace Fazilat.Areas.Account.Controllers
 {
     [Area("Account")]
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,7 +30,7 @@ namespace Fazilat.Areas.Account.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -46,7 +47,11 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Index", "Adviser");
             }
 
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            List<Curriculum> curricula = await _context.Curricula
+                .Where(c => c.UserId == user.Id)
+                .ToListAsync();
+            return View(curricula);
         }
 
         public async Task<IActionResult> EducationalFile()
@@ -130,20 +135,6 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData.Add("StatusMessage", string.Format("Error: {0}", exception.Message));
             }
             return RedirectToAction();
-        }
-
-        public async Task<IActionResult> Curricula()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-            List<Curriculum> curricula = await _context.Curricula
-                .Where(c => c.UserId == user.Id)
-                .ToListAsync();
-            return View(curricula);
         }
 
         public async Task<IActionResult> Curriculum(string id)

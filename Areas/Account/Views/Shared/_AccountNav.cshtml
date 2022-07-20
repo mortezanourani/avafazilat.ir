@@ -17,9 +17,6 @@
         }
         @if(!adviser && !administrator)
         {
-            <li class="nav-item mb-2 border border-success rounded-lg">
-                @Html.ActionLink("برنامه مطالعاتی", "Curricula", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
-            </li>
             @if (!parent)
             {
                 <li class="nav-item mb-2 border border-success rounded-lg">
