@@ -32,11 +32,6 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
             if (User.IsInRole("Administrator"))
             {
                 return RedirectToAction("Index", "Administrator");
@@ -56,11 +51,6 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> EducationalFile()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
             var user = await _userManager.GetUserAsync(User);
 
             var educationalFile = await _context.EducationalFiles
@@ -139,11 +129,6 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Curriculum(string id)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             var user = await _userManager.GetUserAsync(User);
             List<Course> curriculum = new List<Course>();
 
@@ -174,10 +159,6 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Course(string id)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Home");
-            }
             var course = await _context.Courses
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -207,11 +188,6 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Message()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
             List<Message> messages = new List<Message>();
 
             var user = await _userManager.GetUserAsync(User);
