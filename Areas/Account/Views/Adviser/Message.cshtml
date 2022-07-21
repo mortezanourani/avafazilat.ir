@@ -1,0 +1,48 @@
+﻿@using System.Globalization
+@model IEnumerable<Fazilat.Models.Message>
+@{
+    ViewData["Title"] = "پیام ها";
+    var studentId = TempData.FirstOrDefault(d => d.Key == "StudentId").Value.ToString();
+}
+
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="border border-success rounded-lg bg-white box-shadow p-3">
+            @foreach (var message in Model) {
+                var messageClass = (message.SenderId == studentId)
+                    ? "alert-secondary mr-5"
+                    : "alert-success ml-5";
+
+                PersianCalendar persianCalendar = new PersianCalendar();
+                var mC = message.Created;
+                var created = String.Format("{0}/{1:00}/{2:00} {3}:{4}",
+                    persianCalendar.GetYear(mC),
+                    persianCalendar.GetMonth(mC),
+                    persianCalendar.GetDayOfMonth(mC),
+                    persianCalendar.GetHour(mC).ToString(),
+                    persianCalendar.GetMinute(mC).ToString());
+
+                    <div class="alert @messageClass">
+                        <p class="mb-0">
+                            @Html.Raw(message.Text.Replace("\n", "</br>"))
+                        </p>
+                        <p class="w-100 mt-2 mb-0 text-sm-left text-secondary ltr">
+                            <small>
+                                <small>@created</small>
+                            </small>
+                        </p>
+                    </div>
+            }
+            <form id="message-form" method="post">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <input name="ReceiverId" value="@studentId" hidden />
+                <div class="form-floating">
+                    <textarea name="Text" class="form-control mb-2" placeholder="متن پیام" required></textarea>
+                </div>
+                <div class="form-floating text-left">
+                    <button type="submit" class="btn btn-success">ارسال</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

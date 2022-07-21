@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
@@ -76,6 +77,47 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction();
             }
             return View(result);
+        }
+
+        public async Task<IActionResult> Message(string id)
+        {
+            TempData["StudentId"] = id;
+
+            var messages = await _context.Messages
+                .Where(m => m.SenderId == id || m.ReceiverId == id)
+                .OrderBy(m => m.Created)
+                .Skip(Math.Max(0, _context.Messages.Count() - 10))
+                .ToListAsync();
+
+            if(messages.Count == 0)
+            {
+                TempData["StatusMessage"] = "هنوز پیامی ارسال نشده است.";
+            }
+
+            return View(messages);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Message(Message formCollection)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(formCollection);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            Message message = new Message()
+            {
+                Id = Guid.NewGuid().ToString(),
+                SenderId = user.Id,
+                ReceiverId = formCollection.ReceiverId,
+                Text = formCollection.Text,
+                Created = DateTime.Now,
+            };
+            await _context.Messages.AddAsync(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction();
         }
     }
 }

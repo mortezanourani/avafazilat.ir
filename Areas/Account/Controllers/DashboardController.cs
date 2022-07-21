@@ -223,6 +223,7 @@ namespace Fazilat.Areas.Account.Controllers
                 messages = await _context.Messages
                     .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
                     .OrderBy(m => m.Created)
+                    .Skip(Math.Max(0, _context.Messages.Count() - 10))
                     .ToListAsync();
 
                 TempData["Adviser"] = adviser.AdviserId;
