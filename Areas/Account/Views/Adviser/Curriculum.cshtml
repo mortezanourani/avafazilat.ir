@@ -1,0 +1,41 @@
+﻿@using System;
+@model CurriculumModel;
+@{
+    ViewData["Title"] = "برنامه مطالعاتی";
+}
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <form id="personal-information-form" method="post">
+            <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+            <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+                <div class="form-floating mb-4">
+                    @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-floating">
+                    @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+                @Html.LabelFor(m => m.StartDate, new { @class = "form-label" })
+                <div class="row d-flex justify-content-between ltr pr-3 pl-3">
+                    @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
+                    @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
+                    @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
+                </div>
+                @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-success">ثبت</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

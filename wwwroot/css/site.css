@@ -34,6 +34,14 @@ body {
     border-color: #5a8a35 !important;
     background-color: #5a8a35 !important;
 }
+.btn-outline-success {
+    border-color: #5a8a35 !important;
+    color: #5a8a35 !important;
+}
+.btn-outline-success:hover {
+    background-color: #5a8a35 !important;
+    color: #fff !important;
+}
 
 hr {
     border-color: #28a745 !important;

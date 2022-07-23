@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Globalization;
 using System.Linq;
 using System;
 using Fazilat.Data;
 using Fazilat.Models;
+using Fazilat.Areas.Account.Models;
 
 namespace Fazilat.Areas.Account.Controllers
 {
@@ -118,6 +120,96 @@ namespace Fazilat.Areas.Account.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction();
+        }
+
+        public async Task<IActionResult> Curricula(string id)
+        {
+            var curricula = await _context.Curricula
+                .Where(c => c.UserId == id)
+                .OrderByDescending(c => c.StartDate)
+                .ToListAsync();
+            return View(curricula);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Curricula(CurriculumModel formCollection)
+        {
+            formCollection.Id = Guid.NewGuid().ToString();
+            PersianCalendar persianCalendar = new PersianCalendar();
+            formCollection.StartDate = persianCalendar.ToDateTime(
+                formCollection.Year,
+                formCollection.Month,
+                formCollection.Day,
+                0, 0, 0, 0);
+            try
+            {
+                await _context.AddAsync(formCollection);
+                await _context.SaveChangesAsync();
+                TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
+                return RedirectToAction("Curricula", new { @id = formCollection.UserId });
+            }
+            catch
+            {
+                TempData["StatusMessage"] = "Error: خطایی رخ داده است. لطفا مجددا تلاش نمایید.";
+            }
+            return View(formCollection);
+        }
+
+        public async Task<IActionResult> Curriculum(string id)
+        {
+            var curriculum = await _context.Curricula
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if(curriculum == null)
+            {
+                TempData["StatusMessage"] = "Error: برنامه مطالعاتی با این مشخصات وجود ندارد.";
+                return RedirectToAction("Curricula");
+            }
+
+            PersianCalendar persianCalendar = new PersianCalendar();
+            var startDateDay = persianCalendar.GetDayOfMonth(curriculum.StartDate);
+            var startDateMonth = persianCalendar.GetMonth(curriculum.StartDate);
+            var startDateYear = persianCalendar.GetYear(curriculum.StartDate);
+            var curriculumModel = new CurriculumModel()
+            {
+                Id = curriculum.Id,
+                UserId = curriculum.UserId,
+                Title = curriculum.Title,
+                Description = curriculum.Description,
+                StartDate = curriculum.StartDate,
+                Day = startDateDay,
+                Month = startDateMonth,
+                Year = startDateYear
+            };
+            return View(curriculumModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Curriculum(CurriculumModel formCollection)
+        {
+            var curriculum = await _context.Curricula
+                .FirstOrDefaultAsync(c => c.Id == formCollection.Id);
+
+            PersianCalendar persianCalendar = new PersianCalendar();
+            formCollection.StartDate = persianCalendar.ToDateTime(
+                formCollection.Year,
+                formCollection.Month,
+                formCollection.Day,
+                0, 0, 0, 0);
+            try
+            {
+                curriculum.Title = formCollection.Title;
+                curriculum.Description = formCollection.Description;
+                curriculum.StartDate = formCollection.StartDate;
+                _context.Attach(curriculum).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
+                return RedirectToAction("Curricula", new { @id = formCollection.UserId });
+            }
+            catch
+            {
+                TempData["StatusMessage"] = "Error: خطایی رخ داده است. لطفا مجددا تلاش نمایید.";
+            }
+            return View(formCollection);
         }
     }
 }
