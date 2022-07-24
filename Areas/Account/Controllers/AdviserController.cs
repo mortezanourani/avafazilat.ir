@@ -158,6 +158,7 @@ namespace Fazilat.Areas.Account.Controllers
         public async Task<IActionResult> Curriculum(string id)
         {
             var curriculum = await _context.Curricula
+                .Include(c => c.Courses)
                 .FirstOrDefaultAsync(c => c.Id == id);
             if(curriculum == null)
             {
@@ -178,7 +179,8 @@ namespace Fazilat.Areas.Account.Controllers
                 StartDate = curriculum.StartDate,
                 Day = startDateDay,
                 Month = startDateMonth,
-                Year = startDateYear
+                Year = startDateYear,
+                Courses = curriculum.Courses,
             };
             return View(curriculumModel);
         }
@@ -203,13 +205,39 @@ namespace Fazilat.Areas.Account.Controllers
                 _context.Attach(curriculum).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
-                return RedirectToAction("Curricula", new { @id = formCollection.UserId });
+                return RedirectToAction("Curriculum", new { @id = curriculum.Id });
             }
             catch
             {
                 TempData["StatusMessage"] = "Error: خطایی رخ داده است. لطفا مجددا تلاش نمایید.";
             }
             return View(formCollection);
+        }
+
+        public async Task<IActionResult> Course(string id)
+        {
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (course != null)
+            {
+                _context.Remove(course);
+            }
+
+            var curriculum = await _context.Curricula
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (curriculum != null)
+            {
+                course = new Course()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    CurriculumId = id,
+                    Accomplished = false,
+                };
+                await _context.AddAsync(course);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Curriculum", new { id = course.CurriculumId });
         }
     }
 }

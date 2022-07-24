@@ -45,6 +45,7 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _userManager.GetUserAsync(User);
             List<Curriculum> curricula = await _context.Curricula
                 .Where(c => c.UserId == user.Id)
+                .OrderByDescending(c => c.StartDate)
                 .ToListAsync();
             return View(curricula);
         }
@@ -130,36 +131,20 @@ namespace Fazilat.Areas.Account.Controllers
         public async Task<IActionResult> Curriculum(string id)
         {
             var user = await _userManager.GetUserAsync(User);
-            List<Course> curriculum = new List<Course>();
-
-            var lastCurriculum = (id == null)
-                ? _context.Curricula.FirstOrDefault(c => c.UserId == user.Id)
-                : _context.Curricula.FirstOrDefault(c => c.Id == id);
-
-            if (lastCurriculum != null)
-            {
-                PersianCalendar persianCalendar = new PersianCalendar();
-                TempData["StatusMessage"] = string.Format("{0} [{1}/{2:00}/{3:00}]",
-                    lastCurriculum.Title,
-                    persianCalendar.GetYear(lastCurriculum.StartDate),
-                    persianCalendar.GetMonth(lastCurriculum.StartDate),
-                    persianCalendar.GetDayOfMonth(lastCurriculum.StartDate));
-
-                curriculum = await _context.Courses
-                    .Where(ci => ci.CurriculumId == lastCurriculum.Id)
-                    .ToListAsync();
-            }
-            else
+            var curriculum = await _context.Curricula
+                .Include(c => c.Courses)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (curriculum == null)
             {
                 TempData["StatusMessage"] = "Error: There is no curriculum for you.";
             }
-
             return View(curriculum);
         }
 
         public async Task<IActionResult> Course(string id)
         {
             var course = await _context.Courses
+                .Include(c => c.Curriculum)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             return View(course);

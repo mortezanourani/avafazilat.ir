@@ -1,15 +1,29 @@
-﻿@model IEnumerable<Fazilat.Models.Course>
+﻿@model Fazilat.Models.Curriculum
 @{
-    ViewData["Title"] = "Curriculum";
+    ViewData["Title"] = Model.Title;
 }
 
-<div class="row">
-    @foreach (var course in Model)
-    {
-        <div class="col-md shadow-sm border rounded-lg p-3 m-1">
-            <h4>@course.Title</h4>
-            <p>@course.Topics</p>
-            <a asp-area="Account" asp-controller="Dashboard" asp-action="Course" asp-route-id="@course.Id">Report</a>
+<ul class="list-group p-0">
+@foreach(var course in Model.Courses)
+{
+    <a class="list-group-item list-group-item-action d-flex flex-column" asp-area="Account" asp-controller="Dashboard" asp-action="Course" asp-route-id="@course.Id">
+        <div class="d-flex flex-row justify-content-between">
+            <div>
+                <h5>@Html.DisplayFor(c => course.Title)</h5>
+                <p>@Html.DisplayFor(c => course.Topics, new { @class = "text-secondary" })</p>
+            </div>
+            @if (@course.Accomplished)
+            {
+                <i class="fa fa-check-square-o text-success"></i>
+            }
+            else
+            {
+                <i class="fa fa-square-o text-danger"></i>
+            }
         </div>
-    }
-</div>
+        <div>
+            @Html.DisplayFor(c => course.Descritpion)
+        </div>
+    </a>
+}
+</ul>

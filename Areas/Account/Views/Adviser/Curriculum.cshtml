@@ -1,40 +1,61 @@
 ﻿@using System;
 @model CurriculumModel;
 @{
-    ViewData["Title"] = "برنامه مطالعاتی";
+    ViewData["Title"] = Model.Title;
 }
 
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
-<div class="row d-flex justify-content-center">
-    <div class="col-md-6">
-        <form id="personal-information-form" method="post">
-            <input id="Id" name="Id" type="hidden" value="@Model.Id" />
-            <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
-            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
-                <div class="form-floating mb-4">
-                    @Html.LabelFor(m => m.Title, new { @class = "form-label" })
-                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-floating">
-                    @Html.LabelFor(m => m.Description, new { @class = "form-label" })
-                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                </div>
+<form id="personal-information-form" class="rounded-lg border border-success bg-white pt-3 pb-3 mb-3" method="post">
+    <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+    <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
+    <div class="d-md-flex justify-content-between">
+        <div class="form-floating col-md-6 mb-3">
+            @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-floating col-md-6 mb-3">
+            @Html.LabelFor(m => m.StartDate, new { @class = "form-label" })
+            <div class="row d-flex justify-content-between ltr pr-3 pl-3">
+                @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
+                @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
+                @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
             </div>
-            <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
-                @Html.LabelFor(m => m.StartDate, new { @class = "form-label" })
-                <div class="row d-flex justify-content-between ltr pr-3 pl-3">
-                    @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
-                    @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
-                    @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
-                </div>
-                @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-success">ثبت</button>
-        </form>
+            @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+        </div>
     </div>
-</div>
+    <div class="form-floating col-md-12 mb-3">
+        @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-floating col-md-12 text-left">
+        <button type="submit" class="btn btn btn-success w-auto">به روز رسانی</button>
+    </div>
+</form>
+<ul class="list-group p-0">
+@foreach(var course in Model.Courses)
+{
+    <a class="list-group-item list-group-item-action d-flex flex-column" asp-area="Account" asp-controller="Adviser" asp-action="Course" asp-route-id="@course.Id">
+        <div class="d-flex flex-row justify-content-between">
+            <div>
+                <h5>@Html.DisplayFor(c => course.Title)</h5>
+                <p>@Html.DisplayFor(c => course.Topics, new { @class = "text-secondary" })</p>
+            </div>
+            @if (@course.Accomplished)
+            {
+                <i class="fa fa-check-square-o text-success"></i>
+            }
+            else
+            {
+                <i class="fa fa-square-o text-danger"></i>
+            }
+        </div>
+        <div>
+            @Html.DisplayFor(c => course.Descritpion)
+        </div>
+    </a>
+}
+</ul>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
