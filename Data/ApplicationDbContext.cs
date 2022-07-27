@@ -117,13 +117,13 @@ namespace Fazilat.Data
                     new ApplicationUser()
                     {
                         Id = adminUserId,
-                        UserName = "2709863431",
-                        NormalizedUserName = "2709863431",
-                        Email = "mortezanourani@gmail.com",
-                        NormalizedEmail = "MORTEZANOURANI@GMAIL.COM",
+                        UserName = "0000000000",
+                        NormalizedUserName = "0000000000",
+                        Email = "avafazilat@gmail.com",
+                        NormalizedEmail = "AVAFAZILAT@GMAIL.COM",
                         EmailConfirmed = true,
                         PasswordHash = adminPasswordHash,
-                        PhoneNumber = "09116069878",
+                        PhoneNumber = "09125425602",
                         PhoneNumberConfirmed = true,
                         AccessFailedCount = 0,
                         LockoutEnabled = false,

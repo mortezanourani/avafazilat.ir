@@ -5,12 +5,12 @@ namespace Fazilat.Areas.Account.Models
 {
     public class PasswordModel
     {
-        [Required]
+        [Required(ErrorMessage = "وارد کردن رمز عبور فعلی الزامی است.")]
         [DataType(DataType.Password)]
         [Display(Name = "رمز عبور")]
         public string CurrentPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "وارد کردن رمز عبور جدید الزامی است.")]
         [StringLength(100, ErrorMessage = "رمز عبور باید یک رشته از حروف و اعداد با طول حداقل 6 کارکتر باشد.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "رمز عبور جدید")]

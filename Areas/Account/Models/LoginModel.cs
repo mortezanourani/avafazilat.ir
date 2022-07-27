@@ -5,13 +5,13 @@ namespace Fazilat.Areas.Account.Models
 {
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "وارد کردن کد ملی یا شماره همراه الزامی است.")]
         [Display(Name = "کد ملی یا شماره همراه")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا نام کاربری را به شکل درستی وارد نمایید.")]
         [StringLength(11, ErrorMessage = "تعداد ارقام وارد شده غیر مجاز است.", MinimumLength = 10)]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "وارد کردن رمز عبور الزامی است.")]
         [DataType(DataType.Password)]
         [Display(Name = "رمز عبور")]
         public string Password { get; set; }

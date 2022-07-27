@@ -8,9 +8,13 @@ namespace Fazilat.Models
     public class Course
     {
         public string Id { get; set; }
+        [Required(ErrorMessage = "این مورد الزامی است.")]
         [Display(Name = "عنوان درس")]
+        [RegularExpression("^[آ-یای ]+$", ErrorMessage = "لطفا به صورت فارسی وارد گردد.")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "این مورد الزامی است.")]
         [Display(Name = "سرفصل ها")]
+        [RegularExpression("^[آ-یای ]+$", ErrorMessage = "لطفا به صورت فارسی وارد گردد.")]
         public string Topics { get; set; }
         public bool Accomplished { get; set; }
         [Display(Name = "توضیح چگونگی اجرا")]
