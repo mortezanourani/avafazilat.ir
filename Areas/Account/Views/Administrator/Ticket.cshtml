@@ -2,32 +2,46 @@
 @model TicketModel
 @{
     ViewData["Title"] = "نوبت مشاوره";
-    var persianCalendar = new PersianCalendar();
 
-    string persianDay(string day)
+    var days = new List<SelectListItem>();
+    for(int day = 1; day <= 9; day++)
     {
-        return day
-            .Replace("Saturday", "شنبه")
-            .Replace("Sunday", "یکشنبه")
-            .Replace("Monday", "دوشنبه")
-            .Replace("Tuesday", "سه شنبه")
-            .Replace("Wednesday", "چهارشنبه")
-            .Replace("Thursday", "پنجشنبه")
-            .Replace("Friday", "جمعه");
+        days.Add(new SelectListItem()
+            {
+                Value = day.ToString(),
+                Text = convertDay(day),
+            });
+    }
+
+    string convertDay(int day)
+    {
+        return day.ToString()
+            .Replace("1", "روز اول اعلام نتایج")
+            .Replace("2", "روز دوم اعلام نتایج")
+            .Replace("3", "روز سوم اعلام نتایج")
+            .Replace("4", "روز چهارم اعلام نتایج")
+            .Replace("5", "روز پنجم اعلام نتایج")
+            .Replace("6", "روز ششم اعلام نتایج")
+            .Replace("7", "روز هفتم اعلام نتایج")
+            .Replace("8", "روز هشتم اعلام نتایج")
+            .Replace("9", "روز نهم اعلام نتایج");
+
     }
 }
 
 <form id="ticket-form" method="post">
     <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
-        @Html.LabelFor(m => m.Time, new { @class = "form-label col-12" })
-        <div class="row d-flex justify-content-between ltr pr-3 pl-3 mb-3">
-            @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
-            @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
-            @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
-        </div>
+        @Html.LabelFor(m => m.Day, new { @class = "form-label col-12" })
         <div class="row d-flex justify-content-between pr-3 pl-3 mb-3">
+            @Html.DropDownListFor(m => m.Day,
+                new SelectList(days.ToList(), "Value", "Text", null),
+                null,
+                new { @class = "form-control col-5 text-right" })
             @Html.TextBoxFor(m => m.Minute, new { @class = "form-control col-3 text-center", @placeholder = "دقیقه" })
             @Html.TextBoxFor(m => m.Hour, new { @class = "form-control col-3 text-center", @placeholder = "ساعت" })
+        </div>
+        @Html.ValidationMessageFor(m => m.Day, "", new { @class = "text-danger" })
+        <div class="row pr-3 pl-3 mb-3 ltr">
             <button type="submit" class="form-control col-md-3 btn btn-outline-success">اضافه کردن نوبت</button>
         </div>
     </div>
@@ -35,15 +49,10 @@
 <ul class="list-group p-0">
 @foreach(var ticket in Model.Tickets)
 {
-    var date = String.Format("{0} {1:0000}/{2:00}/{3:00}",
-        persianDay(persianCalendar.GetDayOfWeek(ticket.Time).ToString()),
-        persianCalendar.GetYear(ticket.Time),
-        persianCalendar.GetMonth(ticket.Time),
-        persianCalendar.GetDayOfMonth(ticket.Time));
-
+    var date = convertDay(ticket.Day);
     var time = String.Format("{0}:{1:00}",
-        persianCalendar.GetHour(ticket.Time),
-        persianCalendar.GetMinute(ticket.Time));
+        ticket.Hour,
+        ticket.Minute);
 
     var ticketClass = (ticket.Taken)
         ? "success"
@@ -57,7 +66,7 @@
             <span class="badge badge-@ticketClass">@time</span>
         </div>
         <div>
-            @if(!ticket.Taken && ticket.Reserved)
+            @if(ticket.Taken || ticket.Reserved)
             {
                 <a class="btn btn-sm btn-outline-primary" asp-area="Account" asp-controller="Administrator" asp-action="Meeting" asp-route-id="@ticket.Meeting.Id">
                     <i class="fa fa-barcode"></i>

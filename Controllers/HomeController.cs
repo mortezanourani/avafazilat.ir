@@ -47,8 +47,9 @@ namespace Fazilat.Controllers
             var tickets = await _context.Tickets
                 .Where(t => t.Taken == false)
                 .Where(t => t.Reserved == false)
-                .Where(t => t.Time > DateTime.Now)
-                .OrderBy(t => t.Time)
+                .OrderBy(t => t.Day)
+                .ThenBy(d => d.Hour)
+                .ThenBy(h => h.Minute)
                 .ToListAsync();
 
             var model = new ReserveViewModel()

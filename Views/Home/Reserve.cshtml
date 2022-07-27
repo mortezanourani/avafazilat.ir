@@ -2,7 +2,7 @@
 @model ReserveViewModel
 @{
     ViewData["Title"] = "نوبت دهی مشاوره انتخاب رشته";
-    var majors = new List<string>() { "انسانی", "تجربی", "ریاضی", "هنر" };
+    var majors = new List<string>() { "انسانی", "تجربی", "ریاضی", "زبان", "هنر" };
     var types = new List<string>() { "آنلاین", "حضوری" };
 
     PersianCalendar persianCalendar = new PersianCalendar();
@@ -21,43 +21,26 @@
     {
         tickets.Add(new SelectListItem()
         {
-            Text = String.Format("{0} {1} {2} ({3}:{4:00})",
-                persianDay(persianCalendar.GetDayOfWeek(ticket.Time).ToString()),
-                persianCalendar.GetDayOfMonth(ticket.Time),
-                persianMonth(persianCalendar.GetMonth(ticket.Time).ToString()),
-                persianCalendar.GetHour(ticket.Time),
-                persianCalendar.GetMinute(ticket.Time)),
+            Text = String.Format("{0} ({1}:{2:00})",
+                convertDay(ticket.Day),
+                ticket.Hour,
+                ticket.Minute),
             Value = ticket.Id,
         });
     }
 
-    string persianMonth(string month)
+    string convertDay(int day)
     {
-        return month
-            .Replace("1", "فروردین")
-            .Replace("2", "اردیبهشت")
-            .Replace("3", "خرداد")
-            .Replace("4", "تیر")
-            .Replace("5", "مرداد")
-            .Replace("6", "شهریور")
-            .Replace("7", "مهر")
-            .Replace("8", "آبان")
-            .Replace("9", "آذر")
-            .Replace("10", "دی")
-            .Replace("11", "بهمن")
-            .Replace("12", "اسفند");
-    }
-
-    string persianDay(string day)
-    {
-        return day
-            .Replace("Saturday", "شنبه")
-            .Replace("Sunday", "یکشنبه")
-            .Replace("Monday", "دوشنبه")
-            .Replace("Tuesday", "سه شنبه")
-            .Replace("Wednesday", "چهارشنبه")
-            .Replace("Thursday", "پنجشنبه")
-            .Replace("Friday", "جمعه");
+        return day.ToString()
+            .Replace("1", "روز اول اعلام نتایج")
+            .Replace("2", "روز دوم اعلام نتایج")
+            .Replace("3", "روز سوم اعلام نتایج")
+            .Replace("4", "روز چهارم اعلام نتایج")
+            .Replace("5", "روز پنجم اعلام نتایج")
+            .Replace("6", "روز ششم اعلام نتایج")
+            .Replace("7", "روز هفتم اعلام نتایج")
+            .Replace("8", "روز هشتم اعلام نتایج")
+            .Replace("9", "روز نهم اعلام نتایج");
     }
 }
 

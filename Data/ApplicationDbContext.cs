@@ -29,7 +29,7 @@ namespace Fazilat.Data
             base.OnModelCreating(modelBuilder);
 
             var adminUserId = Guid.NewGuid().ToString();
-            var adminPasswordHash = "AQAAAAEAACcQAAAAEFYvVCymYdM4AxjjbasiBtTpgjb4mE7ITeWVcro877XzxNMbbbatKvNQy/PfbvTrLg==";
+            var adminPasswordHash = "AQAAAAEAACcQAAAAEGl4xWsunZGRNrU8pKnBV3HnKsySl79d8inyiOBboRbjj2/VjC3wK/ofdG3Fyy83mQ==";
 
             var adminRoleId = Guid.NewGuid().ToString();
             var managerRoleId = Guid.NewGuid().ToString();
@@ -117,8 +117,8 @@ namespace Fazilat.Data
                     new ApplicationUser()
                     {
                         Id = adminUserId,
-                        UserName = "0000000000",
-                        NormalizedUserName = "0000000000",
+                        UserName = "4285691841",
+                        NormalizedUserName = "4285691841",
                         Email = "avafazilat@gmail.com",
                         NormalizedEmail = "AVAFAZILAT@GMAIL.COM",
                         EmailConfirmed = true,
@@ -284,9 +284,6 @@ namespace Fazilat.Data
             modelBuilder.Entity<Ticket>(b =>
             {
                 b.HasKey(e => e.Id);
-
-                b.Property(e => e.Time)
-                    .HasColumnType("datetime");
 
                 b.ToTable("Ticket");
             });

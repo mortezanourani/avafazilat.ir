@@ -220,36 +220,24 @@ namespace Fazilat.Areas.Account.Controllers
 
             var tickets = await _context.Tickets
                 .Include(t => t.Meeting)
-                .OrderBy(c => c.Time)
+                .OrderBy(t => t.Day)
+                .ThenBy(d => d.Hour)
+                .ThenBy(h => h.Minute)
                 .ToListAsync();
             var model = new TicketModel()
             {
+                Hour = DateTime.Now.Hour,
+                Minute = DateTime.Now.Minute,
                 Tickets = tickets,
             };
 
-            var nowDate = DateTime.Now;
-            PersianCalendar persianCalendar = new PersianCalendar();
-            model.Day = persianCalendar.GetDayOfMonth(nowDate);
-            model.Month = persianCalendar.GetMonth(nowDate);
-            model.Year = persianCalendar.GetYear(nowDate);
-            model.Hour = persianCalendar.GetHour(nowDate);
-            model.Minute = persianCalendar.GetMinute(nowDate);
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Ticket(TicketModel ticketModel)
         {
-            PersianCalendar persianCalendar = new PersianCalendar();
-
             ticketModel.Id = Guid.NewGuid().ToString();
-            ticketModel.Time = persianCalendar.ToDateTime(
-                ticketModel.Year,
-                ticketModel.Month,
-                ticketModel.Day,
-                ticketModel.Hour,
-                ticketModel.Minute,
-                0, 0);
             ticketModel.Reserved = false;
             ticketModel.Taken = false;
 
