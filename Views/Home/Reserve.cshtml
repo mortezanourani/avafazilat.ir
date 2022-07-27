@@ -1,0 +1,125 @@
+﻿@using System.Globalization;
+@model ReserveViewModel
+@{
+    ViewData["Title"] = "نوبت دهی مشاوره انتخاب رشته";
+    var majors = new List<string>() { "انسانی", "تجربی", "ریاضی", "هنر" };
+    var types = new List<string>() { "آنلاین", "حضوری" };
+
+    PersianCalendar persianCalendar = new PersianCalendar();
+    var tickets = new List<SelectListItem>();
+    if(Model.Tickets.Count == 0)
+    {
+        TempData["StatusMessage"] = "هیچ نوبت خالی برای مشاوره وجود ندارد.";
+        tickets.Add(new SelectListItem()
+        {
+            Text = "نوبتی وجود ندارد",
+            Value = "0"
+        });
+    }
+
+    foreach(var ticket in Model.Tickets)
+    {
+        tickets.Add(new SelectListItem()
+        {
+            Text = String.Format("{0} {1} {2} ({3}:{4:00})",
+                persianDay(persianCalendar.GetDayOfWeek(ticket.Time).ToString()),
+                persianCalendar.GetDayOfMonth(ticket.Time),
+                persianMonth(persianCalendar.GetMonth(ticket.Time).ToString()),
+                persianCalendar.GetHour(ticket.Time),
+                persianCalendar.GetMinute(ticket.Time)),
+            Value = ticket.Id,
+        });
+    }
+
+    string persianMonth(string month)
+    {
+        return month
+            .Replace("1", "فروردین")
+            .Replace("2", "اردیبهشت")
+            .Replace("3", "خرداد")
+            .Replace("4", "تیر")
+            .Replace("5", "مرداد")
+            .Replace("6", "شهریور")
+            .Replace("7", "مهر")
+            .Replace("8", "آبان")
+            .Replace("9", "آذر")
+            .Replace("10", "دی")
+            .Replace("11", "بهمن")
+            .Replace("12", "اسفند");
+    }
+
+    string persianDay(string day)
+    {
+        return day
+            .Replace("Saturday", "شنبه")
+            .Replace("Sunday", "یکشنبه")
+            .Replace("Monday", "دوشنبه")
+            .Replace("Tuesday", "سه شنبه")
+            .Replace("Wednesday", "چهارشنبه")
+            .Replace("Thursday", "پنجشنبه")
+            .Replace("Friday", "جمعه");
+    }
+}
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-info text-right" role="alert">
+        @TempData["StatusMessage"]
+    </div>
+}
+<div class="d-md-flex justify-content-center">
+    <div class="col-md-8 pr-md-0">
+        <h3 class="text-black text-right">@ViewData["Title"]</h3>
+    </div>
+    <div class="col-md-4 p-3 text-right bg-white bg-opacity-10 border rounded-lg shadow">
+        <form id="reserve" method="post" enctype="multipart/form-data">
+            <div class="form-floating mb-3">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating mb-3">
+                @Html.LabelFor(m => m.PhoneNumber)
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control ltr" })
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating mb-3">
+                @Html.LabelFor(m => m.Major)
+                @Html.DropDownListFor(m => m.Major,
+                    new SelectList(majors.ToList()),
+                    null,
+                    new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Major, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-floating mb-3">
+                @Html.LabelFor(m => m.Ticket)
+                <div class="d-md-flex justify-content-between">
+                    @Html.DropDownListFor(m => m.TicketId,
+                        new SelectList(tickets.ToList(), "Value", "Text", null),
+                        null,
+                        new { @class = "form-control col-md-8" })
+
+                    @Html.DropDownListFor(m => m.Type,
+                        new SelectList(types.ToList()),
+                        null,
+                        new { @class = "form-control col-md-4" })
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                @Html.LabelFor(m => m.PaymentFile)
+                @Html.EditorFor(m => m.PaymentFile, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PaymentFile, "", new { @class = "text-danger" })
+            </div>
+            @if(Model.Tickets.Count > 0)
+            {
+                <div class="form-floating">
+                    <button id="reserve-submit" type="submit" class="w-100 btn btn-lg btn-info">ارسال فیش و ثبت نوبت</button>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

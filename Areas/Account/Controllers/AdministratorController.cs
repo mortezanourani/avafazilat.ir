@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Globalization;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 using Fazilat.Data;
 using Fazilat.Models;
 using Fazilat.Areas.Account.Models;
@@ -201,6 +203,105 @@ namespace Fazilat.Areas.Account.Controllers
                 studentAdviser.Information.FullName,
                 student.Information.FullName);
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Ticket(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var ticket = await _context.Tickets
+                    .FirstOrDefaultAsync(t => t.Id == id);
+                _context.Remove(ticket);
+                await _context.SaveChangesAsync();
+
+                TempData["StatusMessage"] = "نوبت مورد نظر باموفقیت حذف شد.";
+                return RedirectToAction("Ticket", "Administrator", new { id = "" });
+            }
+
+            var tickets = await _context.Tickets
+                .Include(t => t.Meeting)
+                .OrderBy(c => c.Time)
+                .ToListAsync();
+            var model = new TicketModel()
+            {
+                Tickets = tickets,
+            };
+
+            var nowDate = DateTime.Now;
+            PersianCalendar persianCalendar = new PersianCalendar();
+            model.Day = persianCalendar.GetDayOfMonth(nowDate);
+            model.Month = persianCalendar.GetMonth(nowDate);
+            model.Year = persianCalendar.GetYear(nowDate);
+            model.Hour = persianCalendar.GetHour(nowDate);
+            model.Minute = persianCalendar.GetMinute(nowDate);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Ticket(TicketModel ticketModel)
+        {
+            PersianCalendar persianCalendar = new PersianCalendar();
+
+            ticketModel.Id = Guid.NewGuid().ToString();
+            ticketModel.Time = persianCalendar.ToDateTime(
+                ticketModel.Year,
+                ticketModel.Month,
+                ticketModel.Day,
+                ticketModel.Hour,
+                ticketModel.Minute,
+                0, 0);
+            ticketModel.Reserved = false;
+            ticketModel.Taken = false;
+
+            await _context.AddAsync(ticketModel);
+            await _context.SaveChangesAsync();
+            return RedirectToAction();
+        }
+
+        public async Task<IActionResult> Meeting(string id)
+        {
+            var meeting = await _context.Meetings
+                .Include(m => m.Ticket)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            return View(meeting);
+        }
+
+        public async Task<IActionResult> Reject(string id)
+        {
+            var meeting = await _context.Meetings
+                .Include(m => m.Ticket)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            _context.Remove(meeting);
+
+            var ticket = await _context.Tickets
+                .FirstOrDefaultAsync(t => t.Id == meeting.TicketId);
+            ticket.Reserved = false;
+            ticket.Taken = false;
+            _context.Attach(ticket).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Ticket");
+        }
+
+        public async Task<IActionResult> Confirm(string id)
+        {
+            var meeting = await _context.Meetings
+                .Include(m => m.Ticket)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            meeting.Confirmed = true;
+            _context.Attach(meeting).State = EntityState.Modified;
+
+            var ticket = await _context.Tickets
+                .FirstOrDefaultAsync(t => t.Id == meeting.TicketId);
+            ticket.Reserved = true;
+            ticket.Taken = true;
+            _context.Attach(ticket).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Ticket");
         }
     }
 }

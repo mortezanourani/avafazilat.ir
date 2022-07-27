@@ -1,0 +1,77 @@
+﻿@using System.Globalization;
+@model TicketModel
+@{
+    ViewData["Title"] = "نوبت مشاوره";
+    var persianCalendar = new PersianCalendar();
+
+    string persianDay(string day)
+    {
+        return day
+            .Replace("Saturday", "شنبه")
+            .Replace("Sunday", "یکشنبه")
+            .Replace("Monday", "دوشنبه")
+            .Replace("Tuesday", "سه شنبه")
+            .Replace("Wednesday", "چهارشنبه")
+            .Replace("Thursday", "پنجشنبه")
+            .Replace("Friday", "جمعه");
+    }
+}
+
+<form id="ticket-form" method="post">
+    <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+        @Html.LabelFor(m => m.Time, new { @class = "form-label col-12" })
+        <div class="row d-flex justify-content-between ltr pr-3 pl-3 mb-3">
+            @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
+            @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
+            @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
+        </div>
+        <div class="row d-flex justify-content-between pr-3 pl-3 mb-3">
+            @Html.TextBoxFor(m => m.Minute, new { @class = "form-control col-3 text-center", @placeholder = "دقیقه" })
+            @Html.TextBoxFor(m => m.Hour, new { @class = "form-control col-3 text-center", @placeholder = "ساعت" })
+            <button type="submit" class="form-control col-md-3 btn btn-outline-success">اضافه کردن نوبت</button>
+        </div>
+    </div>
+</form>
+<ul class="list-group p-0">
+@foreach(var ticket in Model.Tickets)
+{
+    var date = String.Format("{0} {1:0000}/{2:00}/{3:00}",
+        persianDay(persianCalendar.GetDayOfWeek(ticket.Time).ToString()),
+        persianCalendar.GetYear(ticket.Time),
+        persianCalendar.GetMonth(ticket.Time),
+        persianCalendar.GetDayOfMonth(ticket.Time));
+
+    var time = String.Format("{0}:{1:00}",
+        persianCalendar.GetHour(ticket.Time),
+        persianCalendar.GetMinute(ticket.Time));
+
+    var ticketClass = (ticket.Taken)
+        ? "success"
+        : (ticket.Reserved)
+            ? "warning"
+            : "dark";
+
+        <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+            @date
+            <span class="badge badge-@ticketClass">@time</span>
+        </div>
+        <div>
+            @if(!ticket.Taken && ticket.Reserved)
+            {
+                <a class="btn btn-sm btn-outline-primary" asp-area="Account" asp-controller="Administrator" asp-action="Meeting" asp-route-id="@ticket.Meeting.Id">
+                    <i class="fa fa-barcode"></i>
+                </a>
+            }
+            <a class="btn btn-sm btn-outline-danger" asp-area="Account" asp-controller="Administrator" asp-action="Ticket" asp-route-id="@ticket.Id">
+                <i class="fa fa-trash-o"></i>
+            </a>
+        </div>
+    </li>
+}
+</ul>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

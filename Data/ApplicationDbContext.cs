@@ -21,6 +21,8 @@ namespace Fazilat.Data
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Adviser> Advisers { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Meeting> Meetings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -278,6 +280,50 @@ namespace Fazilat.Data
 
                 b.ToTable("Adviser");
             });
+
+            modelBuilder.Entity<Ticket>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.Time)
+                    .HasColumnType("datetime");
+
+                b.ToTable("Ticket");
+            });
+
+            modelBuilder.Entity<Meeting>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.Name)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                b.Property(e => e.PhoneNumber)
+                    .HasColumnType("nvarchar(11)")
+                    .HasMaxLength(11)
+                    .IsRequired();
+
+                b.Property(e => e.Major)
+                    .IsRequired();
+
+                b.Property(e => e.Type)
+                    .HasDefaultValue("Online")
+                    .IsRequired();
+
+                b.Property(e => e.Confirmed)
+                    .HasDefaultValue(false);
+
+                b.HasOne(m => m.Ticket)
+                    .WithOne(t => t.Meeting)
+                    .HasForeignKey<Meeting>(mt => mt.TicketId)
+                    .IsRequired();
+
+                b.ToTable("Meeting");
+            });
+            modelBuilder.Entity<Meeting>()
+                .Ignore(c => c.PaymentFile);
         }
     }
 }

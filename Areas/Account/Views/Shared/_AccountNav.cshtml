@@ -9,6 +9,12 @@
         <li class="nav-item mb-2 border border-success rounded-lg">
             @Html.ActionLink("پنل کاربری", "Index", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
         </li>
+        @if(administrator)
+        {
+            <li class="nav-item mb-2 border border-success rounded-lg">
+                @Html.ActionLink("جلسات مشاوره", "Ticket", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-success" })
+            </li>
+        }
         @if(administrator && adviser)
         {
             <li class="nav-item mb-2 border border-success rounded-lg">

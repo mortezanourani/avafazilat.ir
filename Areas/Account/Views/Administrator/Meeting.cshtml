@@ -1,0 +1,93 @@
+﻿@using System.Globalization;
+@model Fazilat.Models.Meeting
+@{
+    ViewData["Title"] = "درخواست جلسه مشاوره";
+
+    PersianCalendar persianCalendar = new PersianCalendar();
+
+    var ticket = Model.Ticket;
+    var meetingTime = String.Format("{0} {1} {2} ({3}:{4:00})",
+        persianDay(persianCalendar.GetDayOfWeek(ticket.Time).ToString()),
+        persianCalendar.GetDayOfMonth(ticket.Time),
+        persianMonth(persianCalendar.GetMonth(ticket.Time).ToString()),
+        persianCalendar.GetHour(ticket.Time),
+        persianCalendar.GetMinute(ticket.Time));
+
+    string persianMonth(string month)
+    {
+        return month
+            .Replace("1", "فروردین")
+            .Replace("2", "اردیبهشت")
+            .Replace("3", "خرداد")
+            .Replace("4", "تیر")
+            .Replace("5", "مرداد")
+            .Replace("6", "شهریور")
+            .Replace("7", "مهر")
+            .Replace("8", "آبان")
+            .Replace("9", "آذر")
+            .Replace("10", "دی")
+            .Replace("11", "بهمن")
+            .Replace("12", "اسفند");
+    }
+
+    string persianDay(string day)
+    {
+        return day
+            .Replace("Saturday", "شنبه")
+            .Replace("Sunday", "یکشنبه")
+            .Replace("Monday", "دوشنبه")
+            .Replace("Tuesday", "سه شنبه")
+            .Replace("Wednesday", "چهارشنبه")
+            .Replace("Thursday", "پنجشنبه")
+            .Replace("Friday", "جمعه");
+    }
+}
+
+<div class="d-md-flex justify-content-between">
+    <div class="col-md-5 p-3 text-right bg-white bg-opacity-10 border rounded-lg shadow">
+        <div class="form-floating mb-3">
+            @Html.LabelFor(m => m.Name)
+            <div class="form-control">
+                @Html.DisplayFor(m => m.Name)
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            @Html.LabelFor(m => m.PhoneNumber)
+            <div class="form-control">
+                @Html.DisplayFor(m => m.PhoneNumber)
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            @Html.LabelFor(m => m.Major)
+            <div class="form-control">
+                @Html.DisplayFor(m => m.Major)
+            </div>
+        </div>
+        <div class="form-floating mb-3">
+            @Html.LabelFor(m => m.Ticket)
+            <div class="d-md-flex justify-content-between">
+                <div class="form-control d-flex justify-content-between">
+                    <span>@meetingTime</span>
+                    <span>@Html.DisplayFor(m => m.Type)</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-floating d-flex justify-content-between">
+            <a asp-controller="Administrator" asp-action="Reject" asp-route-id="@Model.Id" class="btn btn-danger text-white">
+                <i class="fa fa-remove"></i>
+                رد درخواست
+            </a>
+            <a asp-controller="Administrator" asp-action="Confirm" asp-route-id="@Model.Id" class="btn btn-success text-white">
+                <i class="fa fa-check"></i>
+                تایید پرداخت
+            </a>
+        </div>
+    </div>
+    <div class="col-md-5 p-0">
+        <img src="data:image/png;base64,@Convert.ToBase64String(Model.Payment)" class="col-md-12 p-0 border border-success rounded-lg" />
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
