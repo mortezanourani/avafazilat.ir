@@ -50,12 +50,63 @@
         @TempData["StatusMessage"]
     </div>
 }
-<div class="d-md-flex justify-content-center">
-    <div class="col-md-8 pr-md-0">
-        <h3 class="text-black text-right">@ViewData["Title"]</h3>
+<div class="d-md-flex justify-content-between">
+    <div class="col-md-7 pr-md-0 text-center text-md-right">
+        <h3 class="text-black mb-3">@ViewData["Title"]</h3>
+        <div class="list-group text-right">
+            <div class="list-group-item p-4">
+                <h5 class="mb-2 text-bold">مدت زمان جلسات مشاوره</h5>
+                <p class="m-0">
+                    جلسات مشاوره انتخاب رشته کنکور کارشناسی در دو مرحله برگزار می گردند.
+                    <br />
+                    مرحله اول یک جلسه 30 دقیقه ای جهت مشاوره در خصوص رتبه، انتخاب رشته ها و دانشگاه ها و اولویت بندی انتخاب ها
+                    و مرحله دوم 15 دقیقه جلسه بررسی و ویرایش نهایی انتخاب رشته داوطلبان عزیز.
+                </p>
+                <p class="alert alert-info m-0 mt-2 p-3">
+                    جلسات به انتخاب داوطلب به یکی از دو صورت زیر برگزار می گردد.
+                    <br />
+                    <span class="text-bold">جلسه حضوری</span> در دفتر مرکزی موسسه آوای فضیلت
+                    <br />
+                    <span class="text-bold">جلسه آنلاین</span> از طریق تماس تصویری واتسپ
+                </p>
+            </div>
+            <div class="list-group-item p-4">
+                <h5 class="mb-2 text-bold">نحوه رزرو جلسه مشاوره</h5>
+                <p class="m-0">
+                    پس از واریز هزینه مشاوره به شماره کارتی که در کادر زیر نمایش داده شده است،
+                    نام و نام خانوادگی و شماره تلفن همراه خود را به درستی وارد نمایید.
+                    رشته تحصیلی، روز و ساعت مورد نظر خود را از بین لیست موجود انتخاب نموده 
+                    و چنانچه مایل به جلسه مشاوره حضوری هستید گزینه حضوری را فعال نمایید.
+                    تصویر رسید یا فیش واریز وجه را بارگذاری کرده و روی گزینه ارسال درخواست مشاوره کلیک کنید.
+                    <br />
+                    <span class="text-danger">
+                        توجه داشته باشید که فرم های فاقد شماره تماس صحیح یا فاقد فیش واریز تایید نخواهند شد.
+                        <br />
+                        رسید یا فیش واریز را تا پایان مرحله دوم جلسه مشاوره خود نگاه دارید.
+                        جهت دریافت نوبت مرحله دوم به آن نیاز خواهید داشت.
+                    </span>
+                    <br />
+                    ارسال فرم به منزله رزرو جلسه مشاوره بوده و پس از تایید رسید پرداخت وجه توسط واحد مالی،
+                    پیامک ثبت جلسه مشاوره برای شمار ارسال خواهد شد.
+                </p>
+            </div>
+            <div class="list-group-item p-4">
+                <h5 class="mb-2 text-bold">هزینه جلسات</h5>
+                <p class="m-0">
+                    مبلغ حق مشاوره برای هر داوطلب پانزده میلیون ریال (معادل یک میلیون و پانصد هزار تومان) می باشد.
+                    <br />
+                    مبلغ پرداختی در مرحله اول رزرو جلسه مشاوره برای مجموع 45 دقیقه خواهد بود و در مرحله دوم نیازی به واریز مجدد وجه نخواهد بود.
+                    <br />
+                </p>
+                <p class="alert alert-info ltr text-center d-md-flex justify-content-between m-0 mt-3">
+                    <span class="col-md-6 ltr text-left">6037 - 9973 - 8311 - 3447</span>
+                    <span class="col-md-6 rtl text-right">علیرضا ندرلو (بانک ملی ایران)</span>
+                </p>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4 p-3 text-right bg-white bg-opacity-10 border rounded-lg shadow">
-        <form id="reserve" method="post" enctype="multipart/form-data">
+    <div class="col-md-4 p-0">
+        <form id="reserve" method="post" enctype="multipart/form-data" class="p-3 mt-5 text-right bg-white bg-opacity-10 border rounded-lg shadow">
             <div class="form-floating mb-3">
                 @Html.LabelFor(m => m.Name)
                 @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
@@ -96,7 +147,7 @@
             @if(Model.Tickets.Count > 0)
             {
                 <div class="form-floating">
-                    <button id="reserve-submit" type="submit" class="w-100 btn btn-lg btn-info">ارسال فیش و ثبت نوبت</button>
+                    <button id="reserve-submit" type="submit" class="w-100 btn btn-lg btn-info">ارسال درخواست مشاوره</button>
                 </div>
             }
         </form>
