@@ -9,7 +9,7 @@ namespace Fazilat.Areas.Account.Models
     public class EducationalFileModel : EducationalFile
     {
         [Display(Name = "مقطع تحصیلی")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها عدد مورد قبول است.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [StringLength(2, MinimumLength = 2)]
         [Range(10, 12, ErrorMessage = "پایه تحصیلی عددی بین 10 و 12 است.")]
         public string Grade { get; set; }

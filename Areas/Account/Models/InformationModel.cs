@@ -27,20 +27,20 @@ namespace Fazilat.Areas.Account.Models
         [Display(Name = "تاریخ تولد")]
         public new DateTime? BirthDate { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا عدد درستی وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [Range(1, 31, ErrorMessage = "روز عددی بین 1 تا 31 است.")]
         public int Day { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا عدد درستی وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [Range(1, 12, ErrorMessage = "ماه عددی بین 1 تا 12 است.")]
         public int Month { get; set; }
 
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا عدد درستی وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [Range(1300, 1500, ErrorMessage = "سال را به صورت 4 رقمی وارد نمایید.")]
         public int Year { get; set; }
 
         [Display(Name = "شماره تماس")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا عدد درستی وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [StringLength(11, ErrorMessage = "شماره تماس را به صورت 11 رقمی وارد نمایید.", MinimumLength = 11)]
         [Range(9000000000, 9399999999, ErrorMessage = "شماره تماس وارد شده نامعتبر می باشد.")]
         public string PhoneNumber { get; set; }

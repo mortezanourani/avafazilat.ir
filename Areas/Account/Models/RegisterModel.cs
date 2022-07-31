@@ -14,7 +14,7 @@ namespace Fazilat.Areas.Account.Models
 
         [Required(ErrorMessage = "وارد کردن شماره همراه الزامی است.")]
         [Display(Name = "شماره همراه")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا شماره همراه خود را به شکل درست وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
         [StringLength(11, ErrorMessage = "شماره همراه باید به صورت 11 رقمی و بدون کد کشور وارد شود.", MinimumLength = 11)]
         [Range(9000000000, 9399999999, ErrorMessage = "شماره همراه وارد شده نامعتبر است.")]
         public string PhoneNumber { get; set; }
