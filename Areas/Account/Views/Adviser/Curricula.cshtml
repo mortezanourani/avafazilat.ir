@@ -36,7 +36,7 @@
     </div>
 </form>
 
-<ul class="list-group p-0">
+<div class="list-group p-0">
 @foreach(var curriculum in Model)
 {
     var startDate = String.Format("{0}/{1}/{2}",
@@ -48,4 +48,4 @@
         <span class="badge badge-dark">@startDate</span>
     </a>
 }
-</ul>
+</div>

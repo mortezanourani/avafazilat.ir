@@ -3,27 +3,30 @@
     ViewData["Title"] = Model.Title;
 }
 
-<ul class="list-group p-0">
+<div class="list-group p-0">
 @foreach(var course in Model.Courses)
 {
-    <a class="list-group-item list-group-item-action d-flex flex-column" asp-area="Account" asp-controller="Dashboard" asp-action="Course" asp-route-id="@course.Id">
-        <div class="d-flex flex-row justify-content-between">
-            <div>
-                <h5>@Html.DisplayFor(c => course.Title)</h5>
-                <p>@Html.DisplayFor(c => course.Topics, new { @class = "text-secondary" })</p>
+    <form id="student-course-form" method="post" action="/Dashboard/Course" class="list-group-item d-md-flex border-info px-3 mb-3">
+        <input name="Id" type="hidden" value="@course.Id" />
+        <input name="CurriculumId" type="hidden" value="@course.CurriculumId" />
+        <div class="w-100 mb-2 ml-md-2">
+            <input name="Title" type="hidden" value="@course.Title" />
+            @Html.TextBoxFor(c => course.Title, new { @class = "form-control mb-2", disabled = true })
+            <input name="Topics" type="hidden" value="@course.Topics" />
+            @Html.TextAreaFor(c => course.Topics, new { @class = "form-control mb-2", disabled = true })
+        </div>
+        <div class="w-100 mr-md-2">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="form-control">
+                    @Html.CheckBox("Accomplished", course.Accomplished)
+                    @Html.LabelFor(c => course.Accomplished)
+                </span>
+                <button class="btn btn-outline-primary mr-2">
+                    <i class="fa fa-save"></i>
+                </button>
             </div>
-            @if (@course.Accomplished)
-            {
-                <i class="fa fa-check-square-o text-success"></i>
-            }
-            else
-            {
-                <i class="fa fa-square-o text-danger"></i>
-            }
+            @Html.TextArea("Descritpion", course.Descritpion, new { @class = "form-control", placeholder = "توضیح مطالعه" })
         </div>
-        <div>
-            @Html.DisplayFor(c => course.Descritpion)
-        </div>
-    </a>
+    </form>
 }
-</ul>
+</div>

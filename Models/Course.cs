@@ -16,6 +16,7 @@ namespace Fazilat.Models
         [Display(Name = "سرفصل ها")]
         [RegularExpression("^[آ-یای ]+$", ErrorMessage = "لطفا به صورت فارسی وارد گردد.")]
         public string Topics { get; set; }
+        [Display(Name = "کامل مطالعه نمودم.")]
         public bool Accomplished { get; set; }
         [Display(Name = "توضیح چگونگی اجرا")]
         public string Descritpion { get; set; }

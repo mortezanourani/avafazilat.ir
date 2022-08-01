@@ -4,6 +4,7 @@
     ViewData["Title"] = Model.Title;
 }
 
+@*
 <form id="personal-information-form" class="rounded-lg border border-success bg-white pt-3 pb-3 mb-3" method="post">
     <input id="Id" name="Id" type="hidden" value="@Model.Id" />
     <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
@@ -32,30 +33,53 @@
         <button type="submit" class="btn btn btn-success w-auto">به روز رسانی</button>
     </div>
 </form>
-<ul class="list-group p-0">
+*@
+
+<div class="list-group">
+    <form id="add-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item-info d-flex flex-column px-3">
+        @Html.HiddenFor(c => c.Id)
+        <div class="d-flex justify-content-between mb-2">
+            <input type="text" name="Title" class="form-control" placeholder="عنوان درس" />
+            <button class="btn btn-primary mr-2">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <textarea type="text" name="Topics" class="form-control" placeholder="سرفصل ها و توضیحات"></textarea>
+    </form>
 @foreach(var course in Model.Courses)
 {
-    <a class="list-group-item list-group-item-action d-flex flex-column" asp-area="Account" asp-controller="Adviser" asp-action="Course" asp-route-id="@course.Id">
-        <div class="d-flex flex-row justify-content-between">
-            <div>
-                <h5>@Html.DisplayFor(c => course.Title)</h5>
-                <p>@Html.DisplayFor(c => course.Topics, new { @class = "text-secondary" })</p>
-            </div>
-            @if (@course.Accomplished)
-            {
-                <i class="fa fa-check-square-o text-success"></i>
-            }
-            else
-            {
-                <i class="fa fa-square-o text-danger"></i>
-            }
+    <form id="remove-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item d-flex flex-column border-info px-3 mt-3">
+        <input id="Id" name="Id" type="hidden" value="@course.Id" />
+        <div class="d-flex justify-content-between mb-2">
+            <span class="form-control d-flex justify-content-between">
+                @Html.DisplayFor(c => course.Title)
+                <span>
+                @if (@course.Accomplished)
+                {
+                    <i class="fa fa-check-square-o text-success"></i>
+                }
+                else
+                {
+                    <i class="fa fa-square-o text-danger"></i>
+                }
+                </span>
+            </span>
+            <button class="btn btn-outline-danger mr-2">
+                <i class="fa fa-trash"></i>
+            </button>
         </div>
-        <div>
-            @Html.DisplayFor(c => course.Descritpion)
-        </div>
-    </a>
+        <span class="form-control h-auto">
+            @Html.Raw(course.Topics.Replace(Environment.NewLine, "<br />"))
+        </span>
+        @if(course.Descritpion != null)
+        {
+            <span class="form-control h-auto mt-2">
+                @Html.Raw(course.Descritpion.Replace(Environment.NewLine, "<br />"))
+            </span>
+        }
+    </form>
 }
-</ul>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -214,30 +214,37 @@ namespace Fazilat.Areas.Account.Controllers
             return View(formCollection);
         }
 
-        public async Task<IActionResult> Course(string id)
+        [HttpPost]
+        public async Task<IActionResult> Course(Course formCollection)
         {
+            var parameter = formCollection.Id;
             var course = await _context.Courses
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == formCollection.Id);
             if (course != null)
             {
+                parameter = course.CurriculumId;
                 _context.Remove(course);
+                TempData["StatusMessage"] = "Error: درس مورد نظر از برنامه مطالعاتی حذف شد.";
             }
 
             var curriculum = await _context.Curricula
-                .FirstOrDefaultAsync(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == formCollection.Id);
             if (curriculum != null)
             {
                 course = new Course()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    CurriculumId = id,
+                    CurriculumId = formCollection.Id,
+                    Title = formCollection.Title,
+                    Topics = formCollection.Topics,
                     Accomplished = false,
                 };
                 await _context.AddAsync(course);
+                TempData["StatusMessage"] = "برنامه درسی مورد نظر با موفقیت به برنامه مطالعاتی اضافه شد.";
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Curriculum", new { id = course.CurriculumId });
+            return RedirectToAction("Curriculum", new { id = parameter });
         }
     }
 }

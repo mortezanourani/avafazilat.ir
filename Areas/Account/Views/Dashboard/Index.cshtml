@@ -1,9 +1,9 @@
 ﻿@using System.Globalization
 @{
-    ViewData["Title"] = "پنل کاربری";
+    ViewData["Title"] = "فهرست برنامه مطالعاتی";
 }
 
-<ul class="list-group p-0">
+<div class="list-group p-0">
 @foreach(var curriculum in Model)
 {
     PersianCalendar persianCalendar = new PersianCalendar();
@@ -16,4 +16,4 @@
         <span class="badge badge-dark">@startDate</span>
     </a>
 }
-</ul>
+</div>

@@ -45,6 +45,7 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _userManager.GetUserAsync(User);
             List<Curriculum> curricula = await _context.Curricula
                 .Where(c => c.UserId == user.Id)
+                .Where(c => c.Courses.Count > 0)
                 .OrderByDescending(c => c.StartDate)
                 .ToListAsync();
             return View(curricula);
@@ -141,34 +142,20 @@ namespace Fazilat.Areas.Account.Controllers
             return View(curriculum);
         }
 
-        public async Task<IActionResult> Course(string id)
-        {
-            var course = await _context.Courses
-                .Include(c => c.Curriculum)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            return View(course);
-        }
-
         [HttpPost]
         public async Task<IActionResult> Course(Course formCollection)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(formCollection);
-            }
-
             try
             {
                 _context.Courses.Update(formCollection);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Curriculum", new { id = formCollection.CurriculumId });
+                TempData["StatusMessage"] = string.Format("{0} با موفقیت به روزرسانی شد", formCollection.Title);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 TempData.Add("StatusMessage", string.Format("Error: {0}", exception.Message));
-                return View(formCollection);
             }
+            return RedirectToAction("Curriculum", new { id = formCollection.CurriculumId });
         }
 
         public async Task<IActionResult> Message()
