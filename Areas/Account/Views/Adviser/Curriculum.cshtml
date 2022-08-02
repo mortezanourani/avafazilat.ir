@@ -73,9 +73,7 @@
         </span>
         @if(course.Descritpion != null)
         {
-            <span class="form-control h-auto mt-2">
-                @Html.Raw(course.Descritpion.Replace(Environment.NewLine, "<br />"))
-            </span>
+            @Html.TextAreaFor(c => course.Descritpion, new { @class = "form-control mt-2", disabled = true })
         }
     </form>
 }
