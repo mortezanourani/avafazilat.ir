@@ -9,16 +9,16 @@
         <li class="nav-item mb-2 border border-success rounded-lg">
             @Html.ActionLink("پنل کاربری", "Index", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
         </li>
-        @if(administrator)
-        {
-            <li class="nav-item mb-2 border border-success rounded-lg">
-                @Html.ActionLink("جلسات مشاوره", "Ticket", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-success" })
-            </li>
-        }
         @if(administrator && adviser)
         {
             <li class="nav-item mb-2 border border-success rounded-lg">
                 @Html.ActionLink("پنل کاربری مشاور", "Index", "Adviser", new { @area = "Account" }, new {@class = "nav-link text-success" })
+            </li>
+        }
+        @if(administrator)
+        {
+            <li class="nav-item mb-2 border border-success rounded-lg">
+                @Html.ActionLink("جلسات انتخاب رشته", "Ticket", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-success" })
             </li>
         }
         @if(!adviser && !administrator)
@@ -31,6 +31,9 @@
             }
             <li class="nav-item mb-2 border border-success rounded-lg">
                 @Html.ActionLink("پرونده تحصیلی", "EducationalFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
+            </li>
+            <li class="nav-item mb-2 border border-success rounded-lg">
+                @Html.ActionLink("پرونده مالی", "FinancialFile", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
             </li>
         }
         <li class="nav-item mb-2 border border-success rounded-lg">

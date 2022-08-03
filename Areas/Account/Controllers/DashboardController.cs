@@ -51,9 +51,14 @@ namespace Fazilat.Areas.Account.Controllers
             return View(curricula);
         }
 
-        public async Task<IActionResult> EducationalFile()
+        public async Task<IActionResult> EducationalFile(string id)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (!string.IsNullOrEmpty(id))
+            {
+                user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
 
             var educationalFile = await _context.EducationalFiles
                 .FirstOrDefaultAsync(ef => ef.UserId == user.Id);
@@ -69,6 +74,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             EducationalFileModel viewModel = new EducationalFileModel()
             {
+                UserId = user.Id,
                 Grade = educationalFile.Grade,
                 LastAvg = educationalFile.LastAvg,
                 RegistrationFormFileName = educationalFile.RegistrationFormFileName,
@@ -85,7 +91,8 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(formCollection);
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == formCollection.UserId);
 
             var educationalFile = new EducationalFile();
             educationalFile.UserId = user.Id;
@@ -206,6 +213,60 @@ namespace Fazilat.Areas.Account.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction();
+        }
+
+        public async Task<IActionResult> FinancialFile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var financialRecords = await _context.FinancialRecords
+                .Where(e => e.UserId == user.Id)
+                .ToListAsync();
+
+            var financialFile = new FinancialFileModel()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = user.Id,
+                FinancialRecords = financialRecords,
+            };
+
+            return View(financialFile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinancialFile(FinancialRecord record)
+        {
+            var receiptFile = record.PaymentReceiptFile;
+
+            string randomString = Guid.NewGuid().ToString().Replace("-", "");
+            string fileExtention = Path.GetExtension(receiptFile.FileName);
+            string fileName = String.Join("", randomString, fileExtention);
+            string filePath = Path.Combine(path, fileName);
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                await receiptFile.CopyToAsync(stream);
+            }
+
+            record.PaymentReceipt = fileName;
+            await _context.AddAsync(record);
+            await _context.SaveChangesAsync();
+            TempData["StatusMessage"] = "رسید پرداخت با موفقیت ثبت شد. این پرداخت پس از تایید واحد مالی اعمال می گردد.";
+            return RedirectToAction();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinancialReceipt(string id)
+        {
+            var financialRecord = await _context.FinancialRecords
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (financialRecord == null)
+            {
+                TempData["StatusMessage"] = "Error: تراکنشی با مشخصات مورد نظر وجود ندارد.";
+                return RedirectToAction("FinancialFile", new { id = id });
+            }
+
+            return View(financialRecord);
         }
 
         private readonly string path = Path.GetFullPath("wwwroot/images");

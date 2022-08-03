@@ -176,7 +176,7 @@ namespace Fazilat.Areas.Account.Controllers
             return View(passwordModel);
         }
 
-        public async Task<IActionResult> PersonalInfo()
+        public async Task<IActionResult> PersonalInfo(string id)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -184,6 +184,11 @@ namespace Fazilat.Areas.Account.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+            if (!string.IsNullOrEmpty(id))
+            {
+                user = await _context.Users
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
 
             var userInfo = await _context.Information
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
@@ -208,6 +213,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             InformationModel personalInfo = new InformationModel()
             {
+                UserId = user.Id,
                 NationalCode = nationalCode,
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
@@ -229,7 +235,8 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(personalInfo);
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == personalInfo.UserId);
 
             PersianCalendar persianCalendar = new PersianCalendar();
             var birthDate = persianCalendar.ToDateTime(

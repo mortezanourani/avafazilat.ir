@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using System.Linq;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using Fazilat.Data;
 using Fazilat.Models;
@@ -203,6 +204,56 @@ namespace Fazilat.Areas.Account.Controllers
                 studentAdviser.Information.FullName,
                 student.Information.FullName);
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> FinancialFile(string id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var financialFile = await _context.FinancialRecords
+                .Where(f => f.UserId == id)
+                .ToListAsync();
+
+            if (financialFile == null)
+            {
+                TempData["StatusMessage"] = "Error: پرونده مالی با مشخصات مورد نظر یافت نشد.";
+                return RedirectToAction("Index");
+            }
+
+            return View(financialFile);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinancialFile(FinancialRecord record)
+        {
+            var financialRecord = await _context.FinancialRecords
+                .FirstOrDefaultAsync(f => f.Id == record.Id);
+
+            if (financialRecord != null)
+            {
+                financialRecord.IsApproved = !financialRecord.IsApproved;
+                _context.Attach(financialRecord).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinancialReceipt(string id)
+        {
+            var financialRecord = await _context.FinancialRecords
+                .FirstOrDefaultAsync(f => f.Id == id);
+
+            if (financialRecord == null)
+            {
+                TempData["StatusMessage"] = "Error: تراکنشی با مشخصات مورد نظر وجود ندارد.";
+                return RedirectToAction("FinancialFile", new { id = id });
+            }
+
+            return View(financialRecord);
         }
 
         public async Task<IActionResult> Ticket(string id)

@@ -23,6 +23,7 @@ namespace Fazilat.Data
         public virtual DbSet<Adviser> Advisers { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
+        public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -98,6 +99,11 @@ namespace Fazilat.Data
                 b.HasOne(u => u.EducationalFile)
                     .WithOne(ef => ef.User)
                     .HasForeignKey<EducationalFile>(uef => uef.UserId)
+                    .IsRequired();
+
+                b.HasMany(u => u.FinancialFile)
+                    .WithOne(f => f.User)
+                    .HasForeignKey(uf => uf.UserId)
                     .IsRequired();
 
                 b.HasMany(u => u.Curriculums)
@@ -320,7 +326,20 @@ namespace Fazilat.Data
                 b.ToTable("Meeting");
             });
             modelBuilder.Entity<Meeting>()
-                .Ignore(c => c.PaymentFile);
+                .Ignore(m => m.PaymentFile);
+
+            modelBuilder.Entity<FinancialRecord>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.IsApproved)
+                    .HasDefaultValue(false)
+                    .IsRequired();
+
+                b.ToTable("FinancialRecord");
+            });
+            modelBuilder.Entity<FinancialRecord>()
+                .Ignore(f => f.PaymentReceiptFile);
         }
     }
 }

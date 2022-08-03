@@ -1,0 +1,60 @@
+﻿@model FinancialFileModel
+@{
+    ViewData["Title"] = "پرونده مالی";
+}
+
+<form id="add-financial-form" class="rounded-lg border border-success bg-white pt-3 pb-3 mb-3" method="post" enctype="multipart/form-data">
+    <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+    <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
+    <div class="d-md-flex justify-content-between">
+        <div class="col-md-4 mb-3">
+            @Html.LabelFor(m => m.TrackingCode, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.TrackingCode, new { @class = "form-control" })
+        </div>
+        <div class="col-md-4 mb-3">
+            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "مثال: شهریه مهر" })
+        </div>
+        <div class="col-md-4 mb-3">
+            @Html.LabelFor(m => m.PaymentReceiptFile, new { @class = "form-label" })
+            <span class="form-control">
+                @Html.EditorFor(m => m.PaymentReceiptFile)
+            </span>
+        </div>
+    </div>
+    <div class="col-md-12 text-left">
+        <button type="submit" class="btn btn btn-outline-primary">ارسال رسید پرداخت</button>
+    </div>
+</form>
+
+<div class="list-group p-0">
+@if(Model.FinancialRecords.Count < 1)
+{
+    <span class="alert alert-warning">هیچ سابقه پرداختی وجود ندارد.</span>
+}
+@foreach(var record in Model.FinancialRecords)
+{
+    <div class="list-group-item d-md-flex justify-content-between border-info px-3 mb-3">
+        @if (record.IsApproved)
+        {
+            <i class="fa fa-check-square-o text-success w-auto mt-1"></i>
+        }
+        else
+        {
+            <i class="fa fa-square-o text-danger w-auto mt-1"></i>
+        }
+        <span class="w-100 mr-3">
+            @Html.DisplayFor(r => record.Description, new { @class = "form-control" })
+        </span>
+        <span class="w-100">
+            @Html.DisplayFor(r => record.TrackingCode, new { @class = "form-control" })
+        </span>
+        <form method="post" target="_blank" asp-action="FinancialReceipt">
+            <input type="hidden" name="Id" value="@record.Id" />
+            <button class="bg-white border-0">
+                <i class="fa fa-photo w-auto mt-1 text-primary"></i>
+            </button>
+        </form>
+    </div>
+}
+</div>

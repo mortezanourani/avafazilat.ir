@@ -31,8 +31,11 @@
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                <a class="text-success" asp-action="RoleManager" asp-route-id="@item.Id">سطح دسترسی</a> |
-                <a class="text-success" asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a>
+                <a asp-action="RoleManager" asp-route-id="@item.Id">سطح دسترسی</a> |
+                <a asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a> |
+                <a asp-controller="Home" asp-action="PersonalInfo" asp-route-id="@item.Id">مشخصات فردی</a> |
+                <a asp-action="FinancialFile" asp-route-id="@item.Id">پرونده مالی</a> |
+                <a class="text-info" asp-controller="Dashboard" asp-action="EducationalFile" asp-route-id="@item.Id">پرونده تحصیلی</a>
             </td>
         </tr>
 }
