@@ -1,9 +1,15 @@
 ﻿@using System.Globalization
+@model IEnumerable<Fazilat.Models.Curriculum>
 @{
     ViewData["Title"] = "فهرست برنامه مطالعاتی";
 }
 
 <div class="list-group p-0">
+@if(Model.Count() < 1){
+    <span class="alert alert-warning">
+        هنوز برای شما برنامه مطالعه ای تنظیم نشده است.
+    </span>
+}
 @foreach(var curriculum in Model)
 {
     PersianCalendar persianCalendar = new PersianCalendar();

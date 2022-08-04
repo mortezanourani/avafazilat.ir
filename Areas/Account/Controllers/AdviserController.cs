@@ -145,8 +145,8 @@ namespace Fazilat.Areas.Account.Controllers
             {
                 await _context.AddAsync(formCollection);
                 await _context.SaveChangesAsync();
-                TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
-                return RedirectToAction("Curricula", new { @id = formCollection.UserId });
+                TempData["StatusMessage"] = "برنامه مطالعه هفتگی با موفقیت ایجاد شد.";
+                return RedirectToAction("Curriculum", new { @id = formCollection.Id });
             }
             catch
             {
@@ -190,28 +190,16 @@ namespace Fazilat.Areas.Account.Controllers
         {
             var curriculum = await _context.Curricula
                 .FirstOrDefaultAsync(c => c.Id == formCollection.Id);
+            if(curriculum == null)
+            {
+                TempData["StatusMessage"] = "Error: خطایی رخ داده است.";
+                return RedirectToAction();
+            }
 
-            PersianCalendar persianCalendar = new PersianCalendar();
-            formCollection.StartDate = persianCalendar.ToDateTime(
-                formCollection.Year,
-                formCollection.Month,
-                formCollection.Day,
-                0, 0, 0, 0);
-            try
-            {
-                curriculum.Title = formCollection.Title;
-                curriculum.Description = formCollection.Description;
-                curriculum.StartDate = formCollection.StartDate;
-                _context.Attach(curriculum).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                TempData["StatusMessage"] = "عملیات با موفقیت انجام شد.";
-                return RedirectToAction("Curriculum", new { @id = curriculum.Id });
-            }
-            catch
-            {
-                TempData["StatusMessage"] = "Error: خطایی رخ داده است. لطفا مجددا تلاش نمایید.";
-            }
-            return View(formCollection);
+            _context.Remove(curriculum);
+            await _context.SaveChangesAsync();
+            TempData["StatusMessage"] = "Error: برنامه مطالعاتی مورد نظر حذف شد.";
+            return RedirectToAction("Curricula", new { id = curriculum.UserId });
         }
 
         [HttpPost]

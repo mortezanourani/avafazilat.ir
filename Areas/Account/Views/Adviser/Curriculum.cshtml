@@ -4,37 +4,13 @@
     ViewData["Title"] = Model.Title;
 }
 
-@*
-<form id="personal-information-form" class="rounded-lg border border-success bg-white pt-3 pb-3 mb-3" method="post">
-    <input id="Id" name="Id" type="hidden" value="@Model.Id" />
-    <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
-    <div class="d-md-flex justify-content-between">
-        <div class="form-floating col-md-6 mb-3">
-            @Html.LabelFor(m => m.Title, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-floating col-md-6 mb-3">
-            @Html.LabelFor(m => m.StartDate, new { @class = "form-label" })
-            <div class="row d-flex justify-content-between ltr pr-3 pl-3">
-                @Html.TextBoxFor(m => m.Year, new { @class = "form-control col-3 text-center" })
-                @Html.TextBoxFor(m => m.Month, new { @class = "form-control col-3 text-center" })
-                @Html.TextBoxFor(m => m.Day, new { @class = "form-control col-3 text-center" })
-            </div>
-            @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-floating col-md-12 mb-3">
-        @Html.LabelFor(m => m.Description, new { @class = "form-label" })
-        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-floating col-md-12 text-left">
-        <button type="submit" class="btn btn btn-success w-auto">به روز رسانی</button>
-    </div>
-</form>
-*@
-
+<div class="form-floating d-flex justify-content-between border-bottom border-success pb-3 mb-3">
+    <a asp-action="curricula" asp-route-id="@Model.UserId" class="btn btn-outline-info">برنامه های مطالعاتی داوطلب</a>
+    <form id="remove-curriculum-form" method="post">
+        <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+        <button type="submit" class="btn btn btn-danger">حذف برنامه مطالعه</button>
+    </form>
+</div>
 <div class="list-group">
     <form id="add-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item-info d-flex flex-column px-3">
         @Html.HiddenFor(c => c.Id)
