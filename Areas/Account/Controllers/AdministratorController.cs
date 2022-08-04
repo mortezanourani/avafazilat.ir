@@ -33,8 +33,10 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var userId = _userManager.GetUserId(User);
             var users = await _context.Users
                 .Include(u => u.Information)
+                .Where(u => u.Id != userId)
                 .OrderBy(u => u.Information.LastName)
                 .ToListAsync();
 
@@ -43,6 +45,16 @@ namespace Fazilat.Areas.Account.Controllers
                 TempData["StatusMessage"] = "Error: هیچ کاربری در سامانه ثبت نام نکرده است.";
                 return View();
             }
+
+            var adviserRoleId = _roleManager.Roles
+                .Where(r => r.NormalizedName == "ADVISER")
+                .Select(r => r.Id)
+                .FirstOrDefault();
+            var advisers = await _context.UserRoles
+                .Where(ur => ur.RoleId == adviserRoleId)
+                .Select(ur => ur.UserId)
+                .ToListAsync();
+            TempData["Advisers"] = advisers;
 
             return View(users);
         }

@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Fazilat.Models.ApplicationUser>
 @{
     ViewData["Title"] = "فهرست کاربران";
+
+    List<string> advisers = (List<string>)TempData["Advisers"];
 }
 
 <form id="adviser-search-form" method="post" class="d-flex bg-white border rounded-lg p-3 mb-3">
@@ -12,10 +14,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="col-md-3">
                 @Html.DisplayNameFor(model => model.Information.FullName)
             </th>
-            <th>
+            <th class="col-md-3">
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th></th>
@@ -32,10 +34,14 @@
             </td>
             <td>
                 <a asp-action="RoleManager" asp-route-id="@item.Id">سطح دسترسی</a> |
-                <a asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a> |
-                <a asp-controller="Home" asp-action="PersonalInfo" asp-route-id="@item.Id">مشخصات فردی</a> |
-                <a asp-action="FinancialFile" asp-route-id="@item.Id">پرونده مالی</a> |
-                <a class="text-info" asp-controller="Dashboard" asp-action="EducationalFile" asp-route-id="@item.Id">پرونده تحصیلی</a>
+                <a asp-controller="Home" asp-action="PersonalInfo" asp-route-id="@item.Id">مشخصات فردی</a>
+                @if (!advisers.Contains(item.Id))
+                {
+                    @:|
+                    <a asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a> @:|
+                    <a asp-action="FinancialFile" asp-route-id="@item.Id">پرونده مالی</a> @:|
+                    <a class="text-info" asp-controller="Dashboard" asp-action="EducationalFile" asp-route-id="@item.Id">پرونده تحصیلی</a>
+                }
             </td>
         </tr>
 }
