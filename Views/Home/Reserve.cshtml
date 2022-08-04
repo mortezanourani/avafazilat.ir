@@ -22,25 +22,11 @@
         tickets.Add(new SelectListItem()
         {
             Text = String.Format("{0} ({1}:{2:00})",
-                convertDay(ticket.Day),
+                ticket.Day,
                 ticket.Hour,
                 ticket.Minute),
             Value = ticket.Id,
         });
-    }
-
-    string convertDay(int day)
-    {
-        return day.ToString()
-            .Replace("1", "روز اول اعلام نتایج")
-            .Replace("2", "روز دوم اعلام نتایج")
-            .Replace("3", "روز سوم اعلام نتایج")
-            .Replace("4", "روز چهارم اعلام نتایج")
-            .Replace("5", "روز پنجم اعلام نتایج")
-            .Replace("6", "روز ششم اعلام نتایج")
-            .Replace("7", "روز هفتم اعلام نتایج")
-            .Replace("8", "روز هشتم اعلام نتایج")
-            .Replace("9", "روز نهم اعلام نتایج");
     }
 }
 

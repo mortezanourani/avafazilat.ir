@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -47,9 +48,13 @@ namespace Fazilat.Controllers
                 .ThenBy(h => h.Minute)
                 .ToListAsync();
 
+            var sortedTickets = tickets
+                .OrderBy(t => Regex.Match(t.Day, @"\d+").Value)
+                .ToList();
+
             var model = new ReserveViewModel()
             {
-                Tickets = tickets,
+                Tickets = sortedTickets,
             };
             return View(model);
         }

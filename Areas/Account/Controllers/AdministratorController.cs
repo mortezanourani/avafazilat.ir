@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Fazilat.Data;
 using Fazilat.Models;
@@ -287,11 +288,16 @@ namespace Fazilat.Areas.Account.Controllers
                 .ThenBy(d => d.Hour)
                 .ThenBy(h => h.Minute)
                 .ToListAsync();
+
+            var sortedTickets = tickets
+                .OrderBy(t => Regex.Match(t.Day, @"\d+").Value)
+                .ToList();
+
             var model = new TicketModel()
             {
                 Hour = DateTime.Now.Hour,
                 Minute = DateTime.Now.Minute,
-                Tickets = tickets,
+                Tickets = sortedTickets,
             };
 
             return View(model);

@@ -9,8 +9,7 @@ namespace Fazilat.Models
 
         [Display(Name = "نوبت مشاوره انتخاب رشته")]
         [Required(ErrorMessage = "وارد کردن این مورد الزامی است.")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
-        public int Day { get; set; }
+        public string Day { get; set; }
 
         [Required(ErrorMessage = "وارد کردن این مورد الزامی است.")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
