@@ -269,6 +269,27 @@ namespace Fazilat.Areas.Account.Controllers
             return View(financialRecord);
         }
 
+        public async Task<IActionResult> TicketInstruction()
+        {
+            var instruction = await _context.TicketInstruction
+                .FirstOrDefaultAsync();
+
+            return View(instruction);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TicketInstruction(TicketInstruction instruction)
+        {
+            if (instruction != null)
+            {
+                _context.Attach(instruction).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                TempData["StatusMessage"] = "دستور العمل ثبت درخواست مشاوره انتخاب رشته با موفیت به روزرسانی شد.";
+            }
+
+            return RedirectToAction();
+        }
+
         public async Task<IActionResult> Ticket(string id)
         {
             if (!string.IsNullOrEmpty(id))

@@ -1,7 +1,7 @@
 ﻿@using System.Globalization;
 @model ReserveViewModel
 @{
-    ViewData["Title"] = "نوبت دهی انتخاب رشته کنکور سراسری";
+    ViewData["Title"] = Model.Instruction.Title;
     var majors = new List<string>() { "انسانی", "تجربی", "ریاضی", "زبان", "هنر" };
     var types = new List<string>() { "آنلاین", "حضوری" };
 
@@ -30,6 +30,14 @@
     }
 }
 
+@if (!Model.Instruction.IsActive)
+{
+    <div class="alert alert-info text-center py-5">
+        در حال حاضر سامانه نوبت دهی جلسات مشاوره غیرفعال می باشد.
+    </div>
+}
+else
+{
 @if (TempData["StatusMessage"] != null)
 {
     <div class="alert alert-info text-right" role="alert">
@@ -39,58 +47,8 @@
 <div class="d-md-flex justify-content-between">
     <div class="col-md-7 pr-md-0 text-center text-md-right">
         <h4 class="text-black mb-3">@ViewData["Title"]</h4>
-        <div class="list-group text-right">
-            <div class="list-group-item p-4">
-                <h5 class="mb-2 text-bold">مدت زمان جلسات مشاوره</h5>
-                <p class="mb-2">
-                    فرایند انتخاب رشته شما، در دو جلسه صورت می گیرد.
-                    <br />
-                    جلسه اول به مشاوره و بررسی شرایط کارنامه و رشته ها اختصاص دارد 
-                    و در جلسه دوم انتخاب ها بررسی و نهایی شده و در سایت سازمان سنجش ثبت می شود.
-                </p>
-                <p class="alert alert-info m-0">
-                    جلسات به انتخاب داوطلب به یکی از دو صورت زیر برگزار می گردد.
-                    <br />
-                    <span class="text-bold">جلسه حضوری</span> در دفتر مرکزی موسسه آوای فضیلت
-                    <br />
-                    <span class="text-bold">جلسه آنلاین</span> از طریق تماس تصویری واتسپ
-                </p>
-            </div>
-            <div class="list-group-item p-4">
-                <h5 class="mb-2 text-bold">نحوه دریافت نوبت</h5>
-                <p class="mb-2">
-                    ۱- هزینه‌ی مشاوره و انتخاب رشته را به شماره کارت اعلام شده در کادر زیر واریز نمایید و عکس رسید را در فرم ثبت نام بارگذاری کنید.
-                    <br />
-                    ۲- نام و نام خانوادگی، شماره‌ی تلفن همراه و رشته‌ی تحصیلی خود را در کادر مشخص شده وارد نمایید.
-                    <br />
-                    ۳- روز و ساعت مورد نظر خود را از فهرست موجود انتخاب نمایید.
-                    <br />
-                    ۴- اگر مایل به جلسه‌ی حضوری هستید، گزینه‌ی حضوری را فعال کنید.
-                    <br />
-                    ۵- در پایان روی گزینه‌ی ارسال درخواست مشاوره کلیک نمایید.
-                </p>
-                <p class="alert alert-danger mb-2">
-                    توجه:
-                    <br />
-                    فرم‌های فاقد شماره‌ی تلفن همراه یا فاقد فیش واریز تایید نخواهند شد.
-                    <br />
-                    رسید یا فیش واریز را تا پایان انتخاب رشته، نزد خود نگه دارید.
-                </p>
-                <p class="m-0">
-                    دقت داشته باشید، پس از ارسال درخواست مشاوره و بررسی مشخصات شما، پیامک تایید از سوی موسسه برای شما ارسال خواهد شد.
-                </p>
-            </div>
-            <div class="list-group-item p-4">
-                <h5 class="mb-2 text-bold">هزینه‌ی مشاوره و انتخاب رشته</h5>
-                <p class="mb-2">
-                    مجموع مبلغ پرداختی توسط داوطلب 1,500,000 (یک میلیون و پانصد هزار) تومان می باشد.
-                </p>
-                <p class="alert alert-info ltr text-center d-md-flex justify-content-between m-0">
-                    <span class="col-md-6 ltr text-left">6037 - 9973 - 8311 - 3447</span>
-                    <span class="col-md-6 rtl text-right">علیرضا ندرلو (بانک ملی ایران)</span>
-                </p>
-            </div>
-        </div>
+
+        @Html.Raw(Model.Instruction.Content)
     </div>
     <div class="col-md-4 p-0">
         <form id="reserve" method="post" enctype="multipart/form-data" class="p-3 mt-5 text-right bg-white bg-opacity-10 border rounded-lg shadow">
@@ -140,6 +98,7 @@
         </form>
     </div>
 </div>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

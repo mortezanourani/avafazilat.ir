@@ -21,6 +21,7 @@ namespace Fazilat.Data
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Adviser> Advisers { get; set; }
+        public virtual DbSet<TicketInstruction> TicketInstruction { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
@@ -285,6 +286,32 @@ namespace Fazilat.Data
                     .IsRequired();
 
                 b.ToTable("Adviser");
+            });
+
+            modelBuilder.Entity<TicketInstruction>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.IsActive)
+                    .HasDefaultValue(false)
+                    .IsRequired();
+
+                b.Property(e => e.Title)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                b.Property(e => e.Content)
+                    .HasColumnType("text");
+
+                b.ToTable("TicketInstruction");
+
+                b.HasData(new TicketInstruction()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Title = "عنوان اصلی صفحه",
+                    Content = "محتوای دستورالعمل درخواست مشاوره"
+                });
             });
 
             modelBuilder.Entity<Ticket>(b =>

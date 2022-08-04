@@ -52,8 +52,12 @@ namespace Fazilat.Controllers
                 .OrderBy(t => Regex.Match(t.Day, @"\d+").Value)
                 .ToList();
 
+            var instruction = await _context.TicketInstruction
+                .FirstOrDefaultAsync();
+
             var model = new ReserveViewModel()
             {
+                Instruction = instruction,
                 Tickets = sortedTickets,
             };
             return View(model);

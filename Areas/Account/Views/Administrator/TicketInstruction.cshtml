@@ -1,0 +1,26 @@
+﻿@model Fazilat.Models.TicketInstruction
+@{
+    ViewData["Title"] = "متن صفحه نوبت دهی";
+}
+
+<form id="ticket-instruction-form" method="post" class="p-3 border border-success rounded-lg bg-white box-shadow">
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-floating mb-4">
+        <div class="form-control">
+            @Html.CheckBoxFor(m => m.IsActive)
+            @Html.LabelFor(m => m.IsActive, new { @class = "form-label" })
+        </div>
+    </div>
+    <div class="form-floating mb-4">
+        @Html.LabelFor(m => m.Title, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control text-right" })
+    </div>
+    <div class="form-floating mb-3">
+        @Html.LabelFor(m => m.Content, new { @class = "form-label" })
+        @Html.TextAreaFor(m => m.Content, new { @class = "form-control text-left" })
+    </div>
+    <div class="w-100 text-left">
+        <button type="submit" class="form-control col-md-3 btn btn-outline-success">ثبت تغییرات</button>
+    </div>
+</form>
+
