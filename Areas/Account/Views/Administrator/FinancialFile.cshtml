@@ -1,41 +1,28 @@
-﻿@model IEnumerable<Fazilat.Models.FinancialRecord>
+﻿@model Fazilat.Models.ApplicationUser
 @{
     ViewData["Title"] = "پرونده مالی";
 }
 
-@*
-<form id="add-financial-form" class="rounded-lg border border-success bg-white pt-3 pb-3 mb-3" method="post" enctype="multipart/form-data">
-    <input id="UserId" name="UserId" type="hidden" value="@Model.UserId" />
-    <div class="d-md-flex justify-content-between">
-        <div class="col-md-4 mb-3">
-            @Html.LabelFor(m => m.TrackingCode, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.TrackingCode, new { @class = "form-control" })
+<form id="limitation-update-form" method="post"asp-action="Limitation">
+    <input type="hidden" name="UserId" value="@Model.Limitation.UserId" />
+    <div class="form-floating p-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+        <div class="form-label h-auto col-12 px-1 mb-3">تاریخ پایان اعتبار</div>
+        <div class="row d-flex justify-content-between px-3">
+            <input type="text" id="ExpirationMonth" name="ExpirationMonth" value="@Model.Limitation.ExpirationMonth" class="form-control col-3 text-center" />
+            <input type="text" id="ExpirationYead" name="ExpirationYear" value="@Model.Limitation.ExpirationYear" class="form-control col-3 text-center" />
+            <button type="submit" class="form-control col-5 btn btn-outline-primary">ثبت تاریخ جدید</button>
         </div>
-        <div class="col-md-4 mb-3">
-            @Html.LabelFor(m => m.Description, new { @class = "form-label" })
-            @Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "مثال: شهریه مهر" })
-        </div>
-        <div class="col-md-4 mb-3">
-            @Html.LabelFor(m => m.PaymentReceiptFile, new { @class = "form-label" })
-            <span class="form-control">
-                @Html.EditorFor(m => m.PaymentReceiptFile)
-            </span>
-        </div>
-    </div>
-    <div class="col-md-12 text-left">
-        <button type="submit" class="btn btn btn-outline-primary">ارسال رسید پرداخت</button>
     </div>
 </form>
-*@
 
 <div class="list-group p-0">
-@if(Model.Count() < 1)
+@if(Model.FinancialFile.Count() < 1)
 {
     <span class="alert alert-warning">هیچ سابقه پرداختی وجود ندارد.</span>
 }
-@foreach(var record in Model)
+@foreach(var record in Model.FinancialFile)
 {
-    <div class="list-group-item d-flex justify-content-between border-info px-3 mb-3">
+    <div class="list-group-item d-flex justify-content-between border-info px-3">
         <form method="post">
             <input type="hidden" name="Id" value="@record.Id" />
             <button class="bg-white border-0">

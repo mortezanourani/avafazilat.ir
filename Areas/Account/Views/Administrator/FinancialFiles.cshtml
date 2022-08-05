@@ -1,0 +1,51 @@
+﻿@using System.Globalization
+@model IEnumerable<Fazilat.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "پرونده جامع مالی";
+
+    PersianCalendar persianCalendar = new PersianCalendar();
+    string convertDate(DateTime input)
+    {
+        var year = persianCalendar.GetYear(input);
+        var month = persianCalendar.GetMonth(input);
+        year = month == 1 ? --year : year;
+        month = month == 1 ? 12 : --month;
+        return string.Format("{0:0000} / {1:00}", year, month);
+    }
+}
+
+<div class="list-group p-0">
+@if(Model.Count() < 1)
+{
+    <span class="alert alert-warning">هیچ سابقه پرداختی وجود ندارد.</span>
+}
+@foreach(var record in Model)
+{
+    var iconClass = ((record.Limitation == null || record.Limitation.Expiration < DateTime.Now))
+        ? "ban"
+        : "thumbs-o-up"; 
+    
+    var colorClass = ((record.Limitation == null || record.Limitation.Expiration < DateTime.Now))
+        ? "danger"
+        : "info"; 
+
+    var expireDate = (record.Limitation != null)
+        ? convertDate(record.Limitation.Expiration)
+        : "جدید الورود";
+
+    <div class="list-group-item border-@colorClass px-3">
+        <a asp-action="FinancialFile" asp-route-id="@record.Id" class="btn d-flex justify-content-between p-0 text-right">
+            <i class="fa fa-@iconClass text-@colorClass w-auto mt-1"></i>
+            <span class="w-100 mr-2">
+                @Html.DisplayFor(r => record.Information.FullName, new { @class = "form-control" })
+            </span>
+            <span class="w-100 mt-1">
+                @Html.DisplayFor(r => record.PhoneNumber, new { @class = "form-control" })
+            </span>
+            <span class="ltr badge badge-@colorClass py-2">
+                @expireDate
+            </span>
+        </a>
+    </div>
+}
+</div>

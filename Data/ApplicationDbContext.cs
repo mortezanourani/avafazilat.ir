@@ -25,6 +25,7 @@ namespace Fazilat.Data
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
+        public virtual DbSet<UserLimitation> UsersLimitation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +92,11 @@ namespace Fazilat.Data
 
                 b.HasIndex(u => u.Email)
                     .IsUnique();
+
+                b.HasOne(u => u.Limitation)
+                    .WithOne(l => l.User)
+                    .HasForeignKey<UserLimitation>(ul => ul.UserId)
+                    .IsRequired();
 
                 b.HasOne(u => u.Information)
                     .WithOne(i => i.User)
@@ -367,6 +373,21 @@ namespace Fazilat.Data
             });
             modelBuilder.Entity<FinancialRecord>()
                 .Ignore(f => f.PaymentReceiptFile);
+
+            modelBuilder.Entity<UserLimitation>(b =>
+            {
+                b.HasKey("UserId");
+
+                b.Property(e => e.Expiration)
+                    .HasColumnType("date")
+                    .HasDefaultValue(DateTime.Now)
+                    .IsRequired();
+
+                b.ToTable("UserLimitation");
+            });
+            modelBuilder.Entity<UserLimitation>()
+                .Ignore(l => l.ExpirationYear)
+                .Ignore(l => l.ExpirationMonth);
         }
     }
 }

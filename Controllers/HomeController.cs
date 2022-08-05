@@ -60,6 +60,12 @@ namespace Fazilat.Controllers
                 Instruction = instruction,
                 Tickets = sortedTickets,
             };
+
+            if (sortedTickets.Count < 1 && instruction.IsActive)
+            {
+                TempData["StatusMessage"] = "هیچ نوبت خالی برای مشاوره وجود ندارد.";
+            }
+
             return View(model);
         }
 

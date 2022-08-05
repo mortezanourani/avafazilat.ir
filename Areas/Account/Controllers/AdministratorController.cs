@@ -219,24 +219,46 @@ namespace Fazilat.Areas.Account.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> FinancialFile(string id)
+        public async Task<IActionResult> FinancialFiles()
         {
-            if (id == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var financialFile = await _context.FinancialRecords
-                .Where(f => f.UserId == id)
+            var users = await _context.Users
+                .Include(u => u.Information)
+                .Include(u => u.Limitation)
+                .OrderBy(u => u.Limitation.Expiration)
                 .ToListAsync();
 
-            if (financialFile == null)
+            return View(users);
+        }
+
+        public async Task<IActionResult> FinancialFile(string id)
+        {
+            if(id == null)
             {
-                TempData["StatusMessage"] = "Error: پرونده مالی با مشخصات مورد نظر یافت نشد.";
-                return RedirectToAction("Index");
+                return RedirectToAction("FinancialFiles");
             }
 
-            return View(financialFile);
+            var user = await _context.Users
+                .Include(u => u.FinancialFile)
+                .Include(u => u.Limitation)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            var expiration = (user.Limitation != null)
+                ? user.Limitation.Expiration
+                : DateTime.Now.AddMonths(1);
+
+            PersianCalendar persianCalendar = new PersianCalendar();
+            var year = persianCalendar.GetYear(expiration);
+            var month = persianCalendar.GetMonth(expiration);
+            year = month == 1 ? --year : year;
+            month = month == 1 ? 12 : --month;
+            user.Limitation = new UserLimitation()
+            {
+                UserId = user.Id,
+                ExpirationYear = year,
+                ExpirationMonth = month,
+            };
+
+            return View(user);
         }
 
         [HttpPost]
@@ -267,6 +289,41 @@ namespace Fazilat.Areas.Account.Controllers
             }
 
             return View(financialRecord);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Limitation(UserLimitation formCollection)
+        {
+            PersianCalendar persianCalendar = new PersianCalendar();
+            formCollection.ExpirationMonth++;
+            if(formCollection.ExpirationMonth > 12)
+            {
+                formCollection.ExpirationMonth = 1;
+                formCollection.ExpirationYear++;
+            }
+            var expiration = new UserLimitation()
+            {
+                UserId = formCollection.UserId,
+                Expiration = persianCalendar.ToDateTime(
+                    formCollection.ExpirationYear,
+                    formCollection.ExpirationMonth,
+                    1, 0, 0, 0, 0),
+            };
+
+            var isExits = _context.UsersLimitation
+                .Count(l => l.UserId == formCollection.UserId);
+            if(isExits > 0)
+            {
+                _context.Attach(expiration).State = EntityState.Modified;
+            }
+            else
+            {
+                await _context.AddAsync(expiration);
+            }
+            await _context.SaveChangesAsync();
+            TempData["StatusMessage"] = "اعتبار حساب کاربری مورد نظر با موفقیت تغییر یافت.";
+
+            return RedirectToAction("FinancialFile", new { id = expiration.UserId });
         }
 
         public async Task<IActionResult> TicketInstruction()

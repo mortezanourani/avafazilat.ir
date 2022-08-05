@@ -11,6 +11,7 @@ namespace Fazilat.Models
         public override string UserName { get; set; }
         [Display(Name = "شماره تماس")]
         public override string PhoneNumber { get; set; }
+        public virtual UserLimitation Limitation { get; set; }
         public virtual UserInformation Information { get; set; }
         public virtual EducationalFile EducationalFile { get; set; }
         public virtual ICollection<FinancialRecord> FinancialFile { get; set; }

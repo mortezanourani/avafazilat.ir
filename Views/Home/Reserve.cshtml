@@ -9,7 +9,6 @@
     var tickets = new List<SelectListItem>();
     if(Model.Tickets.Count == 0)
     {
-        TempData["StatusMessage"] = "هیچ نوبت خالی برای مشاوره وجود ندارد.";
         tickets.Add(new SelectListItem()
         {
             Text = "نوبتی وجود ندارد",

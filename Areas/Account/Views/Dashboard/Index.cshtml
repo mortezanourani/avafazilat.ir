@@ -5,21 +5,28 @@
 }
 
 <div class="list-group p-0">
-@if(Model.Count() < 1){
-    <span class="alert alert-warning">
-        هنوز برای شما برنامه مطالعه ای تنظیم نشده است.
-    </span>
-}
-@foreach(var curriculum in Model)
-{
-    PersianCalendar persianCalendar = new PersianCalendar();
-    var startDate = String.Format("{0}/{1}/{2}",
-        persianCalendar.GetYear(curriculum.StartDate).ToString(),
-        persianCalendar.GetMonth(curriculum.StartDate).ToString(),
-        persianCalendar.GetDayOfMonth(curriculum.StartDate).ToString());
-    <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" asp-area="Account" asp-controller="Dashboard" asp-action="Curriculum" asp-route-id="@curriculum.Id">
-        @curriculum.Title
-        <span class="badge badge-dark">@startDate</span>
-    </a>
-}
+    <div class="alert alert-info small text-center mb-3">
+        <p class="m-0">@Html.Raw(TempData["LimitationMessage"])</p>
+    </div>
+    @if (Model != null)
+    {
+        @if (Model.Count() < 1)
+        {
+            <div class="alert alert-warning m-0">
+                هنوز برای شما برنامه مطالعه ای تنظیم نشده است.
+            </div>
+        }
+        @foreach (var curriculum in Model)
+        {
+            PersianCalendar persianCalendar = new PersianCalendar();
+            var startDate = String.Format("{0}/{1}/{2}",
+                persianCalendar.GetYear(curriculum.StartDate).ToString(),
+                persianCalendar.GetMonth(curriculum.StartDate).ToString(),
+                persianCalendar.GetDayOfMonth(curriculum.StartDate).ToString());
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" asp-area="Account" asp-controller="Dashboard" asp-action="Curriculum" asp-route-id="@curriculum.Id">
+                @curriculum.Title
+                <span class="badge badge-dark">@startDate</span>
+            </a>
+        }
+    }
 </div>

@@ -43,6 +43,43 @@ namespace Fazilat.Areas.Account.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
+
+            var limitation = await _context.UsersLimitation
+                .FirstOrDefaultAsync(l => l.UserId == user.Id);
+            if(limitation == null || (limitation.Expiration < DateTime.Now))
+            {
+                TempData["LimitationMessage"] = "به دلیل اتمام دوره اعتبار شما، دسترسی به این قسمت امکان پذیر نمی باشد.<br>" +
+                    "لطفا پس از پرداخت مبلغ شهریه، نسبت به ثبت رسید آن در قسمت پرونده مالی اقدام نمایید.<br>" +
+                    "پس از تایید پرداخت شهریه توسط واحد مالی، اعتبار حساب کاربری شما تمدید خواهد شد.";
+                return View();
+            }
+            else
+            {
+                PersianCalendar persianCalendar = new PersianCalendar();
+                var year = persianCalendar.GetYear(limitation.Expiration);
+                var month = persianCalendar.GetMonth(limitation.Expiration);
+                year = month == 1 ? --year : year;
+                month = month == 1 ? 12 : --month;
+                TempData["LimitationMessage"] = string.Format(
+                    "حساب کاربری شما تا پایان {1} {0:0000} معتبر خواهد بود.",
+                        year,
+                        month.ToString()
+                            .Replace("1", "فروردین")
+                            .Replace("2", "اردیبهشت")
+                            .Replace("3", "خرداد")
+                            .Replace("4", "تیر")
+                            .Replace("5", "مرداد")
+                            .Replace("6", "شهریور")
+                            .Replace("7", "مهر")
+                            .Replace("8", "آبان")
+                            .Replace("9", "آذر")
+                            .Replace("10", "دی")
+                            .Replace("11", "بهمن")
+                            .Replace("12", "اسفند"),
+                        persianCalendar.GetDayOfMonth(limitation.Expiration)
+                    );
+            }
+
             List<Curriculum> curricula = await _context.Curricula
                 .Where(c => c.UserId == user.Id)
                 .Where(c => c.Courses.Count > 0)
