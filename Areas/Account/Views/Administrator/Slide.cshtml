@@ -1,0 +1,40 @@
+﻿@model SlideModel
+@{
+    ViewData["Title"] = "اسلایدر";
+}
+
+<form id="add-slide-form" method="post" enctype="multipart/form-data">
+    <div class="form-floating px-3 pt-3 mb-3 border border-success rounded-lg bg-white box-shadow">
+        <div class="form-label h-auto col p-0 mb-3">افزودن اسلاید جدید</div>
+        <div class="row d-flex justify-content-between px-3">
+            <span class="form-control col-md-3 overflow-hidden text-right mb-3">
+                @Html.EditorFor(m => m.ImageFile)
+            </span>
+            @Html.TextBoxFor(m => m.Link, new { @class = "form-control col-md-6 ltr text-left mb-3", @placeholder = "Link" })
+            <button type="submit" class="form-control col-md-2 btn btn-outline-primary mb-3">تایید</button>
+        </div>
+    </div>
+</form>
+<ul class="list-group ltr text-left p-0">
+@foreach(var slide in Model.Slides)
+{
+    <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+            @slide.Link
+        </div>
+        <div>
+            <a class="btn btn-sm btn-outline-info" target="_blank" href="/images/slide/@slide.Image">
+                <i class="fa fa-photo"></i>
+            </a>
+            <a class="btn btn-sm btn-outline-danger" asp-area="Account" asp-controller="Administrator" asp-action="Slide" asp-route-id="@slide.Id">
+                <i class="fa fa-trash-o"></i>
+            </a>
+        </div>
+    </li>
+}
+</ul>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

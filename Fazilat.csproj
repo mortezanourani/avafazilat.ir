@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Areas\Account\Data\" />
     <Folder Include="wwwroot\images\blog\" />
+    <Folder Include="wwwroot\images\slide\" />
   </ItemGroup>
 
 </Project>

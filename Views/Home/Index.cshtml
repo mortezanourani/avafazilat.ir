@@ -1,21 +1,58 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
+
+    bool first = true;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<h3 class="text-center text-bold rounded-lg border border-success p-3 mt-3">
-    آخرین اخبار آکادمی آوای فضیلت
-</h3>
-<div class="row d-md-flex flex-wrap">
-@foreach(var post in Model.News)
+@if(Model.Slides.Count() > 0)
 {
-    <div class="col-md-4 p-3">
-        <div class="border border-success bg-white rounded-lg p-3">
+<div id="sliderIndicators" class="carousel slide border border-success rounded-lg overflow-hidden ltr" data-ride="carousel">
+    <ol class="carousel-indicators">
+        @for (int c = 0; c < Model.Slides.Count(); c++)
+        {
+            var indicatorClass = (c == 0)
+                ? "active"
+                : string.Empty;
+            <li data-target="#sliderIndicators" data-slide-to="@c" class="@indicatorClass"></li>
+        }
+    </ol>
+    <div class="carousel-inner">
+        @foreach(var slide in Model.Slides)
+        {
+            var slideClass = (first)
+                ? "carousel-item active"
+                : "carousel-item";
+            first = false;
+
+            <div class="@slideClass">
+                <a class="d-block w-100" href="@slide.Link">
+                    <img class="d-block w-100" src="/images/slide/@slide.Image">
+                </a>
+            </div>
+        }
+    </div>
+    <a class="carousel-control-prev" href="#sliderIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#sliderIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+}
+
+@if(Model.News.Count() > 0)
+{
+<div class="bg-white border border-success rounded-lg mt-4">
+    <h5 class="text-center p-3 m-0 border-bottom border-success">
+        آخرین اخبار آکادمی آوای فضیلت
+    </h5>
+    <div class="d-md-flex flex-wrap">
+    @foreach(var post in Model.News)
+    {
+        <div class="col-md-4 p-3 border-bottom">
             <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
             <h4 class="text-right mb-2">@post.Title</h4>
             <p class="text-right">
@@ -23,6 +60,8 @@
             </p>
             @Html.ActionLink("متن کامل خبر", "Blog", "Home", new { id = post.Id }, new { Class = "small" })
         </div>
+    }
     </div>
-}
 </div>
+<a href="/blog/" class="d-block text-center p-3 m-0">اخبار بیشتر</a>
+}

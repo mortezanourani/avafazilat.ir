@@ -27,6 +27,7 @@ namespace Fazilat.Data
         public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
         public virtual DbSet<UserLimitation> UsersLimitation { get; set; }
         public virtual DbSet<BlogPost> Blog { get; set; }
+        public virtual DbSet<Slide> Slides { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -389,6 +390,13 @@ namespace Fazilat.Data
             modelBuilder.Entity<UserLimitation>()
                 .Ignore(l => l.ExpirationYear)
                 .Ignore(l => l.ExpirationMonth);
+
+            modelBuilder.Entity<Slide>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.ToTable("Slide");
+            });
 
             modelBuilder.Entity<BlogPost>(b =>
             {

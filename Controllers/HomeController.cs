@@ -29,7 +29,12 @@ namespace Fazilat.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Reserve");
+            var slides = await _context.Slides
+                .ToListAsync();
+            if(slides.Count == 0)
+            {
+                return RedirectToAction("Reserve");
+            }
 
             var news = await _context.Blog
                 .Where(p => p.isVisible == true)
@@ -38,6 +43,7 @@ namespace Fazilat.Controllers
 
             var model = new HomeViewModel()
             {
+                Slides = slides,
                 News = news.SkipLast(Math.Max(0, news.Count() - 3)).ToList(),
             };
             return View(model);

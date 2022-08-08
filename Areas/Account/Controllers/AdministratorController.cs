@@ -440,6 +440,58 @@ namespace Fazilat.Areas.Account.Controllers
             return RedirectToAction("Ticket");
         }
 
+        public async Task<IActionResult> Slide(string id)
+        {
+            if(id != null)
+            {
+                var slide = await _context.Slides
+                    .FirstOrDefaultAsync(s => s.Id == id);
+                string path = Path.GetFullPath("wwwroot/images/slide");
+                string filePath = Path.Combine(path, slide.Image);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                _context.Remove(slide);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Slide", new { id = "" });
+            }
+
+            var slides = await _context.Slides
+                .OrderBy(s => s.Link)
+                .ToListAsync();
+            var model = new SlideModel()
+            {
+                Slides = slides
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Slide(SlideModel slideForm)
+        {
+            var id = Guid.NewGuid().ToString();
+
+            var path = Path.GetFullPath("wwwroot/images/slide");
+            var extention = Path.GetExtension(slideForm.ImageFile.FileName);
+            var fileName = String.Join("", id.Replace("-", ""), extention);
+            var imagePath = Path.Combine(path, fileName);
+            using (var stream = System.IO.File.Create(imagePath))
+            {
+                await slideForm.ImageFile.CopyToAsync(stream);
+            }
+            var slide = new Slide()
+            {
+                Id = id,
+                Image = fileName,
+                Link = slideForm.Link
+            };
+            await _context.AddAsync(slide);
+            await _context.SaveChangesAsync();
+            return RedirectToAction();
+        }
+
         public async Task<IActionResult> Blog()
         {
             var posts = await _context.Blog
