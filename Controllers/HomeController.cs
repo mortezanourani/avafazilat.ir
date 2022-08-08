@@ -27,10 +27,40 @@ namespace Fazilat.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return RedirectToAction("Reserve");
-            return View();
+
+            var news = await _context.Blog
+                .Where(p => p.isVisible == true)
+                .OrderByDescending(p => p.Date)
+                .ToListAsync();
+
+            var model = new HomeViewModel()
+            {
+                News = news.SkipLast(Math.Max(0, news.Count() - 3)).ToList(),
+            };
+            return View(model);
+        }
+
+        public async Task<IActionResult> Blog(string id)
+        {
+            if(id == null)
+            {
+                var posts = await _context.Blog
+                    .Where(p => p.isVisible == true)
+                    .OrderByDescending(p => p.Date)
+                    .ToListAsync();
+
+                return View(posts);
+            }
+
+            var post = await _context.Blog
+                .Where(p => p.isVisible == true)
+                .Where(p => p.Id == id)
+                .ToListAsync();
+
+            return View(post);
         }
 
         public IActionResult AboutUs()

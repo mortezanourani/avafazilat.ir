@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Linq;
@@ -437,6 +438,102 @@ namespace Fazilat.Areas.Account.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Ticket");
+        }
+
+        public async Task<IActionResult> Blog()
+        {
+            var posts = await _context.Blog
+                .OrderByDescending(p => p.Date)
+                .ToListAsync();
+
+            return View(posts);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Blog(string id)
+        {
+            var post = await _context.Blog
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if(post != null)
+            {
+                post.isVisible = !(post.isVisible);
+                _context.Attach(post).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction();
+        }
+
+        public async Task<IActionResult> Post(string id)
+        {
+            var post = await _context.Blog
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (post == null)
+            {
+                post = new BlogPost()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = _userManager.GetUserId(User),
+                };
+            }
+
+            return View(post);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(BlogPost post)
+        {
+            if(post == null)
+            {
+                return RedirectToAction();
+            }
+
+            var path = Path.GetFullPath("wwwroot/images/blog");
+            if (post.ImageFile != null)
+            {
+                var file = post.ImageFile;
+                string randomString = Guid.NewGuid().ToString().Replace("-", "");
+                string fileExtention = Path.GetExtension(file.FileName);
+                string fileName = String.Join("", randomString, fileExtention);
+                string filePath = Path.Combine(path, fileName);
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    await file.CopyToAsync(stream);
+                    post.Image = fileName;
+                }
+            }
+
+            var oldPost = await _context.Blog
+                .FirstOrDefaultAsync(p => p.Id == post.Id);
+
+            if (oldPost != null)
+            {
+                if(oldPost.Image != null)
+                {
+                    var filePath = Path.Combine(path, oldPost.Image);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                oldPost.Id = post.Id;
+                oldPost.UserId = post.UserId;
+                oldPost.Title = post.Title;
+                oldPost.Content = post.Content;
+                oldPost.Date = post.Date;
+                oldPost.Image = post.Image;
+                _context.Attach(oldPost).State = EntityState.Modified;
+            }
+            else
+            {
+                post.Date = DateTime.Now;
+                await _context.AddAsync(post);
+            }
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Post", new { id = post.Id });
         }
     }
 }

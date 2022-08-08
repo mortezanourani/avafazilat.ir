@@ -1,8 +1,28 @@
-﻿@{
+﻿@model HomeViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h3 class="text-center text-bold rounded-lg border border-success p-3 mt-3">
+    آخرین اخبار آکادمی آوای فضیلت
+</h3>
+<div class="row d-md-flex flex-wrap">
+@foreach(var post in Model.News)
+{
+    <div class="col-md-4 p-3">
+        <div class="border border-success bg-white rounded-lg p-3">
+            <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
+            <h4 class="text-right mb-2">@post.Title</h4>
+            <p class="text-right">
+                @post.Content.Substring(0, 160)
+            </p>
+            @Html.ActionLink("متن کامل خبر", "Blog", "Home", new { id = post.Id }, new { Class = "small" })
+        </div>
+    </div>
+}
 </div>

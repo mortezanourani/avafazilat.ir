@@ -1,0 +1,81 @@
+﻿@using System.Globalization;
+@model IEnumerable<Fazilat.Models.BlogPost>
+@{
+    ViewData["Title"] = "مدیریت وبلاگ";
+
+    PersianCalendar pc = new PersianCalendar();
+}
+
+@Html.ActionLink("نوشتن خبر جدید", "Post", "Administrator", null, new { Class = "btn btn-outline-primary col-md-4 mb-3" })
+@if(Model.Count() < 1)
+{
+    <div class="small alert alert-info m-0 text-center">
+        هنوز هیچ خبری در خبرنامه وارد نشده است.
+    </div>
+}
+<div class="list-group p-0">
+@foreach(var post in Model)
+{
+    <div class="list-group-item d-flex justify-content-between border-info px-3">
+        <form id="blog-visibility-form" method="post">
+            <input type="hidden" name="Id" value="@post.Id" />
+            <button class="bg-white border-0 p-0">
+                @if(post.isVisible){
+                    <i class="p-1 fa fa-eye text-success"></i>
+                }
+                else
+                {
+                    <i class="p-1 fa fa-eye-slash text-danger"></i>
+                }
+            </button>
+        </form>
+        <div class="d-md-flex justify-content-between w-100 mx-2">
+            <div class="w-100">
+                @Html.DisplayFor(m => post.Title)
+            </div>
+            <div class="badge border border-dark text-dark pt-md-2">
+                @string.Format("{0} {1} {2} {3}",
+                    pc.GetDayOfWeek(post.Date).ToString()
+                        .Replace("Saturday", "شنبه")
+                        .Replace("Sunday", "یکشنبه")
+                        .Replace("Monday", "دوشنبه")
+                        .Replace("Tuesday", "سه شنبه")
+                        .Replace("Wednesday", "چهارشنبه")
+                        .Replace("Thursday", "پنج شنبه")
+                        .Replace("Friday", "جمعه"),
+                    pc.GetDayOfMonth(post.Date),
+                    pc.GetMonth(post.Date).ToString()
+                        .Replace("1", "فروردین")
+                        .Replace("2", "اردیبهشت")
+                        .Replace("3", "خرداد")
+                        .Replace("4", "تیر")
+                        .Replace("5", "مرداد")
+                        .Replace("6", "شهریور")
+                        .Replace("7", "مهر")
+                        .Replace("8", "آبان")
+                        .Replace("9", "آذر")
+                        .Replace("10", "دی")
+                        .Replace("11", "بهمن")
+                        .Replace("12", "اسفند"),
+                    pc.GetYear(post.Date))
+            </div>
+        </div>
+        <div class="d-flex">
+            @if(post.isVisible)
+            {
+                <a target="_blank" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-id="@post.Id">
+                    <i class="fa fa-external-link p-1 mx-1"></i>
+                </a>
+            }
+            <a asp-area="Account" asp-controller="Administrator" asp-action="Post" asp-route-id="@post.Id">
+                <i class="fa fa-pencil p-1 mx-1"></i>
+            </a>
+        </div>
+    </div>
+}
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -36,6 +36,10 @@
         <div>
             @ticket.Day
             <span class="badge badge-@ticketClass">@time</span>
+            @if(ticket.Meeting != null)
+            {
+                <span class="small border px-2 rounded-lg">@ticket.Meeting.Name</span>
+            }
         </div>
         <div>
             @if(ticket.Taken || ticket.Reserved)

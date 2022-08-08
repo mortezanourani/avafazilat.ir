@@ -1,0 +1,68 @@
+﻿@using System.Globalization;
+@model IEnumerable<BlogPost>
+@{
+    ViewData["Title"] = (Model.Count() == 1)
+        ? Model.FirstOrDefault().Title
+        : "خبرنامه";
+
+    var date = (Model.Count() == 1)
+        ? Model.FirstOrDefault().Date
+        : DateTime.Now;
+    PersianCalendar pc = new PersianCalendar();
+}
+
+<div class="text-center alert alert-fazilat rounded-lg box-shadow overflow-hidden">
+    <h3 class="my-2 text-bold">@ViewData["Title"]</h3>
+    <div class="badge border border-light text-light mt-2">
+        @string.Format("{0} {1} {2} {3}",
+            pc.GetDayOfWeek(date).ToString()
+                .Replace("Saturday", "شنبه")
+                .Replace("Sunday", "یکشنبه")
+                .Replace("Monday", "دوشنبه")
+                .Replace("Tuesday", "سه شنبه")
+                .Replace("Wednesday", "چهارشنبه")
+                .Replace("Thursday", "پنج شنبه")
+                .Replace("Friday", "جمعه"),
+            pc.GetDayOfMonth(date),
+            pc.GetMonth(date).ToString()
+                .Replace("1", "فروردین")
+                .Replace("2", "اردیبهشت")
+                .Replace("3", "خرداد")
+                .Replace("4", "تیر")
+                .Replace("5", "مرداد")
+                .Replace("6", "شهریور")
+                .Replace("7", "مهر")
+                .Replace("8", "آبان")
+                .Replace("9", "آذر")
+                .Replace("10", "دی")
+                .Replace("11", "بهمن")
+                .Replace("12", "اسفند"),
+            pc.GetYear(date))
+    </div>
+</div>
+<hr />
+@if(Model.Count() == 1)
+{
+    <div class="border border-success rounded-lg p-3 text-right about">
+        <img src="/images/blog/@Model.FirstOrDefault().Image" class="w-100 mb-3 border border-success rounded-lg" />
+        @Html.Raw(Model.FirstOrDefault().Content.Replace("\r\n", "<br>"))
+    </div>
+}
+else
+{
+    <div class="row d-md-flex flex-wrap">
+    @foreach(var post in Model)
+    {
+        <div class="col-md-4 p-3">
+            <div class="border border-success bg-white rounded-lg p-3">
+                <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
+                <h4 class="text-right mb-2">@post.Title</h4>
+                <p class="text-right">
+                    @post.Content.Substring(0, 160)
+                </p>
+                @Html.ActionLink("متن کامل خبر", "Blog", "Home", new { id = post.Id }, new { Class = "small" })
+            </div>
+        </div>
+    }
+    </div>
+}

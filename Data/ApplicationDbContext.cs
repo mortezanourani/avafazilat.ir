@@ -26,6 +26,7 @@ namespace Fazilat.Data
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
         public virtual DbSet<UserLimitation> UsersLimitation { get; set; }
+        public virtual DbSet<BlogPost> Blog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -388,6 +389,33 @@ namespace Fazilat.Data
             modelBuilder.Entity<UserLimitation>()
                 .Ignore(l => l.ExpirationYear)
                 .Ignore(l => l.ExpirationMonth);
+
+            modelBuilder.Entity<BlogPost>(b =>
+            {
+                b.HasKey(e => e.Id);
+
+                b.Property(e => e.Date)
+                    .HasColumnType("datetime")
+                    .IsRequired();
+
+                b.Property(e => e.Title)
+                    .HasColumnType("nvarchar(256)")
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                b.Property(e => e.Content)
+                    .HasColumnType("text")
+                    .IsRequired();
+
+                b.Property(e => e.isVisible)
+                    .HasColumnType("bit")
+                    .HasDefaultValue(false)
+                    .IsRequired();
+
+                b.ToTable("BlogPost");
+            });
+            modelBuilder.Entity<BlogPost>()
+                .Ignore(b => b.ImageFile);
         }
     }
 }

@@ -1,0 +1,49 @@
+﻿@model Fazilat.Models.BlogPost
+@{
+    ViewData["Title"] = "مدیریت خبرنامه";
+}
+
+<form id="post-form" method="post" enctype="multipart/form-data" class="bg-white border border-info rounded-lg p-3">
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.UserId)
+    @Html.HiddenFor(m => m.Date)
+    <div class="row d-md-flex justify-content-between">
+        @if(Model.Image != null)
+        {
+            <div class="col-md-12 mb-3">
+                <button onclick="doaction(this)" class="btn btn-outline-danger bg-white position-absolute">
+                    <span class="fa fa-remove text-danger"></span>
+                </button>
+                <img src="/images/blog/@Model.Image" class="w-100 rounded-lg" />
+                @Html.HiddenFor(m => m.Image)
+            </div>
+        }
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.Title, new { Class = "form-label mr-1"})
+            @Html.TextBoxFor(m => m.Title, new { Class = "form-control"})
+        </div>
+        <div class="col-md-6 mb-3">
+            @Html.LabelFor(m => m.Image, new { Class = "form-label mr-1"})
+            <span class="form-control">
+                @Html.EditorFor(m => m.ImageFile)
+            </span>
+        </div>
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Content, new { Class = "form-label mr-1" })
+        @Html.TextAreaFor(m => m.Content, 13, 0, new { Class = "form-control" })
+    </div>
+    <div class="text-left">
+        <button class="btn btn-primary">ذخیره خبر</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function doaction(e) {
+            var element = e.parentNode;
+            element.remove();
+        }
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
