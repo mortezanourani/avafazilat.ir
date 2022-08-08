@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20220806054427_CreateBlogTable.cs" />
-    <Compile Remove="Data\Migrations\20220806054427_CreateBlogTable.Designer.cs" />
+
   </ItemGroup>
 
   <ItemGroup>
