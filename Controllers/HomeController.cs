@@ -69,6 +69,16 @@ namespace Fazilat.Controllers
             return View(post);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Search(string title)
+        {
+            var posts = await _context.Blog
+                .Where(p => p.Title.Contains(title))
+                .ToListAsync();
+
+            return View(posts);
+        }
+
         public IActionResult AboutUs()
         {
             return View();
