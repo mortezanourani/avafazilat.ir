@@ -66,7 +66,7 @@ namespace Fazilat.Areas.Account.Controllers
                 .FirstOrDefaultAsync(u =>
                 u.PhoneNumber == loginModel.Username
                 || u.UserName == loginModel.Username);
-            if(user == null)
+            if (user == null)
             {
                 TempData["StatusMessage"] = "Error: کاربری با این مشخصات یافت نشد.";
                 return View(loginModel);
@@ -250,14 +250,14 @@ namespace Fazilat.Areas.Account.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await personalInfo.BirthCertificateFile.CopyToAsync(memoryStream);
-                    if(memoryStream.Length < 524288)
+                    if (memoryStream.Length < 1048576)
                     {
                         personalInfo.BirthCertificate = memoryStream.ToArray();
                     }
                     else
                     {
-                        TempData.Add("StatusMessage", "Error: حجم فایل انتخاب شده بیش از حد مجاز است.");
-                        return View();
+                        TempData.Add("StatusMessage", "Error: حجم فایل انتخاب شده بیش از یک مگابایت است.");
+                        return View(personalInfo);
                     }
                 }
             }
@@ -278,13 +278,12 @@ namespace Fazilat.Areas.Account.Controllers
                 _context.Attach(userInfo).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 TempData.Add("StatusMessage", "مشخصات فردی با موفقیت به روز رسانی شد.");
-                return RedirectToAction();
             }
             catch (Exception exception)
             {
                 TempData.Add("StatusMessage", exception.Message);
-                return RedirectToAction();
             }
+            return RedirectToAction();
         }
     }
 }
