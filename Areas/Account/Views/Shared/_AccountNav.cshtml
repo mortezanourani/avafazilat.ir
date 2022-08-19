@@ -9,13 +9,13 @@
         <li class="nav-item mb-2 border border-success rounded-lg">
             @Html.ActionLink("پنل کاربری", "Index", "Dashboard", new { @area = "Account" }, new {@class = "nav-link text-success" })
         </li>
-        @if(administrator && adviser)
+        @if (administrator && adviser)
         {
             <li class="nav-item mb-2 border border-success rounded-lg">
                 @Html.ActionLink("پنل کاربری مشاور", "Index", "Adviser", new { @area = "Account" }, new {@class = "nav-link text-success" })
             </li>
         }
-        @if(administrator)
+        @if (administrator)
         {
             <li class="nav-item mb-2 border border-danger rounded-lg">
                 @Html.ActionLink("اسلایدر", "Slide", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-danger" })
@@ -30,7 +30,7 @@
                 @Html.ActionLink("جلسات انتخاب رشته", "Ticket", "Administrator", new { @area = "Account" }, new {@class = "nav-link text-danger" })
             </li>
         }
-        @if(!adviser && !administrator)
+        @if (!adviser && !administrator)
         {
             @if (!parent)
             {

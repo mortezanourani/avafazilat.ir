@@ -14,36 +14,38 @@
 <table class="table">
     <thead>
         <tr>
-            <th class="col-md-3">
+            <th class="col-md-auto">
                 @Html.DisplayNameFor(model => model.Information.FullName)
             </th>
-            <th class="col-md-3">
+            <th class="col-md-auto">
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr class="alert-success">
-            <td>
-                @Html.DisplayFor(modelItem => item.Information.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                <a asp-action="RoleManager" asp-route-id="@item.Id">سطح دسترسی</a> |
-                <a asp-controller="Home" asp-action="PersonalInfo" asp-route-id="@item.Id">مشخصات فردی</a>
-                @if (!advisers.Contains(item.Id))
-                {
-                    @:|
-                    <a asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a> @:|
-                    <a asp-action="FinancialFile" asp-route-id="@item.Id">پرونده مالی</a> @:|
-                    <a class="text-info" asp-controller="Dashboard" asp-action="EducationalFile" asp-route-id="@item.Id">پرونده تحصیلی</a>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="alert-success">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Information.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <a class="text-danger" asp-action="ResetPassword" asp-route-id="@item.Id">حذف رمزعبور</a> |
+                    <a asp-action="RoleManager" asp-route-id="@item.Id">سطح دسترسی</a> |
+                    <a asp-controller="Home" asp-action="PersonalInfo" asp-route-id="@item.Id">مشخصات فردی</a>
+                    @if (advisers != null && !advisers.Contains(item.Id))
+                    {
+                        @:|
+                        <a asp-action="AssignAdviser" asp-route-id="@item.Id">تعیین مشاور</a> @:|
+                        <a asp-action="FinancialFile" asp-route-id="@item.Id">پرونده مالی</a> @:|
+                        <a class="text-info" asp-controller="Dashboard" asp-action="EducationalFile" asp-route-id="@item.Id">پرونده تحصیلی</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

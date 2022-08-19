@@ -74,7 +74,7 @@ namespace Fazilat.Areas.Account.Controllers
                     || u.Information.FullName == Search)
                 .ToList();
 
-            if(result.Count == 0)
+            if (result.Count == 0)
             {
                 TempData["StatusMessage"] = "Error: نتیجه ای یافت نشد.";
                 return RedirectToAction();
@@ -82,12 +82,50 @@ namespace Fazilat.Areas.Account.Controllers
             return View(result);
         }
 
+        public async Task<IActionResult> ResetPassword(string id)
+        {
+            var user = await _context.Users
+                .Include(u => u.Information)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ApplicationUser user)
+        {
+            var fullUser = await _userManager.FindByIdAsync(user.Id);
+            if (fullUser == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(fullUser);
+                await _userManager.ResetPasswordAsync(fullUser, passwordResetToken, "12345678");
+
+                TempData["StatusMessage"] = "کاربر مورد نظر از این پس با رمزعبور ۱۲۳۴۵۶۷۸ می تواند به پنل کاربری خود ورود نماید.";
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                TempData["StatusMessage"] = "خطایی رخ داده است لطفا مجددا تلاش نمایید.";
+                return RedirectToAction();
+            }
+
+        }
+
         public async Task<IActionResult> RoleManager(string id)
         {
             var user = await _context.Users
                 .Include(u => u.Information)
                 .FirstOrDefaultAsync(u => u.Id == id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -144,7 +182,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             var studentAdviser = await _context.Advisers
                 .FirstOrDefaultAsync(a => a.StudentId == id);
-            if(studentAdviser == null)
+            if (studentAdviser == null)
             {
                 studentAdviser = new Adviser()
                 {
@@ -177,7 +215,7 @@ namespace Fazilat.Areas.Account.Controllers
                 Student = student,
                 StudentId = student.Id,
                 Adviser = adviser,
-                AdviserId = (adviser == null) ? null: adviser.Id,
+                AdviserId = (adviser == null) ? null : adviser.Id,
                 Advisers = advisers
             };
 
@@ -189,7 +227,7 @@ namespace Fazilat.Areas.Account.Controllers
         {
             Adviser adviser = await _context.Advisers
                 .FirstOrDefaultAsync(a => a.Id == formCollection.Id);
-            if(adviser == null)
+            if (adviser == null)
             {
                 adviser = new Adviser()
                 {
@@ -233,7 +271,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> FinancialFile(string id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("FinancialFiles");
             }
@@ -297,7 +335,7 @@ namespace Fazilat.Areas.Account.Controllers
         {
             PersianCalendar persianCalendar = new PersianCalendar();
             formCollection.ExpirationMonth++;
-            if(formCollection.ExpirationMonth > 12)
+            if (formCollection.ExpirationMonth > 12)
             {
                 formCollection.ExpirationMonth = 1;
                 formCollection.ExpirationYear++;
@@ -313,7 +351,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             var isExits = _context.UsersLimitation
                 .Count(l => l.UserId == formCollection.UserId);
-            if(isExits > 0)
+            if (isExits > 0)
             {
                 _context.Attach(expiration).State = EntityState.Modified;
             }
@@ -442,7 +480,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Slide(string id)
         {
-            if(id != null)
+            if (id != null)
             {
                 var slide = await _context.Slides
                     .FirstOrDefaultAsync(s => s.Id == id);
@@ -506,7 +544,7 @@ namespace Fazilat.Areas.Account.Controllers
         {
             var post = await _context.Blog
                 .FirstOrDefaultAsync(p => p.Id == id);
-            if(post != null)
+            if (post != null)
             {
                 post.isVisible = !(post.isVisible);
                 _context.Attach(post).State = EntityState.Modified;
@@ -536,7 +574,7 @@ namespace Fazilat.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(BlogPost post)
         {
-            if(post == null)
+            if (post == null)
             {
                 return RedirectToAction();
             }
@@ -561,7 +599,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             if (oldPost != null)
             {
-                if(oldPost.Image != null)
+                if (oldPost.Image != null)
                 {
                     var filePath = Path.Combine(path, oldPost.Image);
                     if (System.IO.File.Exists(filePath))
