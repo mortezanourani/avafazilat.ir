@@ -7,7 +7,7 @@ namespace Fazilat.Areas.Account.Models
     {
         [Required(ErrorMessage = "وارد کردن کد ملی یا شماره همراه الزامی است.")]
         [Display(Name = "کد ملی یا شماره همراه")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا نام کاربری را به شکل درستی وارد نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا نام کاربری را به  صورت درست و با اعداد انگلیسی وارد نمایید.")]
         [StringLength(11, ErrorMessage = "تعداد ارقام وارد شده غیر مجاز است.", MinimumLength = 10)]
         public string Username { get; set; }
 

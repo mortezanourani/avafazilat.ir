@@ -15,9 +15,9 @@ namespace Fazilat.Models
 
         [Required(ErrorMessage = "این مورد الزامی است.")]
         [Display(Name = "شماره موبایل")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "تنها می توانید از اعداد استفاده نمایید.")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا از اعداد انگلیسی استفاده نمایید.")]
         [StringLength(11, ErrorMessage = "شماره تماس را به صورت 11 رقمی وارد نمایید.", MinimumLength = 11)]
-        [Range(9000000000, 9399999999, ErrorMessage = "شماره تماس وارد شده نا معتبر می باشد.")]
+        [Range(9000000000, 9999999999, ErrorMessage = "شماره تماس وارد شده نا معتبر می باشد.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "این مورد الزامی است.")]

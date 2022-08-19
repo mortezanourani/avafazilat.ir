@@ -107,7 +107,7 @@ namespace Fazilat.Areas.Account.Controllers
                 .FirstOrDefaultAsync(u => u.UserName == registerModel.NationalCode);
             var userByPhoneNumber = await _context.Users
                 .FirstOrDefaultAsync(u => u.PhoneNumber == registerModel.PhoneNumber);
-            if(userByUserName != null || userByPhoneNumber != null)
+            if (userByUserName != null || userByPhoneNumber != null)
             {
                 TempData["StatusMessage"] = "Error: کاربری با این مشخصات در سامانه حاضر است.";
                 return View(registerModel);
@@ -126,11 +126,18 @@ namespace Fazilat.Areas.Account.Controllers
                     await _userManager.AddToRoleAsync(user, role.Name);
                 }
 
+                UserInformation userInfo = new UserInformation();
+                userInfo.UserId = user.Id;
+                userInfo.FirstName = registerModel.FirstName;
+                userInfo.LastName = registerModel.LastName;
+                await _context.AddAsync(userInfo);
+                await _context.SaveChangesAsync();
+
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("PersonalInfo", "Home");
             }
 
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
@@ -192,13 +199,6 @@ namespace Fazilat.Areas.Account.Controllers
 
             var userInfo = await _context.Information
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
-            if (userInfo == null)
-            {
-                userInfo = new UserInformation();
-                userInfo.UserId = user.Id;
-                await _context.AddAsync(userInfo);
-                await _context.SaveChangesAsync();
-            }
 
             PersianCalendar persianCalendar = new PersianCalendar();
             DateTime birthDate = (userInfo.BirthDate != null)
