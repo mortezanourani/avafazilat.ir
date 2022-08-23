@@ -599,7 +599,7 @@ namespace Fazilat.Areas.Account.Controllers
 
             if (oldPost != null)
             {
-                if (oldPost.Image != null)
+                if (oldPost.Image != null && post.ImageFile != null)
                 {
                     var filePath = Path.Combine(path, oldPost.Image);
                     if (System.IO.File.Exists(filePath))
