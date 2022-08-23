@@ -113,7 +113,16 @@ namespace Fazilat.Areas.Account.Controllers
                 Id = Guid.NewGuid().ToString(),
                 SenderId = user.Id,
                 ReceiverId = formCollection.ReceiverId,
-                Text = formCollection.Text,
+                Text = formCollection.Text
+                    .Replace("۱", "1")
+                    .Replace("۲", "2")
+                    .Replace("۳", "3")
+                    .Replace("۴", "4")
+                    .Replace("۵", "5")
+                    .Replace("۶", "6")
+                    .Replace("۷", "7")
+                    .Replace("۸", "8")
+                    .Replace("۹", "9"),
                 Created = DateTime.Now,
             };
             await _context.Messages.AddAsync(message);
@@ -135,6 +144,17 @@ namespace Fazilat.Areas.Account.Controllers
         public async Task<IActionResult> Curricula(CurriculumModel formCollection)
         {
             formCollection.Id = Guid.NewGuid().ToString();
+            formCollection.Description = 
+                formCollection.Description
+                    .Replace("۱", "1")
+                    .Replace("۲", "2")
+                    .Replace("۳", "3")
+                    .Replace("۴", "4")
+                    .Replace("۵", "5")
+                    .Replace("۶", "6")
+                    .Replace("۷", "7")
+                    .Replace("۸", "8")
+                    .Replace("۹", "9");
             PersianCalendar persianCalendar = new PersianCalendar();
             formCollection.StartDate = persianCalendar.ToDateTime(
                 formCollection.Year,
@@ -224,7 +244,16 @@ namespace Fazilat.Areas.Account.Controllers
                     Id = Guid.NewGuid().ToString(),
                     CurriculumId = formCollection.Id,
                     Title = formCollection.Title,
-                    Topics = formCollection.Topics,
+                    Topics = formCollection.Topics
+                        .Replace("۱", "1")
+                        .Replace("۲", "2")
+                        .Replace("۳", "3")
+                        .Replace("۴", "4")
+                        .Replace("۵", "5")
+                        .Replace("۶", "6")
+                        .Replace("۷", "7")
+                        .Replace("۸", "8")
+                        .Replace("۹", "9"),
                     Accomplished = false,
                 };
                 await _context.AddAsync(course);

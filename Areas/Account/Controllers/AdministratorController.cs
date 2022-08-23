@@ -617,7 +617,16 @@ namespace Fazilat.Areas.Account.Controllers
                 oldPost.Id = post.Id;
                 oldPost.UserId = post.UserId;
                 oldPost.Title = post.Title;
-                oldPost.Content = post.Content;
+                oldPost.Content = post.Content
+                    .Replace("۱", "1")
+                    .Replace("۲", "2")
+                    .Replace("۳", "3")
+                    .Replace("۴", "4")
+                    .Replace("۵", "5")
+                    .Replace("۶", "6")
+                    .Replace("۷", "7")
+                    .Replace("۸", "8")
+                    .Replace("۹", "9");
                 oldPost.Date = post.Date;
                 oldPost.Image = post.Image;
                 _context.Attach(oldPost).State = EntityState.Modified;
