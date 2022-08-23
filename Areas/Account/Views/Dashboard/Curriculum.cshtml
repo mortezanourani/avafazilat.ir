@@ -3,6 +3,9 @@
     ViewData["Title"] = Model.Title;
 }
 
+<div class="alert alert-info">
+    @Html.Raw(Model.Description.Replace(Environment.NewLine, "<br />"))
+</div>
 <div class="list-group p-0">
 @foreach(var course in Model.Courses)
 {

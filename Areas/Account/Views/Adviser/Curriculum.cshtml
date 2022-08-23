@@ -4,12 +4,17 @@
     ViewData["Title"] = Model.Title;
 }
 
-<div class="form-floating d-flex justify-content-between border-bottom border-success pb-3 mb-3">
-    <a asp-action="curricula" asp-route-id="@Model.UserId" class="btn btn-outline-info">برنامه های مطالعاتی داوطلب</a>
-    <form id="remove-curriculum-form" method="post">
-        <input id="Id" name="Id" type="hidden" value="@Model.Id" />
-        <button type="submit" class="btn btn btn-danger">حذف برنامه مطالعه</button>
-    </form>
+<div class="form-floating d-flex justify-content-between flex-column border-bottom border-success pb-3 mb-3">
+    <div class="alert alert-info">
+        @Html.Raw(Model.Description.Replace(Environment.NewLine, "<br />"))
+    </div>
+    <div class="d-flex justify-content-between flex-row">
+        <a asp-action="curricula" asp-route-id="@Model.UserId" class="btn btn-outline-info">برنامه های مطالعاتی داوطلب</a>
+        <form id="remove-curriculum-form" method="post">
+            <input id="Id" name="Id" type="hidden" value="@Model.Id" />
+            <button type="submit" class="btn btn btn-danger">حذف برنامه مطالعه</button>
+        </form>
+    </div>
 </div>
 <div class="list-group">
     <form id="add-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item-info d-flex flex-column px-3">
