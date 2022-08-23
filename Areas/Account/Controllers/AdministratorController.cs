@@ -509,6 +509,12 @@ namespace Fazilat.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Slide(SlideModel slideForm)
         {
+            if(slideForm.ImageFile == null)
+            {
+                TempData["StatusMessage"] = "Error: بارگزاری عکس برای افزودن اسلاید الزامی می باشد.";
+                return RedirectToAction();
+            }
+
             var id = Guid.NewGuid().ToString();
 
             var path = Path.GetFullPath("wwwroot/images/slide");
