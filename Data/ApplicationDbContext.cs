@@ -425,5 +425,6 @@ namespace Fazilat.Data
             modelBuilder.Entity<BlogPost>()
                 .Ignore(b => b.ImageFile);
         }
+        public DbSet<Fazilat.Models.Category> Category { get; set; }
     }
 }

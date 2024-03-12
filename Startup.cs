@@ -32,6 +32,10 @@ namespace Fazilat
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<FazilatContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.Password.RequireDigit = false;
@@ -98,9 +102,14 @@ namespace Fazilat
                     defaults: new { controller = "Adviser" });
 
                 endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{action=Index}/{id?}",
                     defaults: new { controller = "Home" });
+
                 endpoints.MapRazorPages();
             });
         }
