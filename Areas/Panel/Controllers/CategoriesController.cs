@@ -35,6 +35,7 @@ namespace Fazilat.Areas.Panel.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.Media)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {

@@ -1,37 +1,30 @@
 ﻿@model Fazilat.Models.Category
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "تصاویر آلبوم " + Model.PersianName;
     Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NormalizedName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NormalizedName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PersianName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PersianName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-controller="Media" asp-action="Add" class="btn btn-success">افزودن تصویر</a>
+</p>
+<table class="list-group">
+    <tbody>
+        @foreach (var item in Model.Media)
+        {
+            <tr class="list-group-item d-flex justify-content-between align-items-end">
+                <td class="d-flex flex-column">
+                    <h6 class="fw-bold text-primary m-0">@Html.DisplayFor(modelItem => item.FileName)</h6>
+                    <small class="text-muted">@Html.DisplayFor(modelItem => item.Uploaded)</small>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.PersianName)
+                </td>
+                <td class="text-left">
+                    <a asp-controller="Media" asp-action="Edit" asp-route-id="@item.Id"><small>تغییر آلبوم</small></a> |
+                    <a asp-controller="Media" asp-action="Delete" asp-route-id="@item.Id"><small class="text-danger">حذف</small></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
