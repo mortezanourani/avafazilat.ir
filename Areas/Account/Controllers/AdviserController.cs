@@ -18,11 +18,11 @@ namespace Fazilat.Areas.Account.Controllers
     public class AdviserController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AdviserController(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;

@@ -17,25 +17,25 @@ namespace Fazilat.Areas.Account.Controllers
     [Area("Account")]
     public class HomeController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ApplicationDbContext _context;
 
         public HomeController(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IUserStore<ApplicationUser> userStore,
+            IUserStore<IdentityUser> userStore,
             ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
-            _emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
+            _emailStore = (IUserEmailStore<IdentityUser>)_userStore;
             _context = context;
         }
 
