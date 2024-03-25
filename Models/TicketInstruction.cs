@@ -1,21 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
-#nullable disable
-namespace Fazilat.Models
+namespace Fazilat.Models;
+
+public partial class TicketInstruction
 {
-    public class TicketInstruction
-    {
-        public string Id { get; set; }
-        [Required]
-        [Display(Name = "سامانه نوبت دهی فعال بوده و نمایش داده شود؟")]
-        public bool IsActive { get; set; }
+    public string Id { get; set; }
 
-        [Required]
-        [Display(Name = "عنوان موضوع سامانه نوبت دهی")]
-        public string Title { get; set; }
+    public bool IsActive { get; set; }
 
-        [Display(Name = "محتوای دستورالعمل درخواست نوبت جلسه مشاوره")]
-        public string Content { get; set; }
+    public string Title { get; set; }
 
-    }
+    public string Content { get; set; }
 }

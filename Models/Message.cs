@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Linq;
-using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
-#nullable disable
-namespace Fazilat.Models
+namespace Fazilat.Models;
+
+public partial class Message
 {
-    public class Message
-    {
-        public string Id { get; set; }
-        public string SenderId { get; set; }
-        public string ReceiverId { get; set; }
-        public string Text { get; set; }
-        public DateTime Created { get; set; }
-        public virtual ApplicationUser Sender { get; set; }
-        public virtual ApplicationUser Receiver { get; set; }
-    }
+    public string Id { get; set; }
+
+    public string SenderId { get; set; }
+
+    public string ReceiverId { get; set; }
+
+    public string Text { get; set; }
+
+    public DateTime Created { get; set; }
+
+    public virtual User Receiver { get; set; }
+
+    public virtual User Sender { get; set; }
 }

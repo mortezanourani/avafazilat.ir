@@ -1,29 +1,21 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
-#nullable disable
-namespace Fazilat.Models
+namespace Fazilat.Models;
+
+public partial class UserInformation
 {
-    public class UserInformation
-    {
-        public string UserId { get; set; }
-        [Display(Name = "نام")]
-        public string FirstName { get; set; }
-        [Display(Name = "نام خانوادگی")]
-        public string LastName { get; set; }
-        [Display(Name = "تاریخ تولد")]
-        public DateTime? BirthDate { get; set; }
-        [Display(Name = "استان محل سکونت")]
-        public string Province { get; set; }
-        public byte[] BirthCertificate { get; set; }
-        [Display(Name = "نام و نام خانوادگی")]
-        public virtual string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-        public virtual ApplicationUser User { get; set; }
-    }
+    public string UserId { get; set; }
+
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public DateOnly? BirthDate { get; set; }
+
+    public string Province { get; set; }
+
+    public byte[] BirthCertificate { get; set; }
+
+    public virtual User User { get; set; }
 }
