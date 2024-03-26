@@ -20,7 +20,7 @@
         <form id="blog-visibility-form" method="post">
             <input type="hidden" name="Id" value="@post.Id" />
             <button class="bg-white border-0 p-0">
-                @if(post.isVisible){
+                @if(post.IsVisible){
                     <i class="p-1 fa fa-eye text-success"></i>
                 }
                 else
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="d-flex">
-            @if(post.isVisible)
+            @if(post.IsVisible)
             {
                 <a target="_blank" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-id="@post.Id">
                     <i class="fa fa-external-link p-1 mx-1"></i>

@@ -10,7 +10,7 @@
         <a  class="nav-link text-dark" asp-area="Account" asp-controller="Dashboard" asp-action="Index" title="Profile">پنل کاربری</a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Account" asp-controller="Home" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form  class="form-inline" asp-area="" asp-controller="Account" asp-action="SignOut" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-danger">خروج</button>
         </form>
     </li>
@@ -18,10 +18,10 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Account" asp-controller="Home" asp-action="Register">ثبت نام</a>
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="SignUp">ثبت نام</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Account" asp-controller="Home" asp-action="Login">ورود</a>
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="SignIn">ورود</a>
     </li>
 }
 </ul>

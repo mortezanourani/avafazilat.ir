@@ -6,7 +6,7 @@ using Fazilat.Models;
 #pragma warning disable
 namespace Fazilat.Areas.Account.Models
 {
-    public class EducationalFileModel : EducationalFile
+    public class EducationalFileModel : UserEducationalFile
     {
         [Display(Name = "مقطع تحصیلی")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "لطفا از اعداد انگلیسی استفاده نمایید.")]

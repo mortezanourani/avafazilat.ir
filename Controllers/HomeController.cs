@@ -17,11 +17,11 @@ namespace Fazilat.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly FazilatContext _context;
 
         public HomeController(
             ILogger<HomeController> logger,
-            ApplicationDbContext context)
+            FazilatContext context)
         {
             _logger = logger;
             _context = context;
@@ -36,8 +36,8 @@ namespace Fazilat.Controllers
                 return RedirectToAction("Reserve");
             }
 
-            var news = await _context.Blog
-                .Where(p => p.isVisible == true)
+            var news = await _context.BlogPosts
+                .Where(p => p.IsVisible == true)
                 .OrderByDescending(p => p.Date)
                 .ToListAsync();
 
@@ -53,16 +53,16 @@ namespace Fazilat.Controllers
         {
             if(id == null)
             {
-                var posts = await _context.Blog
-                    .Where(p => p.isVisible == true)
+                var posts = await _context.BlogPosts
+                    .Where(p => p.IsVisible == true)
                     .OrderByDescending(p => p.Date)
                     .ToListAsync();
 
                 return View(posts);
             }
 
-            var post = await _context.Blog
-                .Where(p => p.isVisible == true)
+            var post = await _context.BlogPosts
+                .Where(p => p.IsVisible == true)
                 .Where(p => p.Id == id)
                 .ToListAsync();
 
@@ -72,7 +72,7 @@ namespace Fazilat.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(string title)
         {
-            var posts = await _context.Blog
+            var posts = await _context.BlogPosts
                 .Where(p => p.Title.Contains(title))
                 .ToListAsync();
 
@@ -98,7 +98,7 @@ namespace Fazilat.Controllers
                 .OrderBy(t => Regex.Match(t.Day, @"\d+").Value)
                 .ToList();
 
-            var instruction = await _context.TicketInstruction
+            var instruction = await _context.TicketInstructions
                 .FirstOrDefaultAsync();
 
             var model = new ReserveViewModel()

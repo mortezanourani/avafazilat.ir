@@ -18,11 +18,12 @@
         }
         @foreach (var curriculum in Model)
         {
+            var curriculumStartDate = curriculum.StartDate.ToDateTime(TimeOnly.MinValue);
             PersianCalendar persianCalendar = new PersianCalendar();
             var startDate = String.Format("{0}/{1}/{2}",
-                persianCalendar.GetYear(curriculum.StartDate).ToString(),
-                persianCalendar.GetMonth(curriculum.StartDate).ToString(),
-                persianCalendar.GetDayOfMonth(curriculum.StartDate).ToString());
+                persianCalendar.GetYear(curriculumStartDate).ToString(),
+                persianCalendar.GetMonth(curriculumStartDate).ToString(),
+                persianCalendar.GetDayOfMonth(curriculumStartDate).ToString());
             <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" asp-area="Account" asp-controller="Dashboard" asp-action="Curriculum" asp-route-id="@curriculum.Id">
                 @curriculum.Title
                 <span class="badge badge-dark">@startDate</span>

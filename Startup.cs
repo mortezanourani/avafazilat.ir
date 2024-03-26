@@ -28,9 +28,6 @@ namespace Fazilat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<FazilatContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -78,40 +75,15 @@ namespace Fazilat
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapAreaControllerRoute(
-                    name: "account",
-                    areaName: "Account",
-                    pattern: "Account/{action=Index}/{id?}",
-                    defaults: new { controller = "Home" });
-
-                endpoints.MapAreaControllerRoute(
-                    name: "dashboard",
-                    areaName: "Account",
-                    pattern: "Dashboard/{action=Index}/{id?}",
-                    defaults: new { controller = "Dashboard" });
-
-                endpoints.MapAreaControllerRoute(
-                    name: "administrator",
-                    areaName: "Account",
-                    pattern: "Administrator/{action=Index}/{id?}",
-                    defaults: new { controller = "Administrator" });
-
-                endpoints.MapAreaControllerRoute(
-                    name: "adviser",
-                    areaName: "Account",
-                    pattern: "Adviser/{action=Index}/{id?}",
-                    defaults: new { controller = "Adviser" });
-
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{action=Index}/{id?}",
-                    defaults: new { controller = "Home" });
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
             });
         }
     }

@@ -19,11 +19,11 @@ namespace Fazilat.Areas.Account.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly FazilatContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
         public DashboardController(
-            ApplicationDbContext context,
+            FazilatContext context,
             UserManager<IdentityUser> userManager)
         {
             _context = context;
@@ -44,9 +44,9 @@ namespace Fazilat.Areas.Account.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            var limitation = await _context.UsersLimitation
+            var limitation = await _context.UserLimitations
                 .FirstOrDefaultAsync(l => l.UserId == user.Id);
-            if(limitation == null || (limitation.Expiration < DateTime.Now))
+            if(limitation == null || (limitation.Expiration < DateOnly.FromDateTime(DateTime.Today)))
             {
                 TempData["LimitationMessage"] = "به دلیل اتمام دوره اعتبار شما، دسترسی به این قسمت امکان پذیر نمی باشد.<br>" +
                     "لطفا پس از پرداخت مبلغ شهریه، نسبت به ثبت رسید آن در قسمت پرونده مالی اقدام نمایید.<br>" +
@@ -55,9 +55,10 @@ namespace Fazilat.Areas.Account.Controllers
             }
             else
             {
+                var limitationExpiration = limitation.Expiration.ToDateTime(TimeOnly.MinValue);
                 PersianCalendar persianCalendar = new PersianCalendar();
-                var year = persianCalendar.GetYear(limitation.Expiration);
-                var month = persianCalendar.GetMonth(limitation.Expiration);
+                var year = persianCalendar.GetYear(limitationExpiration);
+                var month = persianCalendar.GetMonth(limitationExpiration);
                 year = month == 1 ? --year : year;
                 month = month == 1 ? 12 : --month;
                 TempData["LimitationMessage"] = string.Format(
@@ -76,7 +77,7 @@ namespace Fazilat.Areas.Account.Controllers
                             .Replace("10", "دی")
                             .Replace("11", "بهمن")
                             .Replace("12", "اسفند"),
-                        persianCalendar.GetDayOfMonth(limitation.Expiration)
+                        persianCalendar.GetDayOfMonth(limitationExpiration)
                     );
             }
 
@@ -88,20 +89,19 @@ namespace Fazilat.Areas.Account.Controllers
             return View(curricula);
         }
 
-        public async Task<IActionResult> EducationalFile(string id)
+        public async Task<IActionResult> UserEducationalFile(string id)
         {
             var user = await _userManager.GetUserAsync(User);
             if (!string.IsNullOrEmpty(id))
             {
-                user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Id == id);
+                user = await _userManager.FindByIdAsync(id);
             }
 
-            var educationalFile = await _context.EducationalFiles
+            var educationalFile = await _context.UserEducationalFiles
                 .FirstOrDefaultAsync(ef => ef.UserId == user.Id);
             if(educationalFile == null)
             {
-                educationalFile = new EducationalFile();
+                educationalFile = new UserEducationalFile();
                 educationalFile.UserId = user.Id;
                 educationalFile.Grade = "10";
                 educationalFile.LastAvg = "10.00";
@@ -131,7 +131,7 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Id == formCollection.UserId);
 
-            var educationalFile = new EducationalFile();
+            var educationalFile = new UserEducationalFile();
             educationalFile.UserId = user.Id;
             educationalFile.Grade = formCollection.Grade;
             educationalFile.LastAvg = formCollection.LastAvg;

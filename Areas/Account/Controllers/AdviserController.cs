@@ -17,11 +17,11 @@ namespace Fazilat.Areas.Account.Controllers
     [Authorize(Roles = "Adviser")]
     public class AdviserController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly FazilatContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
         public AdviserController(
-            ApplicationDbContext context,
+            FazilatContext context,
             UserManager<IdentityUser> userManager)
         {
             _context = context;
@@ -39,7 +39,7 @@ namespace Fazilat.Areas.Account.Controllers
                 .ToListAsync();
 
             var students = await _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .Where(u => studentsId.Contains(u.Id))
                 .ToListAsync();
 
@@ -63,13 +63,13 @@ namespace Fazilat.Areas.Account.Controllers
                 .ToListAsync();
 
             var result = _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .AsEnumerable()
                 .Where(u => u.UserName == Search
                     || u.PhoneNumber == Search
-                    || u.Information.FirstName == Search
-                    || u.Information.LastName == Search
-                    || u.Information.FullName == Search)
+                    || u.UserInformation.FirstName == Search
+                    || u.UserInformation.LastName == Search
+                    || u.UserInformation.FullName == Search)
                 .Where(u => adviserStudents.Contains(u.Id))
                 .ToList();
 
@@ -156,11 +156,11 @@ namespace Fazilat.Areas.Account.Controllers
                     .Replace("۸", "8")
                     .Replace("۹", "9");
             PersianCalendar persianCalendar = new PersianCalendar();
-            formCollection.StartDate = persianCalendar.ToDateTime(
+            formCollection.StartDate = DateOnly.FromDateTime(persianCalendar.ToDateTime(
                 formCollection.Year,
                 formCollection.Month,
                 formCollection.Day,
-                0, 0, 0, 0);
+                0, 0, 0, 0));
             try
             {
                 await _context.AddAsync(formCollection);
@@ -186,10 +186,11 @@ namespace Fazilat.Areas.Account.Controllers
                 return RedirectToAction("Curricula");
             }
 
+            var curriculumStartDate = curriculum.StartDate.ToDateTime(TimeOnly.MinValue);
             PersianCalendar persianCalendar = new PersianCalendar();
-            var startDateDay = persianCalendar.GetDayOfMonth(curriculum.StartDate);
-            var startDateMonth = persianCalendar.GetMonth(curriculum.StartDate);
-            var startDateYear = persianCalendar.GetYear(curriculum.StartDate);
+            var startDateDay = persianCalendar.GetDayOfMonth(curriculumStartDate);
+            var startDateMonth = persianCalendar.GetMonth(curriculumStartDate);
+            var startDateYear = persianCalendar.GetYear(curriculumStartDate);
             var curriculumModel = new CurriculumModel()
             {
                 Id = curriculum.Id,

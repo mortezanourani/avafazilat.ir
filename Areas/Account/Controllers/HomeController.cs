@@ -22,14 +22,14 @@ namespace Fazilat.Areas.Account.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
-        private readonly ApplicationDbContext _context;
+        private readonly FazilatContext _context;
 
         public HomeController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<IdentityUser> userStore,
-            ApplicationDbContext context)
+            FazilatContext context)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -113,7 +113,7 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(registerModel);
             }
 
-            var user = new ApplicationUser();
+            var user = new User();
             await _userManager.SetUserNameAsync(user, registerModel.NationalCode);
             await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
 
@@ -193,16 +193,15 @@ namespace Fazilat.Areas.Account.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (!string.IsNullOrEmpty(id))
             {
-                user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Id == id);
+                user = await _userManager.FindByIdAsync(id);
             }
 
-            var userInfo = await _context.Information
+            var userInfo = await _context.UserInformations
                 .FirstOrDefaultAsync(i => i.UserId == user.Id);
 
             PersianCalendar persianCalendar = new PersianCalendar();
             DateTime birthDate = (userInfo.BirthDate != null)
-                ? (DateTime)userInfo.BirthDate
+                ? userInfo.BirthDate.Value.ToDateTime(TimeOnly.MinValue)
                 : DateTime.Now;
             var birthDateDay = persianCalendar.GetDayOfMonth(birthDate);
             var birthDateMonth = persianCalendar.GetMonth(birthDate);
@@ -235,15 +234,14 @@ namespace Fazilat.Areas.Account.Controllers
                 return View(personalInfo);
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Id == personalInfo.UserId);
+            var user = await _userManager.FindByIdAsync(personalInfo.UserId);
 
             PersianCalendar persianCalendar = new PersianCalendar();
-            var birthDate = persianCalendar.ToDateTime(
+            var birthDate = DateOnly.FromDateTime(persianCalendar.ToDateTime(
                 personalInfo.Year,
                 personalInfo.Month,
                 personalInfo.Day,
-                0, 0, 0, 0);
+                0, 0, 0, 0));
 
             if (personalInfo.BirthCertificateFile != null)
             {

@@ -196,6 +196,7 @@ public partial class FazilatContext : DbContext
                 .IsRequired()
                 .HasMaxLength(256);
         });
+        modelBuilder.Entity<BlogPost>(entity => entity.Ignore("ImageFile"));
 
         modelBuilder.Entity<Category>(entity =>
         {
@@ -269,6 +270,7 @@ public partial class FazilatContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.FinancialRecords).HasForeignKey(d => d.UserId);
         });
+        modelBuilder.Entity<FinancialRecord>(entity => entity.Ignore("PaymentReceiptFile"));
 
         modelBuilder.Entity<Media>(entity =>
         {
@@ -304,6 +306,7 @@ public partial class FazilatContext : DbContext
 
             entity.HasOne(d => d.Ticket).WithOne(p => p.Meeting).HasForeignKey<Meeting>(d => d.TicketId);
         });
+        modelBuilder.Entity<Meeting>(entity => entity.Ignore("PaymentFile"));
 
         modelBuilder.Entity<Message>(entity =>
         {

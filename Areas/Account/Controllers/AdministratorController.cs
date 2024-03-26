@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Fazilat.Data;
 using Fazilat.Models;
 using Fazilat.Areas.Account.Models;
+using System.Security.Claims;
 
 namespace Fazilat.Areas.Account.Controllers
 {
@@ -20,11 +21,11 @@ namespace Fazilat.Areas.Account.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdministratorController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly FazilatContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         public AdministratorController(
-            ApplicationDbContext context,
+            FazilatContext context,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
@@ -37,25 +38,18 @@ namespace Fazilat.Areas.Account.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var users = await _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .Where(u => u.Id != userId)
-                .OrderBy(u => u.Information.LastName)
+                .OrderBy(u => u.UserInformation.LastName)
                 .ToListAsync();
-
             if (users == null)
             {
                 TempData["StatusMessage"] = "Error: هیچ کاربری در سامانه ثبت نام نکرده است.";
                 return View();
             }
 
-            var adviserRoleId = _roleManager.Roles
-                .Where(r => r.NormalizedName == "ADVISER")
-                .Select(r => r.Id)
-                .FirstOrDefault();
-            var advisers = await _context.UserRoles
-                .Where(ur => ur.RoleId == adviserRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
+            var _advisers = await _userManager.GetUsersInRoleAsync("Adviser");
+            var advisers = _advisers.Select(a => a.Id).ToList();
             TempData["Advisers"] = advisers;
 
             return View(users);
@@ -65,13 +59,13 @@ namespace Fazilat.Areas.Account.Controllers
         public ActionResult Index(string Search)
         {
             var result = _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .AsEnumerable()
                 .Where(u => u.UserName == Search
                     || u.PhoneNumber == Search
-                    || u.Information.FirstName == Search
-                    || u.Information.LastName == Search
-                    || u.Information.FullName == Search)
+                    || u.UserInformation.FirstName == Search
+                    || u.UserInformation.LastName == Search
+                    || u.UserInformation.FullName == Search)
                 .ToList();
 
             if (result.Count == 0)
@@ -85,7 +79,7 @@ namespace Fazilat.Areas.Account.Controllers
         public async Task<IActionResult> ResetPassword(string id)
         {
             var user = await _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
             {
@@ -96,7 +90,7 @@ namespace Fazilat.Areas.Account.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ResetPassword(ApplicationUser user)
+        public async Task<IActionResult> ResetPassword(User user)
         {
             var fullUser = await _userManager.FindByIdAsync(user.Id);
             if (fullUser == null)
@@ -122,9 +116,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> RoleManager(string id)
         {
-            var user = await _context.Users
-                .Include(u => u.Information)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -150,10 +142,8 @@ namespace Fazilat.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> RoleManager(RoleManagerModel formCollection)
         {
-            var user = await _context.Users
-                .Include(u => u.Information)
-                .FirstOrDefaultAsync(u => u.Id == formCollection.User.Id);
-            if (user == null)
+            var user = await _userManager.FindByIdAsync(formCollection.User.Id);
+            if(user == null)
             {
                 TempData["StatusMessage"] = "کاربری با این مشخصات وجود ندارد.";
                 return RedirectToAction("Index");
@@ -161,9 +151,12 @@ namespace Fazilat.Areas.Account.Controllers
 
             try
             {
+                var _user = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+                var fullName = _user.UserInformation.FullName;
+
                 await _userManager.AddToRoleAsync(user, formCollection.Role);
                 TempData["StatusMessage"] = string.Format("{0} با موفقیت به سطح دسترسی {1} اضافه شد.",
-                    user.Information.FullName, formCollection.Role);
+                    fullName, formCollection.Role);
             }
             catch (Exception exception)
             {
@@ -176,9 +169,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> AssignAdviser(string id)
         {
-            var student = await _context.Users
-                .Include(u => u.Information)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            var student = await _userManager.FindByIdAsync(id);
 
             var studentAdviser = await _context.Advisers
                 .FirstOrDefaultAsync(a => a.StudentId == id);
@@ -192,22 +183,9 @@ namespace Fazilat.Areas.Account.Controllers
                 };
             }
 
-            var adviser = await _context.Users
-                .Include(a => a.Information)
-                .FirstOrDefaultAsync(a => a.Id == studentAdviser.AdviserId);
+            var adviser = await _userManager.FindByIdAsync(studentAdviser.AdviserId);
 
-            var adviserRole = await _context.Roles
-                .FirstOrDefaultAsync(r => r.Name == "Adviser");
-            var adviserRoleId = adviserRole.Id;
-            var advisersList = await _context.UserRoles
-                .Where(ur => ur.RoleId == adviserRoleId)
-                .Select(ur => ur.UserId)
-                .ToListAsync();
-            var advisers = await _context.Users
-                .Include(u => u.Information)
-                .Where(u => advisersList.Contains(u.Id))
-                .OrderBy(u => u.Information.LastName)
-                .ToListAsync();
+            var advisers = await _userManager.GetUsersInRoleAsync("Adviser");
 
             var adviserModel = new AdviserAssignmentModel()
             {
@@ -245,25 +223,25 @@ namespace Fazilat.Areas.Account.Controllers
             await _context.SaveChangesAsync();
 
             var student = await _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .FirstOrDefaultAsync(u => u.Id == formCollection.StudentId);
 
             var studentAdviser = await _context.Users
-                .Include(u => u.Information)
+                .Include(u => u.UserInformation)
                 .FirstOrDefaultAsync(u => u.Id == formCollection.AdviserId);
 
             TempData["StatusMessage"] = string.Format("«{0}» به عنوان مشاور تحصیلی «{1}» تعیین شد.",
-                studentAdviser.Information.FullName,
-                student.Information.FullName);
+                studentAdviser.UserInformation.FullName,
+                student.UserInformation.FullName);
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> FinancialFiles()
         {
             var users = await _context.Users
-                .Include(u => u.Information)
-                .Include(u => u.Limitation)
-                .OrderBy(u => u.Limitation.Expiration)
+                .Include(u => u.UserInformation)
+                .Include(u => u.UserLimitation)
+                .OrderBy(u => u.UserLimitation.Expiration)
                 .ToListAsync();
 
             return View(users);
@@ -277,12 +255,12 @@ namespace Fazilat.Areas.Account.Controllers
             }
 
             var user = await _context.Users
-                .Include(u => u.FinancialFile)
-                .Include(u => u.Limitation)
+                .Include(u => u.FinancialRecords)
+                .Include(u => u.UserLimitation)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
-            var expiration = (user.Limitation != null)
-                ? user.Limitation.Expiration
+            var expiration = (user.UserLimitation != null)
+                ? user.UserLimitation.Expiration.ToDateTime(TimeOnly.MinValue)
                 : DateTime.Now.AddMonths(1);
 
             PersianCalendar persianCalendar = new PersianCalendar();
@@ -290,7 +268,7 @@ namespace Fazilat.Areas.Account.Controllers
             var month = persianCalendar.GetMonth(expiration);
             year = month == 1 ? --year : year;
             month = month == 1 ? 12 : --month;
-            user.Limitation = new UserLimitation()
+            user.UserLimitation = new UserLimitation()
             {
                 UserId = user.Id,
                 ExpirationYear = year,
@@ -343,13 +321,13 @@ namespace Fazilat.Areas.Account.Controllers
             var expiration = new UserLimitation()
             {
                 UserId = formCollection.UserId,
-                Expiration = persianCalendar.ToDateTime(
+                Expiration = DateOnly.FromDateTime(persianCalendar.ToDateTime(
                     formCollection.ExpirationYear,
                     formCollection.ExpirationMonth,
-                    1, 0, 0, 0, 0),
+                    1, 0, 0, 0, 0)),
             };
 
-            var isExits = _context.UsersLimitation
+            var isExits = _context.UserLimitations
                 .Count(l => l.UserId == formCollection.UserId);
             if (isExits > 0)
             {
@@ -367,7 +345,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> TicketInstruction()
         {
-            var instruction = await _context.TicketInstruction
+            var instruction = await _context.TicketInstructions
                 .FirstOrDefaultAsync();
 
             return View(instruction);
@@ -538,7 +516,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Blog()
         {
-            var posts = await _context.Blog
+            var posts = await _context.BlogPosts
                 .OrderByDescending(p => p.Date)
                 .ToListAsync();
 
@@ -548,11 +526,11 @@ namespace Fazilat.Areas.Account.Controllers
         [HttpPost]
         public async Task<IActionResult> Blog(string id)
         {
-            var post = await _context.Blog
+            var post = await _context.BlogPosts
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (post != null)
             {
-                post.isVisible = !(post.isVisible);
+                post.IsVisible = !(post.IsVisible);
                 _context.Attach(post).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
@@ -562,7 +540,7 @@ namespace Fazilat.Areas.Account.Controllers
 
         public async Task<IActionResult> Post(string id)
         {
-            var post = await _context.Blog
+            var post = await _context.BlogPosts
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (post == null)
@@ -600,7 +578,7 @@ namespace Fazilat.Areas.Account.Controllers
                 }
             }
 
-            var oldPost = await _context.Blog
+            var oldPost = await _context.BlogPosts
                 .FirstOrDefaultAsync(p => p.Id == post.Id);
 
             if (oldPost != null)
