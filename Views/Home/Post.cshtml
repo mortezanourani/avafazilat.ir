@@ -1,9 +1,9 @@
 ﻿@using System.Globalization;
-@model IEnumerable<BlogPost>
-@{
-    ViewData["Title"] = "خبرنامه";
+@model Fazilat.Models.BlogPost;
 
-    var date = DateTime.Now;
+@{
+    ViewData["Title"] = Model.Title;
+    var date = Model.Date;
     PersianCalendar pc = new PersianCalendar();
 }
 
@@ -38,26 +38,7 @@
 </div>
 <hr />
 
-<form id="blog-search-form" method="post" asp-controller="Home" asp-action="Search" class="d-flex bg-white border rounded-lg p-3 mb-3">
-    <div class="form-floating w-100 ml-3">
-        <input type="search" name="title" class="form-control" placeholder="جستجوی موضوع خبر" required />
-    </div>
-    <button type="submit" class="btn btn-primary w-25">جستجو</button>
-</form>
-<hr />
-
-<div class="row d-md-flex flex-wrap">
-@foreach(var post in Model)
-{
-    <div class="col-md-4 p-3">
-        <div class="border border-success bg-white rounded-lg p-3">
-            <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
-            <h4 class="text-right mb-2">@post.Title</h4>
-            <p class="text-right">
-                @post.Content.Substring(0, 160)
-            </p>
-            @Html.ActionLink("متن کامل خبر", "Post", "Home", new { id = post.Id }, new { Class = "small" })
-        </div>
-    </div>
-}
+<div class="border border-success rounded-lg p-3 text-right about">
+    <img src="/images/blog/@Model.Image" class="w-100 mb-3 border border-success rounded-lg" />
+    @Html.Raw(Model.Content.Replace("\r\n", "<br>"))
 </div>

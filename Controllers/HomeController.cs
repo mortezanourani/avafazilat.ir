@@ -49,24 +49,31 @@ namespace Fazilat.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Blog(string id)
+        [Route("Blog/")]
+        public async Task<IActionResult> Blog()
         {
-            if(id == null)
-            {
-                var posts = await _context.BlogPosts
-                    .Where(p => p.IsVisible == true)
-                    .OrderByDescending(p => p.Date)
-                    .ToListAsync();
+            return View(await _context.BlogPosts
+                .Where(m => m.IsVisible == true)
+                .OrderByDescending(m => m.Date)
+                .ToListAsync());
+        }
 
-                return View(posts);
+        [Route("Blog/Post/{id?}")]
+        public async Task<IActionResult> Post(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
 
-            var post = await _context.BlogPosts
-                .Where(p => p.IsVisible == true)
-                .Where(p => p.Id == id)
-                .ToListAsync();
+            var blogPost = await _context.BlogPosts
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (blogPost == null)
+            {
+                return NotFound();
+            }
 
-            return View(post);
+            return View(blogPost);
         }
 
         [HttpPost]
