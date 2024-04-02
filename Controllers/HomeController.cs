@@ -27,6 +27,7 @@ namespace Fazilat.Controllers
             _context = context;
         }
 
+        [Route("/")]
         public async Task<IActionResult> Index()
         {
             var slides = await _context.Slides
@@ -76,21 +77,35 @@ namespace Fazilat.Controllers
             return View(blogPost);
         }
 
-        [HttpPost]
+        [Route("Search/{title?}")]
         public async Task<IActionResult> Search(string title)
         {
+            if(title == null)
+            {
+                return NotFound();
+            }
+
             var posts = await _context.BlogPosts
-                .Where(p => p.Title.Contains(title))
+                .Where(m => m.Title.Contains(title))
+                .OrderByDescending(m => m.Date)
                 .ToListAsync();
+            if(posts == null)
+            {
+                return NotFound();
+            }
 
             return View(posts);
         }
 
+        [Route("About/")]
         public IActionResult AboutUs()
         {
             return View();
         }
 
+
+
+        /*
         public async Task<IActionResult> Reserve()
         {
             var tickets = await _context.Tickets
@@ -142,6 +157,7 @@ namespace Fazilat.Controllers
             TempData["StatusMessage"] = "نوبت درخواستی شما با موفقیت رزرو شد. پس از تایید فیش واریزی توسط واحد امور مالی، پیامک ثبت نوبت درخواستی برای شما ارسال می گردد.";
             return RedirectToAction();
         }
+        */
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
