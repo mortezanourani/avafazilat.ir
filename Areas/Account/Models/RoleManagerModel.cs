@@ -8,7 +8,7 @@ namespace Fazilat.Areas.Account.Models
     public class RoleManagerModel
     {
         [Display(Name = "کاربر")]
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public string Role { get; set; }
 

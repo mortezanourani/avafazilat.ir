@@ -22,11 +22,11 @@ namespace Fazilat.Areas.Account.Controllers
     public class AdministratorController : Controller
     {
         private readonly FazilatContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         public AdministratorController(
             FazilatContext context,
-            UserManager<IdentityUser> userManager,
+            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;

@@ -31,11 +31,11 @@ namespace Fazilat
             services.AddDbContext<FazilatContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<IdentityContext>(options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 8;
@@ -45,7 +45,7 @@ namespace Fazilat
                 options.SignIn.RequireConfirmedAccount = false;
             })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

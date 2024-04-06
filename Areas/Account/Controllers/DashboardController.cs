@@ -20,11 +20,11 @@ namespace Fazilat.Areas.Account.Controllers
     public class DashboardController : Controller
     {
         private readonly FazilatContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public DashboardController(
             FazilatContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

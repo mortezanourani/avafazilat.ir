@@ -8,9 +8,9 @@ namespace Fazilat.Areas.Account.Models
     public class AdviserAssignmentModel : Adviser
     {
         [Display(Name = "داوطلب")]
-        public virtual IdentityUser Student { get; set; }
-        public virtual IdentityUser Adviser { get; set; }
+        public virtual ApplicationUser Student { get; set; }
+        public virtual ApplicationUser Adviser { get; set; }
         [Display(Name = "مشاور")]
-        public virtual ICollection<IdentityUser> Advisers { get; set; }
+        public virtual ICollection<ApplicationUser> Advisers { get; set; }
     }
 }

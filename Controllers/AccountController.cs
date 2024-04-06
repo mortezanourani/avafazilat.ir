@@ -5,18 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Fazilat.Models;
 
 namespace Fazilat.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
     public AccountController(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -32,7 +33,7 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            IdentityUser user = new IdentityUser();
+            ApplicationUser user = new ApplicationUser();
             await _userManager.SetUserNameAsync(user, signUpModel.Username);
             await _userManager.SetPhoneNumberAsync(user, signUpModel.PhoneNumber);
             var result = await _userManager.CreateAsync(user, signUpModel.Password);
@@ -67,7 +68,7 @@ public class AccountController : Controller
             var result = await _signInManager.PasswordSignInAsync(user.UserName, signInModel.Password, false, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home", new { @area = "Panel" });
+                return RedirectToAction("Index", "Dashboard", new { @area = "Account" });
             }
 
             ModelState.AddModelError(string.Empty, "خطایی رخ داده است.");
