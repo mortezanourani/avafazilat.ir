@@ -19,6 +19,8 @@ public partial class Learner
 
     public string School { get; set; }
 
+    public string TrackingCode { get; set; }
+
     public string Registered { get; set; }
 
     public virtual ICollection<Workshop> Workshops { get; set; } = new List<Workshop>();

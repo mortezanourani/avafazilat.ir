@@ -137,6 +137,9 @@ public partial class FazilatContext : DbContext
                 .IsUnique()
                 .HasFilter("([NormalizedUserName] IS NOT NULL)");
 
+            entity.Property(e => e.BirthDate)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
             entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
@@ -287,6 +290,7 @@ public partial class FazilatContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
             entity.Property(e => e.School).IsRequired();
+            entity.Property(e => e.TrackingCode).IsRequired();
         });
 
         modelBuilder.Entity<Media>(entity =>
