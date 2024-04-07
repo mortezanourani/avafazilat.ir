@@ -43,6 +43,8 @@ public partial class FazilatContext : DbContext
 
     public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
 
+    public virtual DbSet<Learner> Learners { get; set; }
+
     public virtual DbSet<Media> Medias { get; set; }
 
     public virtual DbSet<Meeting> Meetings { get; set; }
@@ -74,6 +76,8 @@ public partial class FazilatContext : DbContext
     public virtual DbSet<UserLogin> UserLogins { get; set; }
 
     public virtual DbSet<UserToken> UserTokens { get; set; }
+
+    public virtual DbSet<Workshop> Workshops { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -271,6 +275,19 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.FinancialRecords).HasForeignKey(d => d.UserId);
         });
         modelBuilder.Entity<FinancialRecord>(entity => entity.Ignore("PaymentReceiptFile"));
+
+        modelBuilder.Entity<Learner>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.City).IsRequired();
+            entity.Property(e => e.District).IsRequired();
+            entity.Property(e => e.Name).IsRequired();
+            entity.Property(e => e.Phone).IsRequired();
+            entity.Property(e => e.Registered)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.School).IsRequired();
+        });
 
         modelBuilder.Entity<Media>(entity =>
         {
@@ -493,6 +510,29 @@ public partial class FazilatContext : DbContext
             entity.ToTable("UserToken");
 
             entity.HasOne(d => d.User).WithMany(p => p.UserTokens).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<Workshop>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Cost).IsRequired();
+            entity.Property(e => e.Grade).HasDefaultValue(10);
+            entity.Property(e => e.Title).IsRequired();
+
+            entity.HasMany(d => d.Learners).WithMany(p => p.Workshops)
+                .UsingEntity<Dictionary<string, object>>(
+                    "WorkshopLearner",
+                    r => r.HasOne<Learner>().WithMany()
+                        .HasForeignKey("LearnerId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<Workshop>().WithMany()
+                        .HasForeignKey("WorkshopId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("WorkshopId", "LearnerId");
+                        j.ToTable("WorkshopLearners");
+                    });
         });
 
         OnModelCreatingPartial(modelBuilder);
