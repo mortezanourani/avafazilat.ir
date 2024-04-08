@@ -1,12 +1,86 @@
 ﻿@model IEnumerable<Fazilat.Models.Workshop>
 
 @{
-    ViewData["Title"] = "دوره های جمعبندی امتحانات نهایی";
+    ViewData["Title"] = "دوره های جمع بندی امتحانات نهایی";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-center mt-5" style="font-weight: 600;">@ViewBag.Title</h2>
+<h2 class="text-center mt-5 mb-4" style="font-weight: 600;">@ViewBag.Title</h2>
 
+<div class="row d-md-flex flex-wrap text-right">
+    @for (var grade = 10; grade <= 12; grade++)
+    {
+        <div class="col-lg p-2">
+            @if (grade == 10)
+            {
+                <div class="card border-primary">
+                    <div class="card-header d-flex justify-content-between">
+                        <h6 class="m-0 pt-2 text-primary font-weight-bold">پایه دهم</h6>
+                        <a asp-controller="Learners" asp-action="Index" class="btn btn-primary">ثبت نام</a>
+                    </div>
+                    <ul class="list-group list-group-flush p-0">
+                        @foreach (var item in Model.Where(i => i.Grade == grade))
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>
+                                    <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                    <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                </span>
+                                <small class="text-primary pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            else if (grade == 11)
+            {
+                <div class="card border-warning">
+                    <div class="card-header d-flex justify-content-between">
+                        <h6 class="m-0 pt-2 text-warning font-weight-bold">پایه یازدهم</h6>
+                        <a asp-controller="Learners" asp-action="Index" class="btn btn-warning">ثبت نام</a>
+                    </div>
+                    <ul class="list-group list-group-flush p-0">
+                        @foreach (var item in Model.Where(i => i.Grade == grade))
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>
+                                    <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                    <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                </span>
+                                <small class="text-warning pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            else if (grade == 12)
+            {
+                <div class="card border-success">
+                    <div class="card-header d-flex justify-content-between">
+                        <h6 class="m-0 pt-2 text-success font-weight-bold">پایه دوازدهم</h6>
+                        <a asp-controller="Learners" asp-action="Index" class="btn btn-success">ثبت نام</a>
+                    </div>
+                    <ul class="list-group list-group-flush p-0">
+                        @foreach (var item in Model.Where(i => i.Grade == grade))
+                        {
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>
+                                    <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                    <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                </span>
+                                <small class="text-success pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+
+@*
 <table class="list-group">
     <tbody>
         @foreach (var item in Model)
@@ -38,3 +112,4 @@
         }
     </tbody>
 </table>
+ *@

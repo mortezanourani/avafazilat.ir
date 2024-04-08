@@ -24,7 +24,7 @@ namespace Fazilat.Areas.Panel.Controllers
         // GET: Panel/Workshops
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Workshops.ToListAsync());
+            return View(await _context.Workshops.OrderBy(w => w.Grade).ToListAsync());
         }
 
         // GET: Panel/Workshops/Details/5
