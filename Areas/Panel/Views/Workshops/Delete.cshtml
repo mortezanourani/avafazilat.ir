@@ -1,48 +1,15 @@
 ﻿@model Fazilat.Models.Workshop
 
 @{
-    ViewData["Title"] = "حذف دوره جمعبندی";
+    ViewData["Title"] = "حذف کلاس " + Model.Title;
     Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
 }
 
-<h3>شما در حال حذف یک دوره جمعبندی هستید، آیا از این کار اطمینان دارید؟</h3>
+<h4>آیا از حذف <b>@Html.DisplayFor(model => model.Title)</b> پایه @Html.DisplayFor(model => model.Grade) اطمینان دارید؟</h4>
 <div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Grade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cost)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-    </dl>
-    
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="حذف" class="btn btn-danger" /> |
-        <a asp-action="Index"><small>فهرست دوره ها</small></a>
+        <input type="submit" value="بله، حتما" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-outline-secondary">پشیمان شدم</a>
     </form>
 </div>

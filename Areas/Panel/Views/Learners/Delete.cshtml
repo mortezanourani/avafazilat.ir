@@ -1,0 +1,15 @@
+﻿@model Fazilat.Models.Learner
+
+@{
+    ViewData["Title"] = "حذف ثبت نام های " + Model.Name;
+    Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
+}
+
+<h4>آیا از حذف ثبت نام @Model.Name اطمینان دارید؟</h4>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="بله، حتما" class="btn btn-danger" /> |
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">پشیمان شدم</a>
+    </form>
+</div>

@@ -24,7 +24,10 @@ namespace Fazilat.Areas.Panel.Controllers
         // GET: Panel/Workshops
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Workshops.OrderBy(w => w.Grade).ToListAsync());
+            return View(await _context.Workshops
+                .Include(w => w.Learners)
+                .OrderBy(w => w.Grade)
+                .ToListAsync());
         }
 
         // GET: Panel/Workshops/Details/5
@@ -36,6 +39,7 @@ namespace Fazilat.Areas.Panel.Controllers
             }
 
             var workshop = await _context.Workshops
+                .Include(m => m.Learners)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (workshop == null)
             {

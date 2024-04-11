@@ -1,0 +1,28 @@
+﻿@model Fazilat.Models.Learner
+
+@{
+    ViewData["Title"] = "تکمیل ثبت نام";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center font-weight-bold mt-5 mb-4">@ViewData["Title"]</h2>
+<div class="row justify-content-center text-center">
+    <div class="col-lg-4">
+        <h5 class="display-5 text-success mb-5">
+            ثبت نام شما انجام شده است. پس از بررسی تراکنش توسط واحد مالی، نتیجه به شما اطلاعرسانی خواهد شد.
+            <br />
+            با سپاس از شکیبایی شما.
+        </h5>
+        <p class="text-danger text-right">
+            کد رهگیری شما:
+            <br />
+            @Html.DisplayFor(m => m.Id);
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

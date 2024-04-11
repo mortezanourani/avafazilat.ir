@@ -1,57 +1,44 @@
 ﻿@model IEnumerable<Fazilat.Models.Workshop>
 
 @{
-    ViewData["Title"] = "فهرست دوره های جمعبندی";
+    ViewData["Title"] = "فهرست کلاس های ویژه";
     Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
 }
 
 <p>
-    <a asp-action="Create">افزودن دوره جدید</a>
+    <a asp-action="Create" class="btn btn-primary">کلاس جدید</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Grade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+
+<table class="list-group">
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">ویرایش</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger">حذف</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="list-group-item d-flex justify-content-between align-items-end">
+                <td class="d-flex flex-column">
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        <h6 class="fw-bold m-0">
+                            @Html.DisplayFor(modelItem => item.Title)
+                            <small class="text-dark">(<b>@Html.DisplayFor(modelItem => item.Capacity)</b> / @Html.DisplayFor(modelItem => item.Learners.Count))</small>
+                        </h6>
+                    </a>
+                    @if (item.Grade == 10)
+                    {
+                        <small class="text-dark">پایه دهم</small>
+                    }
+                    else if (item.Grade == 11)
+                    {
+                        <small class="text-dark">پایه یازدم</small>
+                    }
+                    else if (item.Grade == 12)
+                    {
+                        <small class="text-dark">پایه دوازدهم</small>
+                    }
+                </td>
+                <td class="text-left">
+                    <a asp-action="Edit" asp-route-id="@item.Id"><small>ویرایش</small></a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger"><small>حذف</small></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
