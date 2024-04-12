@@ -10,7 +10,7 @@
     <div class="col-lg-7">
         <form asp-controller="Learners" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group card text-right border-success mb-5">
+            <div class="form-group card text-right border-success mb-4">
                 <h6 class="card-header bg-success text-light">شما در حال ثبت نام در کلاس (های) ذیل می باشید:</h6>
                 <ul class="list-group list-group-flush p-0">
                     @foreach (var workshop in Model.Workshops)
@@ -22,19 +22,27 @@
                                     <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => workshop.Title)</h6>
                                     <small class="text-muted">از @Html.DisplayFor(modelItem => workshop.StartDate)</small>
                                 </span>
-                                <small class="text-success pt-4">@Html.DisplayFor(modelItem => workshop.Cost) ریال</small>
+                                <small class="text-primary pt-4">@Html.DisplayFor(modelItem => workshop.Cost) ریال</small>
                             </label>
                         </li>
                     }
-                    @*
-                    @foreach (var workshop in Model.Workshops)
-                    {
-                        <input type="hidden" name="workshops" id="@workshop.Id" value="@workshop.Id" />
-                        <label for="@workshop.Id">@workshop.Title</label>
-                    }
-                    *@
-                    </ul>
+                </ul>
             </div>
+            <div class="form-group card text-right border-info mb-5">
+                <h6 class="card-header bg-info text-light">شماره کارت جهت پرداخت هزینه کلاس های فوق</h6>
+                <ul class="list-group list-group-flush p-0">
+                    <li class="list-group-item d-flex">
+                        <label class="d-flex justify-content-between flex-fill mr-3">
+                            <span>
+                                <h6 class="m-0 text-dark">6037-9981-6776-6053</h6>
+                                <small class="text-muted">بانک ملی</small>
+                            </span>
+                            <small class="text-success pt-4">به نام علیرضا ندرلو</small>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
