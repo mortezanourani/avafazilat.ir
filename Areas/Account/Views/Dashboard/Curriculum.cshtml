@@ -9,7 +9,7 @@
 <div class="list-group p-0">
 @foreach(var course in Model.Courses)
 {
-    <form id="student-course-form" method="post" action="/Dashboard/Course" class="list-group-item d-md-flex border-info px-3 mb-3">
+    <form asp-area="Account" asp-controller="Dashboard" asp-action="Course" id="student-course-form" method="post" class="list-group-item d-md-flex border-info px-3 mb-3">
         <input name="Id" type="hidden" value="@course.Id" />
         <input name="CurriculumId" type="hidden" value="@course.CurriculumId" />
         <div class="w-100 mb-2 ml-md-2">

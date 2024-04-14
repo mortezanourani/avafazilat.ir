@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="list-group">
-    <form id="add-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item-info d-flex flex-column px-3">
+    <form asp-controller="Adviser" asp-action="Course" asp-area="Account" id="add-course-form" method="post" class="list-group-item list-group-item-info d-flex flex-column px-3">
         @Html.HiddenFor(c => c.Id)
         <div class="d-flex justify-content-between mb-2">
             <input type="text" name="Title" class="form-control" placeholder="عنوان درس" />
@@ -29,7 +29,7 @@
     </form>
 @foreach(var course in Model.Courses)
 {
-    <form id="remove-course-form" method="post" action="/Adviser/Course" class="list-group-item list-group-item d-flex flex-column border-info px-3 mt-3">
+    <form asp-area="Account" asp-controller="Adviser" asp-action="Course" id="remove-course-form" method="post" class="list-group-item list-group-item d-flex flex-column border-info px-3 mt-3">
         <input id="Id" name="Id" type="hidden" value="@course.Id" />
         <div class="d-flex justify-content-between mb-2">
             <span class="form-control d-flex justify-content-between">
