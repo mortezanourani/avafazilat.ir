@@ -104,8 +104,7 @@ namespace Fazilat.Controllers
         }
 
 
-
-        /*
+        [Route("Reserve/")]
         public async Task<IActionResult> Reserve()
         {
             var tickets = await _context.Tickets
@@ -138,6 +137,7 @@ namespace Fazilat.Controllers
         }
 
         [HttpPost]
+        [Route("Reserve/")]
         public async Task<IActionResult> Reserve(Meeting model)
         {
             using (var memoryStream = new MemoryStream())
@@ -157,7 +157,6 @@ namespace Fazilat.Controllers
             TempData["StatusMessage"] = "نوبت درخواستی شما با موفقیت رزرو شد. پس از تایید فیش واریزی توسط واحد امور مالی، پیامک ثبت نوبت درخواستی برای شما ارسال می گردد.";
             return RedirectToAction();
         }
-        */
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
