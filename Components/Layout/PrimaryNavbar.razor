@@ -1,0 +1,50 @@
+﻿@* @implements IDisposable *@
+
+@rendermode InteractiveServer
+
+@inject NavigationManager NavigationManager
+
+<nav class="primary-nav">
+    <input type="checkbox" title="Navigation menu" class="menu-toggler"
+        checked="@collapsed"
+        @bind-value="collapsed"
+        @bind-value:event="oninput" />
+    
+    @* brand *@
+    <a class="primary-nav-brand" href="/">
+        <img class="brand-icon" src="/favicon.svg" />
+    </a>
+
+    @* Main Menu *@
+    <div class="primary-nav-container @((collapsed) ? "collapse" : "")">
+        <div class="primary-nav-curtain"></div>
+        <div class="primary-nav-menu">
+            <div class="menu-item">
+                <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">دوره های آموزشی</NavLink>
+            </div>
+            <div class="menu-item">
+                <NavLink class="nav-link" href="counter">انتخاب رشته</NavLink>
+            </div>
+            <div class="menu-item">
+                <NavLink class="nav-link" href="weather">مشاوره روانشناسی</NavLink>
+            </div>
+            <div class="menu-item">
+                <NavLink class="nav-link" href="auth">خبرنامه</NavLink>
+            </div>
+        </div>
+        <div class="primary-nav-search-bar">
+            <img src="/icons/search.svg" />
+            <input type="search" placeholder="جستجو" @bind-value="searchText" />
+        </div>
+    </div>
+
+    <a class="primary-nav-account" href="account">
+        <img src="/icons/user.svg" />
+    </a>
+</nav>
+
+@code {
+    private string? currentUrl;
+    private bool collapsed = false;
+    private string? searchText;
+}

@@ -1,5 +1,8 @@
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'IRANSans';
+    font-style: normal;
+    background: #e7e7e7;
+    direction: rtl;
 }
 
 a, .btn-link {
@@ -48,4 +51,31 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+input {
+    outline: none;
+    border: none;
+}
+
+.primary-nav .primary-nav-container .primary-nav-menu .menu-item .nav-link {
+    padding: 8px 0;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 21px;
+    /* identical to box height, or 114% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #292D32;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+.primary-nav .primary-nav-container .primary-nav-menu .menu-item .nav-link.active {
+    font-weight: 500;
+}
+.primary-nav .primary-nav-container .primary-nav-menu .menu-item .nav-link:hover {
+    color: #000;
 }
