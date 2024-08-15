@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Fazilat.Models;
 using Fazilat.Areas.Panel.Models;
+using Fazilat.Data;
 
 namespace Fazilat.Areas.Panel.Controllers
 {

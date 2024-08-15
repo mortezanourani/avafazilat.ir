@@ -40,3 +40,8 @@ public partial class Meeting
 {
     public virtual IFormFile PaymentFile { get; set; }
 }
+
+[ModelMetadataType(typeof(MeetingMetadata))]
+public partial class ReserveViewModel
+{
+}

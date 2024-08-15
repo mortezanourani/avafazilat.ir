@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Fazilat.Models;
 using Microsoft.AspNetCore.Authorization;
+using Fazilat.Data;
 
 namespace Fazilat.Areas.Panel.Controllers
 {

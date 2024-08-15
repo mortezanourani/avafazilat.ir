@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fazilat.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Fazilat.Models;
+namespace Fazilat.Data;
 
 public partial class FazilatContext : DbContext
 {
