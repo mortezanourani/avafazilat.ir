@@ -58,7 +58,7 @@
             <p class="text-right">
                 @post.Content.Substring(0, 160)
             </p>
-            @Html.ActionLink("متن کامل خبر", "Blog", "Home", new { id = post.Id }, new { Class = "small" })
+            @Html.ActionLink("متن کامل خبر", "Post", "Home", new { id = post.Id }, new { Class = "small" })
         </div>
     }
     </div>
