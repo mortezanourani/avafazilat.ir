@@ -2,12 +2,8 @@
 
 namespace Fazilat.Models.ViewModels;
 
-public class AccountSignUpViewModel
+public class AccountRegisterViewModel
 {
-    [Required]
-    [Display(Name = "کد ملی")]
-    public string Username { get; set; }
-
     [Required]
     [Display(Name = "نام")]
     public string FirstName { get; set; }
@@ -30,5 +26,5 @@ public class AccountSignUpViewModel
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "تکرار رمز عبور نادرست است.")]
     [Display(Name = "تکرار رمز عبور")]
-    public string PasswordRetype { get; set; }
+    public string ConfirmPassword { get; set; }
 }
