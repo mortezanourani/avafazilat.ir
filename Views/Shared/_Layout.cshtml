@@ -1,66 +1,26 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - آوای فضیلت</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body class="bg-light">
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border border-success-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand text-black" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="/images/src/favicon.png" height="48" alt="">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse text-right">
-                    <partial name="_SignInPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Workshops" asp-action="Index">کلاس های ویژه امتحان نهایی</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Reserve">مشاوره انتخاب رشته</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AboutUs">درباره ما</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-success" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-id="">خبرنامه</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="container pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"]</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
 
-    <footer class="border border-success-top footer text-muted">
-        <div class="container">
-            <div class="text-center">
-                <p class="rtl text-wrap mt-3"><i class="fa fa-lg fa-map-marker ml-2"></i>
-                    تهران، قلهک، خیابان دکتر شریعتی، بالاتر از میرداماد، کوچه احمدیه یکم، پلاک 10، واحد 7
-                </p>
-            </div>
-            <div class="text-center small border rounded-lg p-3 mb-2">
-                تمامی حقوق مادی و معنوی سایت برای <span class="text-success">آکادمی آوای فضیلت</span> محفوظ است.
-            </div>
-            
+    <body>
+        <div class="page">
+            <partial name="_PrimaryNav" />
+
+            <main class="avafazilat-content">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-</body>
+    
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @RenderSection("Scripts", required: false)
+    </body>
 </html>

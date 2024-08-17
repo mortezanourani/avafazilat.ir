@@ -539,7 +539,7 @@ button {
 }
 
 @media (max-width: 480px) {
-    .primary-nav-container:not(.collapse) {
+    .primary-nav:has(.menu-toggler:not(:checked)) .primary-nav-container {
         display: none;
     }
 
