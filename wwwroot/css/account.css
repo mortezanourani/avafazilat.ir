@@ -20,6 +20,22 @@
     overflow: hidden;
 }
 
+    .af-account-page .brand-link {
+        position: fixed;
+        height: 60px;
+        top: 24px;
+        right: 24px;
+        z-index: 999;
+        padding: 6px;
+        background: white;
+        border-radius: 6px;
+    }
+
+        .af-account-page .brand-link img {
+            height: 48px;
+        }
+
+
     .af-account-page .instruction-text {
         position: absolute;
         height: 100%;
