@@ -46,7 +46,7 @@ namespace Fazilat.Controllers
                 .Include(p => p.Header)
                 .Where(p => p.IsVisible == true)
                 .OrderByDescending(p => p.Published)
-                .Take(6)
+                .Take(3)
                 .ToListAsync();
 
             var model = new HomeViewModel();
