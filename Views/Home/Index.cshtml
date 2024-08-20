@@ -5,63 +5,69 @@
     bool first = true;
 }
 
-@if(Model.Slides.Count() > 0)
-{
-<div id="sliderIndicators" class="carousel slide border border-success rounded-lg overflow-hidden ltr" data-ride="carousel">
-    <ol class="carousel-indicators">
-        @for (int c = 0; c < Model.Slides.Count(); c++)
-        {
-            var indicatorClass = (c == 0)
-                ? "active"
-                : string.Empty;
-            <li data-target="#sliderIndicators" data-slide-to="@c" class="@indicatorClass"></li>
-        }
-    </ol>
-    <div class="carousel-inner">
-        @foreach(var slide in Model.Slides)
-        {
-            var slideClass = (first)
-                ? "carousel-item active"
-                : "carousel-item";
-            first = false;
+<header class="af-home-header">
+    <div class="af-home-slider">
+        <div id="sliderIndicators" class="carousel slide border border-success rounded-lg overflow-hidden ltr" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @for (int c = 0; c < Model.Slider.Count(); c++)
+                {
+                    var indicatorClass = (c == 0)
+                    ? "active"
+                    : string.Empty;
+                    <li data-target="#sliderIndicators" data-slide-to="@c" class="@indicatorClass"></li>
+                }
+            </ol>
+            <div class="carousel-inner">
+                @foreach (var slide in Model.Slider)
+                {
+                    var slideClass = (first)
+                    ? "carousel-item active"
+                    : "carousel-item";
+                    first = false;
 
-            <div class="@slideClass">
-                <a class="d-block w-100" href="@slide.Link">
-                    <img class="d-block w-100" src="/images/slide/@slide.Image">
-                </a>
+                    var imageFile = slide.Image.FileName + '.' + slide.Image.Extension;
+                    <div class="@slideClass">
+                        <a class="d-block w-100" href="@slide.Link">
+                            <img class="d-block w-100" src="/images/slide/@imageFile">
+                        </a>
+                    </div>
+                }
             </div>
-        }
-    </div>
-    <a class="carousel-control-prev" href="#sliderIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#sliderIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-}
-
-@if(Model.News.Count() > 0)
-{
-<div class="bg-white border border-success rounded-lg mt-4">
-    <h5 class="text-center p-3 m-0 border-bottom border-success">
-        آخرین اخبار آکادمی آوای فضیلت
-    </h5>
-    <div class="d-md-flex flex-wrap">
-    @foreach(var post in Model.News)
-    {
-        <div class="col-md-4 p-3 border-bottom">
-            <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
-            <h4 class="text-right mb-2">@post.Title</h4>
-            <p class="text-right">
-                @post.Content.Substring(0, 160)
-            </p>
-            @Html.ActionLink("متن کامل خبر", "Post", "Home", new { id = post.Id }, new { Class = "small" })
+            <a class="carousel-control-prev" href="#sliderIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#sliderIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-    }
     </div>
-</div>
-<a href="/blog/" class="d-block text-center p-3 m-0">اخبار بیشتر</a>
-}
+</header>
+
+<section class="af-home-banners">
+</section>
+
+<section class="af-home-blog">
+    <div class="bg-white border border-success rounded-lg mt-4">
+        <h5 class="text-center p-3 m-0 border-bottom border-success">
+            آخرین اخبار آکادمی آوای فضیلت
+        </h5>
+        <div class="d-md-flex flex-wrap">
+            @foreach (var post in Model.Blog)
+            {
+                var imageFile = post.Header.FileName + '.' + post.Header.Extension;
+
+                <div class="col-md-4 p-3 border-bottom">
+                    <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@imageFile" />
+                    <h4 class="text-right mb-2">@post.Title</h4>
+                    <p class="text-right">
+                        @post.Body.Substring(0, 160)
+                    </p>
+                    @Html.ActionLink("متن کامل خبر", "Post", "Home", new { id = post.Id }, new { Class = "small" })
+                </div>
+            }
+        </div>
+    </div>
+    <a asp-area="" asp-controller="Home" asp-action="Blog" class="d-block text-center p-3 m-0">مشاهده تمامی مقالات</a>
+</section>

@@ -4,7 +4,7 @@ namespace Fazilat.Models.ViewModels;
 
 public class HomeViewModel
 {
-    public ICollection<Slide> Slides { get; set; }
-
-    public ICollection<BlogPost> Posts { get; set; }
+    public ICollection<Slide1> Slider { get; set; }
+    public ICollection<Banner> Banners { get; set; }
+    public ICollection<Post> Blog { get; set; }
 }

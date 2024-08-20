@@ -1,4 +1,5 @@
 ﻿using Fazilat.Models;
+using Fazilat.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,23 +31,29 @@ namespace Fazilat.Controllers
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            var slides = await _context.Slides
+            var slider = await _context.Slides1
+                .Include(s => s.Image)
+                .Where(s => s.IsVisible == true)
                 .ToListAsync();
-            if(slides.Count == 0)
-            {
-                return RedirectToAction("Reserve");
-            }
 
-            var news = await _context.BlogPosts
+            var banners = await _context.Banners
+                .Include(b => b.Image)
+                .Where(b => b.IsActive)
+                .OrderByDescending(b => b.Position)
+                .ToListAsync();
+
+            var blog = await _context.Posts
+                .Include(p => p.Header)
                 .Where(p => p.IsVisible == true)
-                .OrderByDescending(p => p.Date)
+                .OrderByDescending(p => p.Published)
+                .Take(6)
                 .ToListAsync();
 
-            var model = new HomeViewModel()
-            {
-                Slides = slides,
-                News = news.SkipLast(Math.Max(0, news.Count() - 3)).ToList(),
-            };
+            var model = new HomeViewModel();
+            model.Slider = slider;
+            model.Banners = banners;
+            model.Blog = blog;
+
             return View(model);
         }
 
