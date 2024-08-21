@@ -44,6 +44,7 @@ namespace Fazilat.Controllers
 
             var blog = await _context.Posts
                 .Include(p => p.Header)
+                .Include(p => p.Author)
                 .Where(p => p.IsVisible == true)
                 .OrderByDescending(p => p.Published)
                 .Take(3)
