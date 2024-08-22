@@ -35,32 +35,42 @@
         <a class="af-section-title-link" asp-area="" asp-controller="Home" asp-action="Blog">مشاهده تمامی مطالب</a>
     </div>
     <div class="af-home-blog-posts">
-        @foreach (var post in Model.Blog)
-        {
-            var imageFile = post.Header.FileName + post.Header.Extension;
-            var author = post.Author.FirstName + ' ' + post.Author.LastName;
-            <div class="blog-post horizontal">
-                <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
-                    <img src="/images/blog/@imageFile" />
-                </a>
-                <div class="blog-post-content">
-                    <a class="blog-post-summary">
-                        <h5 class="text-right mb-2">@post.Title</h5>
-                        <p class="text-right">
-                            @post.Body.Substring(0, 160)
-                        </p>
-                    </a>
-                    <div class="blog-post-author">
-                        <p class="blog-post-author">@author</p>
-                        <p class="blog-post-tags">@post.Published</p>
-                    </div>
-                    @*
-                        <div class="blog-post-tags">
-                         Tags
+        @{
+            bool horizontal = true; 
+            foreach (var post in Model.Blog)
+            {
+                var imageFile = post.Header.FileName + post.Header.Extension;
+                var author = post.Author.FirstName + ' ' + post.Author.LastName;
+                <div class="blog-post @(horizontal ? "horizontal" : "vertical")">
+                    <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+                        <div>
+                            <img src="/images/blog/@imageFile" />
                         </div>
-                    *@
+                    </a>
+                    <div class="blog-post-content">
+                        <div class="blog-post-body">
+                            <a class="blog-post-summary" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+                                <h5>@post.Title</h5>
+                                <p>@post.Body</p>
+                            </a>
+                            <div class="blog-post-author">
+                                <div class="post-author">
+                                    <img src="/icons/author.svg" />
+                                    @author
+                                </div>
+                                <div class="post-publish">
+                                    <img src="/icons/publish.svg" />
+                                    @post.Published
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-post-tags">
+                            Tags
+                        </div>
+                    </div>
                 </div>
-            </div>
+                horizontal = false;
+            }
         }
     </div>
 </section>
@@ -70,11 +80,11 @@
     <div>
         <div class="contact-info contact-whatsapp">
             <img src="/icons/whatsapp-blue.svg" />
-            <h5>0936 204 6937</h5>
+            <h5 class="en">0936 204 6937</h5>
         </div>
         <div class="contact-info contact-phone">
             <img src="/icons/phone-blue.svg" />
-            <h5>021 - 23456789</h5>
+            <h5 class="en">021 - 23456789</h5>
         </div>
         <div class="contact-info contact-address">
             <img src="/icons/location-blue.svg" />
