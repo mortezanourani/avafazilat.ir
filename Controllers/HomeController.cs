@@ -58,13 +58,41 @@ namespace Fazilat.Controllers
             return View(model);
         }
 
-        [Route("Blog/")]
-        public async Task<IActionResult> Blog()
+        [Route("Blog/{offset?}")]
+        public async Task<IActionResult> Blog(int offset)
         {
-            return View(await _context.BlogPosts
-                .Where(m => m.IsVisible == true)
-                .OrderByDescending(m => m.Date)
-                .ToListAsync());
+            int limit = 5;
+
+            var postsCount = _context.Posts
+                .Where(p => p.IsVisible)
+                .Count();
+            int pageCount = (int)Math.Ceiling((double)postsCount / limit);
+            int offsetMax = pageCount - 1;
+
+            Post lastPost = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Author)
+                .Where(p => p.IsVisible)
+                .OrderByDescending(p => p.Published)
+                .FirstOrDefaultAsync();
+
+            ICollection<Post> postsList = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Author)
+                .Where(p => p.IsVisible)
+                .OrderByDescending(p => p.Published)
+                .Skip((offset * limit) + 1)
+                .Take(5)
+                .ToListAsync();
+
+            BlogViewModels model = new BlogViewModels();
+            model.LastPost = lastPost;
+            model.PostsList = postsList;
+            model.Offset = offset;
+            model.hasPrevious = offset > 0;
+            model.hasNext = offset < offsetMax;
+
+            return View(model);
         }
 
         [Route("Blog/Post/{id?}")]
