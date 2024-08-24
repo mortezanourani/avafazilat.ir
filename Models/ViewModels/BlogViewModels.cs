@@ -10,5 +10,6 @@ namespace Fazilat.Models.ViewModels
         public int Offset { get; set; }
         public bool hasPrevious { get; set; }
         public bool hasNext { get; set; }
+        public ICollection<AspNetUser> AuthorsList { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fazilat.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Fazilat.Controllers
 {
@@ -85,12 +86,19 @@ namespace Fazilat.Controllers
                 .Take(5)
                 .ToListAsync();
 
+            ICollection<AspNetUser> authorsList = await _context.AspNetUsers
+                .Include(u => u.Posts)
+                .Where(u => u.Posts
+                    .Any(p => p.IsVisible == true))
+                .ToListAsync();
+
             BlogViewModels model = new BlogViewModels();
             model.LastPost = lastPost;
             model.PostsList = postsList;
             model.Offset = offset;
             model.hasPrevious = offset > 0;
             model.hasNext = offset < offsetMax;
+            model.AuthorsList = authorsList;
 
             return View(model);
         }

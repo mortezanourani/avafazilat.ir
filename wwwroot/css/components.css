@@ -127,6 +127,52 @@ button {
         background: #228B22;
         color: #FFFFFF;
     }
+
+    a:has(button):hover {
+        text-decoration: none;
+    }
+    button.btn-next,
+    button.btn-previous {
+        padding: 6px 12px;
+        border: 1px solid #292D32;
+        line-height: 0;
+        color: #292D32;
+        gap: 8px;
+    }
+
+        button.btn-next:after,
+        button.btn-previous:before {
+            height: 18px;
+            content: url('/icons/next.svg');
+        }
+        button.btn-next:after {
+            content: url('/icons/next.svg');
+        }
+        button.btn-previous:before {
+            content: url('/icons/previous.svg');
+        }
+
+        button:disabled.btn-next,
+        button:disabled.btn-previous {
+            border-color: #a9a9a9;
+            color: #a9a9a9;
+        }
+            button:disabled.btn-next:after {
+                content: url('/icons/next-d.svg');
+            }
+            button:disabled.btn-previous:before {
+                content: url('/icons/previous-d.svg');
+            }
+
+@media (max-width: 480px) {
+    button.btn-next,
+    button.btn-previous {
+        width: 32px;
+        height: 32px;
+        font-size: 0;
+        gap: 0;
+    }
+}
 /* Button Type Styles *** END */
 
 /* 

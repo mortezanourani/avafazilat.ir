@@ -823,13 +823,65 @@ main:has(.af-blog-header){
         }
 
         .af-blog-posts .af-blog-posts-content .blog-posts-sidebar {
-            flex-basis: clamp(240px, 16%, 420px);
+            flex-basis: clamp(240px, 25%, 420px);
         }
 
-        .af-blog-posts .af-blog-posts-content .blog-posts-sidebar > div {
-            position: sticky;
-            top: 16px;
-        }
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar > div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0px;
+                gap: 16px;
+                /* Inside auto layout */
+                flex: none;
+                order: 0;
+                flex-grow: 0;
+                position: sticky;
+                top: 16px;
+            }
+
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar .sidebar-tags,
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar .sidebar-authors {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 16px 16px;
+                gap: 8px;
+                background: #FFFFFF;
+                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+                border-radius: 12px;
+                /* Inside auto layout */
+                flex: none;
+                order: 0;
+                align-self: stretch;
+                flex-grow: 0;
+            }
+
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar .sidebar-authors {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar div h6 {
+                margin-bottom: 6px;
+                font-weight: 600;
+                font-size: 14px;
+                color: #000000;
+                /* Inside auto layout */
+                flex: none;
+                order: 0;
+                align-self: stretch;
+                flex-grow: 0;
+            }
+
+            .af-blog-posts .af-blog-posts-content .blog-posts-sidebar div a {
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 20px;
+                /* identical to box height, or 100% */
+                text-align: right;
+                color: #000000;
+            }
 
 @media (max-width: 480px) {
     .af-blog-posts .af-blog-posts-content {

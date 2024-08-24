@@ -5,7 +5,6 @@
     ViewData["Title"] = "خبرنامه";
 }
 
-
 <header class="af-blog-header">
     <div class="af-section-title-bar">
         <h5 class="af-section-title">آخرین مقاله</h5>
@@ -13,7 +12,7 @@
     @{
         var lastPost = Model.LastPost;
         var imageFile = lastPost.Header.FileName + lastPost.Header.Extension;
-        var author = lastPost.Author.FirstName + ' ' + lastPost.Author.LastName;
+        var postAuthor = lastPost.Author.FirstName + ' ' + lastPost.Author.LastName;
         <div class="blog-post horizontal">
             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@lastPost.Id">
                 <div>
@@ -29,7 +28,7 @@
                     <div class="blog-post-author">
                         <div class="post-author">
                             <img src="/icons/author.svg" />
-                            @author
+                            @postAuthor
                         </div>
                         <div class="post-publish">
                             <img src="/icons/publish.svg" />
@@ -57,7 +56,7 @@
                     {
                         c++;
                         imageFile = post.Header.FileName + post.Header.Extension;
-                        author = post.Author.FirstName + ' ' + post.Author.LastName;
+                        postAuthor = post.Author.FirstName + ' ' + post.Author.LastName;
                         <div class="blog-post @(c == 3 ? "horizontal" : "vertical")">
                             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
                                 <div>
@@ -73,7 +72,7 @@
                                     <div class="blog-post-author">
                                         <div class="post-author">
                                             <img src="/icons/author.svg" />
-                                            @author
+                                            @postAuthor
                                         </div>
                                         <div class="post-publish">
                                             <img src="/icons/publish.svg" />
@@ -91,17 +90,50 @@
             </div>
             <div class="posts-navigator">
                 @{
-                    var previousPage = (int)Model.Offset - 1;
-                    var nextPage = (int)Model.Offset + 1;
+                    int offset = (int)Model.Offset;
+                    bool hasPrevious = Model.hasPrevious;
+                    bool hasNext = Model.hasNext;
+
+                    if (!hasPrevious)
+                    {
+                        <button class="btn-previous" disabled>قبلی</button>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Home" asp-action="Blog" asp-route-offset="@(offset > 1 ? offset-1 : null)">
+                            <button class="btn-previous">قبلی</button>
+                        </a>
+                    }
+
+                    if (!hasNext)
+                    {
+                        <button class="btn-next" disabled>بعدی</button>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Home" asp-action="Blog" asp-route-offset="@(offset+1)">
+                            <button class="btn-next">بعدی</button>
+                        </a>
+                    }
                 }
-                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-offset="@previousPage">قبلی</a>
-                <a class="btn btn-ghost" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-offset="@nextPage">بعدی</a>
             </div>
         </article>
         <aside class="blog-posts-sidebar">
             <div>
-                <p>Post Tags</p>
-                <p>Authors</p>
+                <div class="sidebar-tags">
+                    <h6>فهرست موضوعات</h6>
+                    <p>Post Tags</p>
+                </div>
+
+                <div class="sidebar-authors">
+                    <h6>فهرست نویسندگان</h6>
+                    @foreach(AspNetUser author in Model.AuthorsList)
+                    {
+                        <a asp-area="" asp-controller="Home" asp-action="Author" asp-route-id="@author.Id">
+                            @author.FirstName @author.LastName
+                        </a>
+                    }
+                </div>
             </div>
         </aside>
     </div>
