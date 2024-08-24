@@ -193,6 +193,7 @@ button {
     .blog-post.vertical {
         flex-direction: column;
         flex-basis: calc(50% - 8px);
+        max-width: calc(50% - 8px);
     }
 
     .blog-post .blog-post-image {
@@ -305,6 +306,7 @@ button {
     .blog-post.vertical {
         flex-direction: column;
         flex-basis: 100%;
+        max-width: 100%;
     }
 
         .blog-post.horizontal .blog-post-image,
