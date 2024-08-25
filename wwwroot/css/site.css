@@ -759,7 +759,6 @@ ul {
         }
 }
 
-
 /* NEW BLOG PAGE STYLES */
 main:has(.af-blog-header){
     gap: 32px;
@@ -891,5 +890,92 @@ main:has(.af-blog-header){
         .af-blog-posts .af-blog-posts-content .blog-posts-sidebar {
             position: sticky;
             top: 16px;
+        }
+}
+
+/* NEW BLOG POST PAGE STYLES */
+.af-post-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 16px;
+}
+
+    .af-post-page .af-post-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 16px;
+        flex: 0;
+        flex-grow: 1;
+    }
+
+        .af-post-page .af-post-body .post-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: stretch;
+            align-items: stretch;
+            aspect-ratio: 2;
+            gap: 0;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
+            overflow: hidden;
+        }
+
+            .af-post-page .af-post-body .post-header img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border: none;
+            }
+
+        .af-post-page .af-post-body .post-body {
+            padding: 16px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            flex: 0;
+            flex-grow: 1;
+        }
+
+    .af-post-page .af-post-info {
+        flex-basis: clamp(240px, 25%, 420px);
+    }
+
+        .af-post-page .af-post-info > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 12px;
+            position: sticky;
+            top: 16px;
+        }
+
+@media (max-width: 480px) {
+    .af-post-page {
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+        .af-post-page .af-post-body .post-body {
+            padding: 0px;
+            background: none;
+            box-shadow: none;
+            border-radius: 0px;
+        }
+
+        .af-post-page .af-post-info {
+            position: sticky;
+            top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
         }
 }

@@ -104,21 +104,24 @@ namespace Fazilat.Controllers
         }
 
         [Route("Blog/Post/{id?}")]
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> Post(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            Post model = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Author)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if(model == null || !model.IsVisible)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(model);
         }
 
         [Route("Search/{title?}")]

@@ -15,9 +15,7 @@
         var postAuthor = lastPost.Author.FirstName + ' ' + lastPost.Author.LastName;
         <div class="blog-post horizontal">
             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@lastPost.Id">
-                <div>
-                    <img src="/images/blog/@imageFile" />
-                </div>
+                <img src="/images/blog/@imageFile" />
             </a>
             <div class="blog-post-content">
                 <div class="blog-post-body">
@@ -59,9 +57,7 @@
                         postAuthor = post.Author.FirstName + ' ' + post.Author.LastName;
                         <div class="blog-post @(c == 3 ? "horizontal" : "vertical")">
                             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
-                                <div>
-                                    <img src="/images/blog/@imageFile" />
-                                </div>
+                                <img src="/images/blog/@imageFile" />
                             </a>
                             <div class="blog-post-content">
                                 <div class="blog-post-body">
