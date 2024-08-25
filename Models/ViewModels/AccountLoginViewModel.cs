@@ -2,13 +2,13 @@
 
 namespace Fazilat.Models.ViewModels;
 
-public class AccountSignInViewModel
+public class AccountLoginViewModel
 {
     [Required]
-    [Display(Name = "نام کاربری")]
-    public string Username { get; set; }
+    [Display(Name = "Phone Number")]
+    public string PhoneNumber { get; set; }
 
     [Required]
-    [Display(Name = "رمز عبور")]
+    [Display(Name = "Password")]
     public string Password { get; set; }
 }

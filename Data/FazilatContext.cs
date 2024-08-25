@@ -16,6 +16,8 @@ public partial class FazilatContext : DbContext
     {
     }
 
+    public virtual DbSet<ActivityReport> ActivityReports { get; set; }
+
     public virtual DbSet<Address> Addresses { get; set; }
 
     public virtual DbSet<Adviser> Advisers { get; set; }
@@ -32,6 +34,8 @@ public partial class FazilatContext : DbContext
 
     public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
 
+    public virtual DbSet<Banner> Banners { get; set; }
+
     public virtual DbSet<BlogPost> BlogPosts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -40,9 +44,19 @@ public partial class FazilatContext : DbContext
 
     public virtual DbSet<Course> Courses { get; set; }
 
+    public virtual DbSet<Course1> Courses1 { get; set; }
+
     public virtual DbSet<Curriculum> Curricula { get; set; }
 
+    public virtual DbSet<Department> Departments { get; set; }
+
+    public virtual DbSet<Field> Fields { get; set; }
+
     public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
+
+    public virtual DbSet<Grade> Grades { get; set; }
+
+    public virtual DbSet<Invoice> Invoices { get; set; }
 
     public virtual DbSet<Learner> Learners { get; set; }
 
@@ -52,17 +66,33 @@ public partial class FazilatContext : DbContext
 
     public virtual DbSet<Message> Messages { get; set; }
 
+    public virtual DbSet<Message1> Messages1 { get; set; }
+
+    public virtual DbSet<Post> Posts { get; set; }
+
     public virtual DbSet<Province> Provinces { get; set; }
+
+    public virtual DbSet<Receipt> Receipts { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<RoleClaim> RoleClaims { get; set; }
 
+    public virtual DbSet<Schedule> Schedules { get; set; }
+
+    public virtual DbSet<SleepReport> SleepReports { get; set; }
+
     public virtual DbSet<Slide> Slides { get; set; }
+
+    public virtual DbSet<Slide1> Slides1 { get; set; }
+
+    public virtual DbSet<Task> Tasks { get; set; }
 
     public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<TicketInstruction> TicketInstructions { get; set; }
+
+    public virtual DbSet<Transaction> Transactions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -83,6 +113,24 @@ public partial class FazilatContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Persian_100_CI_AI");
+
+        modelBuilder.Entity<ActivityReport>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.Day, e.TaskId });
+
+            entity.Property(e => e.Day)
+                .HasMaxLength(10)
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.Duration).IsRequired();
+
+            entity.HasOne(d => d.Task).WithMany(p => p.ActivityReports)
+                .HasForeignKey(d => d.TaskId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.User).WithMany(p => p.ActivityReports)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
 
         modelBuilder.Entity<Address>(entity =>
         {
@@ -138,13 +186,70 @@ public partial class FazilatContext : DbContext
                 .IsUnique()
                 .HasFilter("([NormalizedUserName] IS NOT NULL)");
 
-            entity.Property(e => e.BirthDate)
-                .IsRequired()
-                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
             entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
+
+            entity.HasMany(d => d.Counsellors).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserCounsellor",
+                    r => r.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("CounsellorId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "CounsellorId");
+                        j.ToTable("UserCounsellors");
+                    });
+
+            entity.HasMany(d => d.Departments).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserDepartment",
+                    r => r.HasOne<Department>().WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "DepartmentId");
+                        j.ToTable("UserDepartments");
+                    });
+
+            entity.HasMany(d => d.Grades).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserGrade",
+                    r => r.HasOne<Grade>().WithMany()
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "GradeId");
+                        j.ToTable("UserGrades");
+                    });
+
+            entity.HasMany(d => d.Parents).WithMany(p => p.UsersNavigation)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserParent",
+                    r => r.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "ParentId");
+                        j.ToTable("UserParents");
+                    });
 
             entity.HasMany(d => d.Roles).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
@@ -156,6 +261,36 @@ public partial class FazilatContext : DbContext
                         j.HasKey("UserId", "RoleId");
                         j.ToTable("AspNetUserRoles");
                         j.HasIndex(new[] { "RoleId" }, "IX_AspNetUserRoles_RoleId");
+                    });
+
+            entity.HasMany(d => d.Users).WithMany(p => p.Counsellors)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserCounsellor",
+                    r => r.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("CounsellorId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "CounsellorId");
+                        j.ToTable("UserCounsellors");
+                    });
+
+            entity.HasMany(d => d.UsersNavigation).WithMany(p => p.Parents)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserParent",
+                    r => r.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    l => l.HasOne<AspNetUser>().WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull),
+                    j =>
+                    {
+                        j.HasKey("UserId", "ParentId");
+                        j.ToTable("UserParents");
                     });
         });
 
@@ -189,6 +324,19 @@ public partial class FazilatContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(128);
 
             entity.HasOne(d => d.User).WithMany(p => p.AspNetUserTokens).HasForeignKey(d => d.UserId);
+        });
+
+        modelBuilder.Entity<Banner>(entity =>
+        {
+            entity.HasIndex(e => e.Position, "IX_Banners_Position").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.IsActive).HasColumnName("isActive");
+
+            entity.HasOne(d => d.Image).WithMany(p => p.Banners)
+                .HasForeignKey(d => d.ImageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Banners_Media_ImageId");
         });
 
         modelBuilder.Entity<BlogPost>(entity =>
@@ -251,6 +399,22 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.Curriculum).WithMany(p => p.Courses).HasForeignKey(d => d.CurriculumId);
         });
 
+        modelBuilder.Entity<Course1>(entity =>
+        {
+            entity.ToTable("Courses");
+
+            entity.HasIndex(e => new { e.GradeId, e.Title }, "IX_Courses_Title").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Title)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.HasOne(d => d.Grade).WithMany(p => p.Course1s)
+                .HasForeignKey(d => d.GradeId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         modelBuilder.Entity<Curriculum>(entity =>
         {
             entity.ToTable("Curriculum");
@@ -266,6 +430,42 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Curricula).HasForeignKey(d => d.UserId);
         });
 
+        modelBuilder.Entity<Department>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "IX_Departments_Name").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.NormalizedName)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.PersianName)
+                .IsRequired()
+                .HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<Field>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "IX_Fields_Name").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.NormalizedName)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.PersianName)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.HasOne(d => d.Department).WithMany(p => p.Fields)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         modelBuilder.Entity<FinancialRecord>(entity =>
         {
             entity.ToTable("FinancialRecord");
@@ -279,6 +479,49 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.FinancialRecords).HasForeignKey(d => d.UserId);
         });
         modelBuilder.Entity<FinancialRecord>(entity => entity.Ignore("PaymentReceiptFile"));
+
+        modelBuilder.Entity<Grade>(entity =>
+        {
+            entity.HasIndex(e => e.NormalizedName, "IX_Grades_Name").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Name)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.NormalizedName)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.PersianName)
+                .IsRequired()
+                .HasMaxLength(256);
+
+            entity.HasOne(d => d.Field).WithMany(p => p.Grades)
+                .HasForeignKey(d => d.FieldId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Invoice>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CustomerId)
+                .IsRequired()
+                .HasMaxLength(450);
+            entity.Property(e => e.Discount)
+                .IsRequired()
+                .HasDefaultValueSql("((0))");
+            entity.Property(e => e.DueDate)
+                .IsRequired()
+                .HasDefaultValueSql("(format(dateadd(day,(7),getdate()),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.Issued)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.SubTotal).IsRequired();
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.Invoices)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Invoices_AspNetUsers_PayerId");
+        });
 
         modelBuilder.Entity<Learner>(entity =>
         {
@@ -354,6 +597,45 @@ public partial class FazilatContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
+        modelBuilder.Entity<Message1>(entity =>
+        {
+            entity.ToTable("Messages");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Body).IsRequired();
+            entity.Property(e => e.IsRead).HasColumnName("isRead");
+            entity.Property(e => e.Name).IsRequired();
+            entity.Property(e => e.Subject).IsRequired();
+            entity.Property(e => e.Submitted)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+
+            entity.HasOne(d => d.Department).WithMany(p => p.Message1s)
+                .HasForeignKey(d => d.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Post>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.AuthorId)
+                .IsRequired()
+                .HasMaxLength(450);
+            entity.Property(e => e.IsVisible).HasColumnName("isVisible");
+            entity.Property(e => e.Published)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+
+            entity.HasOne(d => d.Author).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.AuthorId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Header).WithMany(p => p.Posts)
+                .HasForeignKey(d => d.HeaderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Posts_Media_HeaderId");
+        });
+
         modelBuilder.Entity<Province>(entity =>
         {
             entity.HasIndex(e => e.Name, "IX_Provinces_Name").IsUnique();
@@ -362,6 +644,16 @@ public partial class FazilatContext : DbContext
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<Receipt>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+            entity.HasOne(d => d.Transaction).WithMany(p => p.Receipts)
+                .HasForeignKey(d => d.TransactionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Receipts_TransactionId");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -387,9 +679,84 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.RoleClaims).HasForeignKey(d => d.RoleId);
         });
 
+        modelBuilder.Entity<Schedule>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.CounsellorId)
+                .IsRequired()
+                .HasMaxLength(450);
+            entity.Property(e => e.Finish)
+                .IsRequired()
+                .HasDefaultValueSql("(format(dateadd(day,(7),getdate()),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.Start)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450);
+
+            entity.HasOne(d => d.Counsellor).WithMany(p => p.ScheduleCounsellors)
+                .HasForeignKey(d => d.CounsellorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Schedules_AspNetUsers_ConsellorId");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ScheduleUsers)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<SleepReport>(entity =>
+        {
+            entity.HasKey(e => new { e.UserId, e.Day });
+
+            entity.Property(e => e.Day)
+                .HasMaxLength(10)
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.BedTime).IsRequired();
+            entity.Property(e => e.InBed).IsRequired();
+            entity.Property(e => e.WakeUp).IsRequired();
+
+            entity.HasOne(d => d.User).WithMany(p => p.SleepReports)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         modelBuilder.Entity<Slide>(entity =>
         {
             entity.ToTable("Slide");
+        });
+
+        modelBuilder.Entity<Slide1>(entity =>
+        {
+            entity.ToTable("Slides");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Created)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+            entity.Property(e => e.IsVisible).HasColumnName("isVisible");
+
+            entity.HasOne(d => d.Image).WithMany(p => p.Slide1s)
+                .HasForeignKey(d => d.ImageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Slides_Media_ImageId");
+        });
+
+        modelBuilder.Entity<Task>(entity =>
+        {
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Instruction).IsRequired();
+            entity.Property(e => e.IsDone).HasColumnName("isDone");
+            entity.Property(e => e.Report).IsRequired();
+            entity.Property(e => e.Topics).IsRequired();
+
+            entity.HasOne(d => d.Course).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.CourseId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(d => d.Schedule).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.ScheduleId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         modelBuilder.Entity<Ticket>(entity =>
@@ -407,6 +774,26 @@ public partial class FazilatContext : DbContext
             entity.Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            entity.HasIndex(e => e.TrackingCode, "IX_Transactions_TrackingCode").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Amount).IsRequired();
+            entity.Property(e => e.Paid)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd hh:mm:ss','fa-IR'))");
+            entity.Property(e => e.Status)
+                .IsRequired()
+                .HasDefaultValueSql("((-1))");
+            entity.Property(e => e.TrackingCode).HasMaxLength(256);
+
+            entity.HasOne(d => d.Invoice).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.InvoiceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Transactions_InvoiceId");
         });
 
         modelBuilder.Entity<User>(entity =>

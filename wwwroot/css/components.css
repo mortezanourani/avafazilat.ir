@@ -1,0 +1,325 @@
+﻿/*
+ * Inputs Styles
+ **************/
+input {
+    outline: none;
+    border: none;
+}
+
+.input {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 12px;
+    width: inherit;
+    background: #FFFFFF;
+    border: 1px solid #A9A9A9;
+    border-radius: 8px;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+    .input:has(.input-validation-error),
+    .input:has(.input-validation-error) input,
+    .input.en:has(.input-validation-error) input {
+        border-color: #f04040;
+    }
+
+    .input img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .input input {
+        direction: rtl;
+        height: auto;
+        padding: 0px 12px 0 0;
+        border-right: 2px solid #A9A9A9;
+        font-weight: 300;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        text-align: right;
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        align-self: stretch;
+        flex-grow: 1;
+        flex-basis: 80%;
+        min-width: 0;
+    }
+
+        .input input:has(+input) {
+            flex-basis: 30%;
+        }
+
+        .input input + input {
+            flex-basis: 50%;
+            border: none;
+        }
+
+    .input.en,
+    .input.en * {
+        direction: ltr;
+    }
+
+        .input.en input {
+            border: none;
+            text-align: left;
+            padding: 0px 0 0 12px;
+            border-left: 2px solid #A9A9A9;
+        }
+/* Inputs Styles *** END */
+
+/*
+ * Button Types Styles
+ ********************/
+a.btn,
+button {
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    background: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    gap: 16px;
+    border-radius: 8px;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+    font-size: 16px;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+    button span {
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 300;
+        gap: 12px;
+        text-wrap: nowrap;
+    }
+
+    a.btn-ghost,
+    button.btn-ghost {
+        border: 2px solid #292D32;
+        color: #292D32;
+    }
+
+        a.btn-ghost.btn-invert,
+        button.btn-ghost.btn-invert {
+            border: 2px solid #FFFFFF;
+            color: #FFFFFF;
+        }
+
+    a.btn-cta,
+    button.btn-cta {
+        background: #228B22;
+        color: #FFFFFF;
+    }
+
+    a:has(button):hover {
+        text-decoration: none;
+    }
+    button.btn-next,
+    button.btn-previous {
+        padding: 6px 12px;
+        border: 1px solid #292D32;
+        line-height: 0;
+        color: #292D32;
+        gap: 8px;
+    }
+
+        button.btn-next:after,
+        button.btn-previous:before {
+            height: 18px;
+            content: url('/icons/next.svg');
+        }
+        button.btn-next:after {
+            content: url('/icons/next.svg');
+        }
+        button.btn-previous:before {
+            content: url('/icons/previous.svg');
+        }
+
+        button:disabled.btn-next,
+        button:disabled.btn-previous {
+            border-color: #a9a9a9;
+            color: #a9a9a9;
+        }
+            button:disabled.btn-next:after {
+                content: url('/icons/next-d.svg');
+            }
+            button:disabled.btn-previous:before {
+                content: url('/icons/previous-d.svg');
+            }
+
+@media (max-width: 480px) {
+    button.btn-next,
+    button.btn-previous {
+        width: 32px;
+        height: 32px;
+        font-size: 0;
+        gap: 0;
+    }
+}
+/* Button Type Styles *** END */
+
+/* 
+ * Blog Post Component Styles
+ ***************************/
+.blog-post {
+    display: flex;
+    justify-content: flex-start;
+    align-items: self-start;
+    gap: 16px;
+}
+
+    .blog-post.horizontal {
+        flex-direction: row;
+        flex-basis: 100%;
+    }
+
+    .blog-post.vertical {
+        flex-direction: column;
+        flex-basis: calc(50% - 8px);
+        max-width: calc(50% - 8px);
+    }
+
+    .blog-post .blog-post-image {
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        align-items: stretch;
+        background: #ffffff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 8px;
+        aspect-ratio: 1.75;
+        overflow: hidden;
+    }
+
+    .blog-post.horizontal .blog-post-image {
+        flex-basis: calc(50% - 8px);
+        align-self: stretch;
+    }
+
+    .blog-post.vertical .blog-post-image {
+        width: 100%;
+        overflow: hidden;
+    }
+
+        .blog-post .blog-post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+
+    .blog-post .blog-post-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 8px;
+        flex-grow: 1;
+    }
+
+    .blog-post.horizontal .blog-post-content {
+        flex-basis: calc(50% - 8px);
+        align-self: stretch;
+    }
+
+    .blog-post.vertical .blog-post-content {
+        width: 100%;
+    }
+
+    .blog-post .blog-post-content .blog-post-body {
+        display: flex;
+        justify-content: flex-end;
+        flex-grow: 1;
+        gap: 16px;
+    }
+
+    .blog-post.horizontal .blog-post-content .blog-post-body {
+        justify-content: space-between;
+        flex-direction: column;
+    }
+
+    .blog-post.vertical .blog-post-content .blog-post-body {
+        flex-direction: column-reverse;
+    }
+
+    .blog-post .blog-post-content .blog-post-body .blog-post-summary h5 {
+        font-weight: 600;
+        font-size: clamp(15px, 125%, 18px);
+        line-height: 32px;
+        max-height: 32px;
+        overflow: hidden;
+        color: #292D32;
+    }
+
+    .blog-post .blog-post-content .blog-post-body .blog-post-summary p {
+        font-weight: 400;
+        font-size: clamp(12px, 100%, 14px);
+        line-height: 24px;
+        max-height: 72px;
+        overflow: hidden;
+        color: #292D32;
+    }
+
+    .blog-post .blog-post-author {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 32px;
+    }
+
+        .blog-post .blog-post-author .post-author,
+        .blog-post .blog-post-author .post-publish {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            gap: 6px;
+            font-weight: 500;
+            font-size: 13px;
+            color: #777777;
+        }
+
+@media (max-width: 600px) {
+    .blog-post.horizontal,
+    .blog-post.vertical {
+        flex-direction: column;
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+        .blog-post.horizontal .blog-post-image,
+        .blog-post.vertical .blog-post-image {
+            flex-basis: auto;
+            width: 100%;
+        }
+
+        .blog-post.horizontal .blog-post-content,
+        .blog-post.vertical .blog-post-content {
+            flex-basis: auto;
+            width: 100%;
+        }
+
+            .blog-post.horizontal .blog-post-content .blog-post-body,
+            .blog-post.vertical .blog-post-content .blog-post-body {
+                flex-direction: column-reverse;
+            }
+}
+/* Blog Post Component Styles *** END */

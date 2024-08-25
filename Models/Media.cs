@@ -15,5 +15,11 @@ public partial class Media
 
     public string Uploaded { get; set; }
 
+    public virtual ICollection<Banner> Banners { get; set; } = new List<Banner>();
+
     public virtual Category Category { get; set; }
+
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
+
+    public virtual ICollection<Slide1> Slide1s { get; set; } = new List<Slide1>();
 }

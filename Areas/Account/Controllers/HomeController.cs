@@ -39,109 +39,11 @@ namespace Fazilat.Areas.Account.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-            return RedirectToAction("Index", "Dashboard");
-        }
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginModel loginModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(loginModel);
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u =>
-                u.PhoneNumber == loginModel.Username
-                || u.UserName == loginModel.Username);
-            if (user == null)
-            {
-                TempData["StatusMessage"] = "Error: کاربری با این مشخصات یافت نشد.";
-                return View(loginModel);
-            }
-            var username = user.UserName;
-
-            var result = await _signInManager.PasswordSignInAsync(username, loginModel.Password, loginModel.RememberMe, false);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
-
-            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
-            return View(loginModel);
-        }
-
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return Redirect("/");
-        }
-
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel registerModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(registerModel);
-            }
-
-            var userByUserName = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == registerModel.NationalCode);
-            var userByPhoneNumber = await _context.Users
-                .FirstOrDefaultAsync(u => u.PhoneNumber == registerModel.PhoneNumber);
-            if (userByUserName != null || userByPhoneNumber != null)
-            {
-                TempData["StatusMessage"] = "Error: کاربری با این مشخصات در سامانه حاضر است.";
-                return View(registerModel);
-            }
-
-            var user = new ApplicationUser();
-            await _userManager.SetUserNameAsync(user, registerModel.NationalCode);
-            await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
-
-            var result = await _userManager.CreateAsync(user, registerModel.Password);
-            if (result.Succeeded)
-            {
-                var role = await _roleManager.FindByNameAsync("User");
-                if (role != null)
-                {
-                    await _userManager.AddToRoleAsync(user, role.Name);
-                }
-
-                UserInformation userInfo = new UserInformation();
-                userInfo.UserId = user.Id;
-                userInfo.FirstName = registerModel.FirstName;
-                userInfo.LastName = registerModel.LastName;
-                await _context.AddAsync(userInfo);
-                await _context.SaveChangesAsync();
-
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("PersonalInfo", "Home");
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(registerModel);
         }
 
         public IActionResult ChangePassword()
