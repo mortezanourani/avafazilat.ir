@@ -667,98 +667,6 @@ ul {
         gap: 16px;
     }
 
-.af-home-contact {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    padding: 16px;
-    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.25));
-    background: url('/images/home-page-contact-background.jpg');
-    background-repeat: no-repeat;
-    background-position: right;
-    background-size: cover;
-    border-radius: 12px;
-    /* Inside auto layout */
-    flex: none;
-    order: 5;
-    align-self: stretch;
-    flex-grow: 0;
-    overflow: hidden;
-}
-
-    .af-home-contact > div {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: flex-start;
-        padding: 12% 16px 16px;
-        gap: 32px;
-        /* Inside auto layout */
-        flex: none;
-        order: 1;
-        align-self: stretch;
-        flex-grow: 1;
-        flex-basis: 50%;
-    }
-
-    .af-home-contact .contact-info {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: self-start;
-        gap: 16px;
-    }
-
-        .af-home-contact .contact-info img {
-            aspect-ratio: 1;
-            height: 28px;
-        }
-
-        .af-home-contact .contact-info h5 {
-            margin: 0;
-            font-weight: 600;
-            font-size: 18px;
-            line-height: 32px;
-            /* identical to box height, or 171% */
-            text-align: right;
-            color: #000000;
-        }
-
-@media (max-width: 1024px) {
-    .af-home-contact > div:first-child {
-        display: none;
-    }
-
-        .af-home-contact > div {
-            gap: 16px;
-            padding: 16% 16px 16px;
-        }
-}
-
-@media (max-width: 480px) {
-    .af-home-contact {
-        aspect-ratio: auto;
-    }
-
-        .af-home-contact > div {
-            gap: 16px;
-            padding: 25% 0 16px;
-        }
-
-            .af-home-contact > div:first-child {
-                display: none;
-            }
-
-        .af-home-contact .contact-info img {
-            height: 24px;
-        }
-
-        .af-home-contact .contact-info h5 {
-            font-size: 16px;
-        }
-}
-
 /* NEW BLOG PAGE STYLES */
 main:has(.af-blog-header){
     gap: 32px;
@@ -979,3 +887,39 @@ main:has(.af-blog-header){
             box-shadow: 0 2px 4px rgba(0, 0, 0, .25);
         }
 }
+
+/* NEW ABOUT PAGE STYLES */
+.af-about {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+    .af-about .af-about-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 64px 16px 16px;
+        gap: 16px;
+        background: #cde5f5;
+    }
+
+        .af-about .af-about-text h4 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 21px;
+            text-align: center;
+            color: #292D32;
+        }
+
+        .af-about .af-about-text p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 32px;
+            text-align: right;
+            color: #292D32;
+        }
+
+    .af-about .af-about-team {
+        min-height: 360px;
+        background: linear-gradient(#cde5f5 10%, transparent 80%);
+    }
