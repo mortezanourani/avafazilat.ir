@@ -15,36 +15,7 @@
         </div>
     </div>
     <div class="af-about-leaders">
-        <div class="leaderboard">
-            <button class="btn">
-                <img src="/icons/previous.svg" />
-            </button>
-            <div class="leaders-list">
-                <div class="leader">
-                    <img class="leader-profile" />
-                    <h6 class="leader-name"></h6>
-                    <p class="leader-role"></p>
-                </div>
-                <div class="leader">
-                    <img class="leader-profile" />
-                    <h6 class="leader-name"></h6>
-                    <p class="leader-role"></p>
-                </div>
-                <div class="leader">
-                    <img class="leader-profile" />
-                    <h6 class="leader-name"></h6>
-                    <p class="leader-role"></p>
-                </div>
-                <div class="leader">
-                    <img class="leader-profile" />
-                    <h6 class="leader-name"></h6>
-                    <p class="leader-role"></p>
-                </div>
-            </div>
-            <button class="btn">
-                <img src="/icons/next.svg" />
-            </button>
-        </div>
+        @Html.PartialAsync("~/Views/_Components/_LeaderBoard.cshtml").Result
     </div>
 </section>
 

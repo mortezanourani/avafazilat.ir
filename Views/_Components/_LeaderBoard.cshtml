@@ -1,0 +1,92 @@
+﻿<div class="leaderboard">
+    <button id="leaderboardPreviousButton" class="btn" onclick="handlePrevious()">
+        <img src="/icons/previous.svg" />
+    </button>
+    <div id="leaders" class="leaders-list">
+        <div class="leader">
+            <img class="leader-profile" />
+            <div>
+                <h6 class="leader-name">علیرضا ندرلو</h6>
+                <p class="leader-role">
+                    مدیر عامل
+                    <br />
+                    مدیر ارشد گروه طراحی آموزشی
+                </p>
+            </div>
+        </div>
+        <div class="leader">
+            <img class="leader-profile" />
+            <div>
+                <h6 class="leader-name">فرهاد فرخنده</h6>
+                <p class="leader-role">
+                    رپیس هیات مدیره
+                    <br />
+                    مدیر ارشد دیجیتال مارکتینگ
+                </p>
+            </div>
+        </div>
+        <div class="leader">
+            <img class="leader-profile" />
+            <div>
+                <h6 class="leader-name">مرتضی نورانی</h6>
+                <p class="leader-role">
+                    مدیر تیم پشتیبانی فنی
+                </p>
+            </div>
+        </div>
+        <div class="leader">
+            <img class="leader-profile" />
+            <div>
+                <h6 class="leader-name">الهه شیرین وند</h6>
+                <p class="leader-role">
+                    مدیر تیم پشتیبانی فنی
+                </p>
+            </div>
+        </div>
+        <div class="leader">
+            <img class="leader-profile" />
+            <div>
+                <h6 class="leader-name">الهه شیرین وند</h6>
+                <p class="leader-role">
+                    مدیر تیم پشتیبانی فنی
+                </p>
+            </div>
+        </div>
+    </div>
+    <button id="leaderboardNextButton" class="btn" onclick="handleNext()">
+        <img src="/icons/next.svg" />
+    </button>
+</div>
+
+<script>
+    let leadersWrapper = document.getElementById("leaders");
+    let leaderItems = document.getElementsByClassName("leader");
+    let scrollStep = leaderItems.item(0).offsetWidth + 16;
+
+    const navigatorStatus = setInterval(() => {
+        if (!leadersWrapper)
+            return clearInterval(navigatorStatus);
+
+        let previousButton = document.getElementById("leaderboardPreviousButton");
+        let previousButtonDisabled = leadersWrapper.scrollLeft >= 0;
+        previousButton.disabled = previousButtonDisabled;
+
+        let nextButton = document.getElementById("leaderboardNextButton");
+        let nextButtonDisabled = (leadersWrapper.scrollLeft <= leadersWrapper.offsetWidth - leadersWrapper.scrollWidth);
+        nextButton.disabled = nextButtonDisabled;
+    }, 0);
+
+    const handlePrevious = () => {
+        leadersWrapper.scroll({
+            left: leadersWrapper.scrollLeft + scrollStep,
+            behavior: "smooth"
+        });
+    }
+
+    const handleNext = () => {
+        leadersWrapper.scroll({
+            left: leadersWrapper.scrollLeft - scrollStep,
+            behavior: "smooth"
+        });
+    }
+</script>
