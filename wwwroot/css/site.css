@@ -919,7 +919,6 @@ main:has(.af-blog-header){
             color: #292D32;
         }
 
-    .af-about .af-about-team {
-        min-height: 360px;
+    .af-about .af-about-leaders {
         background: linear-gradient(#cde5f5 10%, transparent 80%);
     }
