@@ -20,18 +20,5 @@
 </section>
 
 <section class="af-contact-card">
-    <div>
-        <div class="contact-info contact-whatsapp">
-            <img src="/icons/whatsapp-blue.svg" />
-            <h5 class="en">0936 204 6937</h5>
-        </div>
-        <div class="contact-info contact-phone">
-            <img src="/icons/phone-blue.svg" />
-            <h5 class="en">021 - 23456789</h5>
-        </div>
-        <div class="contact-info contact-address">
-            <img src="/icons/location-blue.svg" />
-            <h5>تهران، قلهک، خیابان دکتر شریعتی، بالاتر از میرداماد، کوچه احمدیه یکم، پلاک 10، واحد 7</h5>
-        </div>
-    </div>
+    @Html.PartialAsync("~/Views/_Components/_ContactCard.cshtml").Result
 </section>

@@ -58,7 +58,7 @@ public class AccountController : Controller
                 return View(model);
             }
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Panel");
         }
         else
         {
@@ -92,7 +92,7 @@ public class AccountController : Controller
             await _userManager.AddToRoleAsync(user, "User");
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Panel");
         }
     }
 

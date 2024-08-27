@@ -183,7 +183,7 @@ button {
 /*
  * Contact Card Styles
  ********************/
-.af-contact-card {
+.contact-card {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -203,7 +203,7 @@ button {
     overflow: hidden;
 }
 
-    .af-contact-card > div {
+    .contact-card .contact-info {
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -219,20 +219,22 @@ button {
         margin-right: calc(50% - 16px);
     }
 
-    .af-contact-card .contact-info {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: self-start;
-        gap: 16px;
-    }
+        .contact-card .contact-info .contact-whatsapp,
+        .contact-card .contact-info .contact-phone,
+        .contact-card .contact-info .contact-address {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: self-start;
+            gap: 16px;
+        }
 
-        .af-contact-card .contact-info img {
+        .contact-card .contact-info img {
             aspect-ratio: 1;
             height: 28px;
         }
 
-        .af-contact-card .contact-info h5 {
+        .contact-card .contact-info h5 {
             margin: 0;
             font-weight: 600;
             font-size: 18px;
@@ -243,7 +245,7 @@ button {
         }
 
 @media (max-width: 1024px) {
-    .af-contact-card > div {
+    .contact-card .contact-info {
         margin: 0;
         gap: 16px;
         padding: 16% 16px 16px;
@@ -251,22 +253,22 @@ button {
 }
 
 @media (max-width: 480px) {
-    .af-contact-card {
+    .contact-card {
         aspect-ratio: auto;
     }
 
-        .af-contact-card > div {
+        .contact-card .contact-info {
             gap: 16px;
             margin: 0;
             padding: 25% 0 16px;
         }
 
 
-        .af-contact-card .contact-info img {
+        .contact-card .contact-info img {
             height: 24px;
         }
 
-        .af-contact-card .contact-info h5 {
+        .contact-card .contact-info h5 {
             font-size: 16px;
         }
 }
