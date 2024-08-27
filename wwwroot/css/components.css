@@ -100,6 +100,11 @@ button {
     cursor: pointer;
 }
 
+    a.btn:focus,
+    button:focus {
+        box-shadow: none !important;
+    }
+
     button span {
         overflow: hidden;
         display: inline-flex;
@@ -174,6 +179,100 @@ button {
     }
 }
 /* Button Type Styles *** END */
+
+/*
+ * Contact Card Styles
+ ********************/
+.contact-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 16px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    background: url('/images/home-page-contact-background.jpg');
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: cover;
+    border-radius: 12px;
+    /* Inside auto layout */
+    flex: none;
+    order: 5;
+    align-self: stretch;
+    flex-grow: 0;
+    overflow: hidden;
+}
+
+    .contact-card .contact-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 12% 16px 16px;
+        gap: 32px;
+        /* Inside auto layout */
+        flex: none;
+        order: 1;
+        align-self: stretch;
+        flex-grow: 1;
+        flex-basis: 50%;
+        margin-right: calc(50% - 16px);
+    }
+
+        .contact-card .contact-info .contact-whatsapp,
+        .contact-card .contact-info .contact-phone,
+        .contact-card .contact-info .contact-address {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: self-start;
+            gap: 16px;
+        }
+
+        .contact-card .contact-info img {
+            aspect-ratio: 1;
+            height: 28px;
+        }
+
+        .contact-card .contact-info h5 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 32px;
+            /* identical to box height, or 171% */
+            text-align: right;
+            color: #000000;
+        }
+
+@media (max-width: 1024px) {
+    .contact-card .contact-info {
+        margin: 0;
+        gap: 16px;
+        padding: 16% 16px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-card {
+        aspect-ratio: auto;
+    }
+
+        .contact-card .contact-info {
+            gap: 16px;
+            margin: 0;
+            padding: 25% 0 16px;
+        }
+
+
+        .contact-card .contact-info img {
+            height: 24px;
+        }
+
+        .contact-card .contact-info h5 {
+            font-size: 16px;
+        }
+}
+/* Contact Card Styles *** END */
 
 /* 
  * Blog Post Component Styles
@@ -323,3 +422,116 @@ button {
             }
 }
 /* Blog Post Component Styles *** END */
+
+/* 
+ * Leaderboard Component Styles
+ *****************************/
+.leaderboard {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 16px 11px;
+    gap: 24px;
+}
+
+    .leaderboard button {
+        flex-basis: 5%;
+    }
+
+    .leaderboard button img {
+        height: 32px;
+    }
+
+    .leaderboard .leaders-list {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0px 5px;
+        gap: 16px;
+        /* Inside auto layout */
+        flex: 0;
+        order: 0;
+        flex-basis: 100%;
+        align-self: stretch;
+        flex-grow: 1;
+        overflow: hidden;
+        overflow-x: scroll;
+        padding-bottom: 16px;
+        margin-bottom: -33px;
+    }
+
+    .leaderboard .leaders-list .leader {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px 16px 32px;
+        gap: 16px;
+        background: #FFFFFF;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 12px;
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        align-self: stretch;
+        flex-grow: 0;
+        flex-basis: calc(25% - 12px);
+    }
+
+        .leaderboard .leaders-list .leader img.leader-profile {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .leaderboard .leaders-list .leader .leader-name {
+            margin: 0;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            text-align: right;
+            color: #292D32;
+        }
+
+        .leaderboard .leaders-list .leader .leader-role {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            text-align: right;
+            color: #292D32;
+        }
+
+@media (max-width: 1023px) {
+    .leaderboard .leaders-list {
+        flex-grow: 1;
+        flex-basis: 100%;
+    }
+
+    .leaderboard .leaders-list .leader {
+        flex-basis: calc(33% - 8px);
+    }
+}
+
+@media (max-width: 480px) {
+    .leaderboard {
+        padding: 0 16px;
+    }
+
+        .leaderboard button {
+            display: none;
+        }
+
+        .leaderboard .leaders-list {
+            padding: 0;
+            padding-bottom: 16px;
+            margin-bottom: -12px;
+        }
+
+        .leaderboard .leaders-list .leader {
+            flex-basis: 75%;
+        }
+}
+/* Leaderboard Component Styles *** END */
