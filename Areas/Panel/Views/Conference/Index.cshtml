@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Fazilat.Models.Landing>
+
+@{
+    ViewData["Title"] = "ثبت نامی های همایش";
+    Layout = "~/Areas/Account/Views/Shared/_Layout.cshtml";
+}
+
+<h5 class="text-secondary" style="font-weight: 600;">فهرست شماره تماس ها</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>
+                شماره تماس
+            </th>
+            <th>
+                تاریخ ثبت نام
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int c = 1;
+            foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @c
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Submitted)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
