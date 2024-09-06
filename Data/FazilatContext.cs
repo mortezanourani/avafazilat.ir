@@ -280,6 +280,21 @@ public partial class FazilatContext : DbContext
         });
         modelBuilder.Entity<FinancialRecord>(entity => entity.Ignore("PaymentReceiptFile"));
 
+        modelBuilder.Entity<Landing>(entity =>
+        {
+            entity.ToTable("Landing");
+
+            entity.HasIndex(e => e.Phone, "IX_Landing_Phone").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Phone)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.Submitted)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+        });
+
         modelBuilder.Entity<Learner>(entity =>
         {
             entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
@@ -544,4 +559,6 @@ public partial class FazilatContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+public DbSet<Fazilat.Models.Landing> Landing { get; set; }
 }
