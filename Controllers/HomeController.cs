@@ -34,6 +34,7 @@ namespace Fazilat.Controllers
                 .ToListAsync();
             if(slides.Count == 0)
             {
+                return RedirectToAction("Conference");
                 return RedirectToAction("Reserve");
             }
 
