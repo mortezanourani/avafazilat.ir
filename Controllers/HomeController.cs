@@ -62,54 +62,6 @@ namespace Fazilat.Controllers
             return View(model);
         }
 
-        [Route("Conference/")]
-        public async Task<IActionResult> Conference()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("Conference/")]
-        public async Task<IActionResult> Conference(Landing model)
-        {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError(string.Empty, "Error");
-                return View(model);
-            }
-
-            var phone = await _context.Landing
-                .FirstOrDefaultAsync(l => l.Phone == model.Phone);
-            if(phone != null)
-            {
-                ModelState.AddModelError(string.Empty, "این شماره تماس قبلا ثبت شده است.");
-                return View(model);
-            }
-
-            try
-            {
-                await _context.AddAsync(model);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError(string.Empty, e.Message);
-                return View(model);
-            }
-
-            return RedirectToAction("ConferenceDone", "Home");
-        }
-
-        [Route("ConferenceDone/")]
-        public IActionResult ConferenceDone()
-        {
-            return View();
-        }
-
-        [Route("Blog/")]
-        public async Task<IActionResult> Blog()
-
         [Route("Blog/{offset?}")]
         public async Task<IActionResult> Blog(int offset)
         {
