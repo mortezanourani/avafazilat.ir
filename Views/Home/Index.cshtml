@@ -8,27 +8,21 @@
         @foreach (var slide in Model.Slider)
         {
             var imageFile = slide.Image.FileName + slide.Image.Extension;
-            var imageDirectory = slide.Image.Category.NormalizedName.ToLower();
-
             <div class="slides">
-                <a href="@slide.Link">
-                    <img src="/images/@imageDirectory/@imageFile">
+                <a href="#">
+                    <img src="/images/slide/@imageFile">
                 </a>
             </div>
         }
     </div>
 
     <div class="af-home-event">
-        <a asp-area="" asp-controller="Home" asp-action="Conference">
-            <img src="/images/event.png" />
-        </a>
+
     </div>
 </header>
 
-@*
 <section class="af-home-banners">
 </section>
- *@
 
 <section class="af-home-register-cta">
     <h4>با یک حساب کاربری می توانید از تمامی خدمات فوق استفاده کنید.</h4>
@@ -46,11 +40,10 @@
             foreach (var post in Model.Blog)
             {
                 var imageFile = post.Header.FileName + post.Header.Extension;
-                var imageDirectory = post.Header.Category.NormalizedName.ToLower();
                 var author = post.Author.FirstName + ' ' + post.Author.LastName;
                 <div class="blog-post @(horizontal ? "horizontal" : "vertical")">
                     <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
-                        <img src="/images/@imageDirectory/@imageFile" />
+                        <img src="/images/blog/@imageFile" />
                     </a>
                     <div class="blog-post-content">
                         <div class="blog-post-body">
@@ -70,7 +63,7 @@
                             </div>
                         </div>
                         <div class="blog-post-tags">
-                            <!-- Tags -->
+                            Tags
                         </div>
                     </div>
                 </div>
