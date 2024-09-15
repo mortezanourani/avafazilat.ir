@@ -34,17 +34,20 @@ namespace Fazilat.Controllers
         {
             var slider = await _context.Slides1
                 .Include(s => s.Image)
+                .Include(s => s.Image.Category)
                 .Where(s => s.IsVisible == true)
                 .ToListAsync();
 
             var banners = await _context.Banners
                 .Include(b => b.Image)
+                .Include(b => b.Image.Category)
                 .Where(b => b.IsActive)
                 .OrderByDescending(b => b.Position)
                 .ToListAsync();
 
             var blog = await _context.Posts
                 .Include(p => p.Header)
+                .Include(p => p.Header.Category)
                 .Include(p => p.Author)
                 .Where(p => p.IsVisible == true)
                 .OrderByDescending(p => p.Published)
@@ -72,6 +75,7 @@ namespace Fazilat.Controllers
 
             Post lastPost = await _context.Posts
                 .Include(p => p.Header)
+                .Include(p => p.Header.Category)
                 .Include(p => p.Author)
                 .Where(p => p.IsVisible)
                 .OrderByDescending(p => p.Published)
@@ -79,6 +83,7 @@ namespace Fazilat.Controllers
 
             ICollection<Post> postsList = await _context.Posts
                 .Include(p => p.Header)
+                .Include(p => p.Header.Category)
                 .Include(p => p.Author)
                 .Where(p => p.IsVisible)
                 .OrderByDescending(p => p.Published)
@@ -113,6 +118,7 @@ namespace Fazilat.Controllers
 
             Post model = await _context.Posts
                 .Include(p => p.Header)
+                .Include(p => p.Header.Category)
                 .Include(p => p.Author)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
