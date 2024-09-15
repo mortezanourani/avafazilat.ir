@@ -1,44 +1,35 @@
-﻿@using System.Globalization;
-@model Fazilat.Models.BlogPost;
+﻿@model Post;
 
 @{
     ViewData["Title"] = Model.Title;
-    var date = Model.Date;
-    PersianCalendar pc = new PersianCalendar();
+
+    var imageFile = Model.Header.FileName + Model.Header.Extension;
+    var imageDirectory = Model.Header.Category.NormalizedName.ToLower();
 }
 
-<div class="text-center alert alert-fazilat rounded-lg box-shadow overflow-hidden">
-    <h3 class="my-2 text-bold">@ViewData["Title"]</h3>
-    <div class="badge border border-light text-light mt-2">
-        @string.Format("{0} {1} {2} {3}",
-            pc.GetDayOfWeek(date).ToString()
-                .Replace("Saturday", "شنبه")
-                .Replace("Sunday", "یکشنبه")
-                .Replace("Monday", "دوشنبه")
-                .Replace("Tuesday", "سه شنبه")
-                .Replace("Wednesday", "چهارشنبه")
-                .Replace("Thursday", "پنج شنبه")
-                .Replace("Friday", "جمعه"),
-            pc.GetDayOfMonth(date),
-            pc.GetMonth(date).ToString()
-                .Replace("1", "فروردین")
-                .Replace("2", "اردیبهشت")
-                .Replace("3", "خرداد")
-                .Replace("4", "تیر")
-                .Replace("5", "مرداد")
-                .Replace("6", "شهریور")
-                .Replace("7", "مهر")
-                .Replace("8", "آبان")
-                .Replace("9", "آذر")
-                .Replace("10", "دی")
-                .Replace("11", "بهمن")
-                .Replace("12", "اسفند"),
-            pc.GetYear(date))
-    </div>
-</div>
-<hr />
-
-<div class="border border-success rounded-lg p-3 text-right about">
-    <img src="/images/blog/@Model.Image" class="w-100 mb-3 border border-success rounded-lg" />
-    @Html.Raw(Model.Content.Replace("\r\n", "<br>"))
-</div>
+<section class="af-post-page">
+    <article class="af-post-body">
+        <header class="post-header">
+            <img src="/images/@imageDirectory/@imageFile" />
+        </header>
+        <div class="post-body">
+            @Html.Raw(Model.Body.Replace("\r\n", "<br />"))
+        </div>
+    </article>
+    <aside class="af-post-info">
+        <div>
+            <h5 class="post-title">@Model.Title</h5>
+            <div class="post-author">
+                <img src="/icons/author.svg" />
+                @Model.Author.FirstName @Model.Author.LastName
+            </div>
+            <div class="post-publish">
+                <img src="/icons/publish.svg" />
+                @Model.Published
+            </div>
+            <div class="post-tags">
+                <!-- Model.Tags -->
+            </div>
+        </div>
+    </aside>
+</section>

@@ -1,0 +1,39 @@
+﻿<nav class="primary-nav">
+    <input type="checkbox" title="Navigation menu" class="menu-toggler" />
+
+    @* Brand *@
+    <a class="primary-nav-brand" href="/">
+        <img class="brand-icon" src="/favicon.svg" />
+    </a>
+
+    @* Main Menu *@
+    <div class="primary-nav-container">
+        <div class="primary-nav-curtain"></div>
+        <div class="primary-nav-menu">
+            <div class="menu-item">
+                <a class="nav-link" asp-area="" asp-controller="Workshops" asp-action="Index">کلاس های ویژه امتحان نهایی</a>
+                @* <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">دوره های آموزشی</a> *@
+            </div>
+            <div class="menu-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Reserve">مشاوره انتخاب رشته</a>
+                @* <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">انتخاب رشته</a> *@
+            </div>
+            <div class="menu-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">درباره ما</a>
+                @* <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">مشاوره روانشناسی</a> *@
+            </div>
+            <div class="menu-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Blog" asp-route-id="">خبرنامه</a>
+                @* <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">خبرنامه</a> *@
+            </div>
+        </div>
+        <div class="primary-nav-search-bar">
+            <img src="/icons/search.svg" />
+            <input type="search" placeholder="جستجو" />
+        </div>
+    </div>
+
+    <a class="primary-nav-account" asp-area="" asp-controller="Account" asp-action="Index">
+        <img src="/icons/user.svg" />
+    </a>
+</nav>

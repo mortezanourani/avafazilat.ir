@@ -1,4 +1,5 @@
 ﻿using Fazilat.Models;
+using Fazilat.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Fazilat.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Fazilat.Controllers
 {
@@ -30,24 +32,33 @@ namespace Fazilat.Controllers
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            var slides = await _context.Slides
+            var slider = await _context.Slides1
+                .Include(s => s.Image)
+                .Include(s => s.Image.Category)
+                .Where(s => s.IsVisible == true)
                 .ToListAsync();
-            if(slides.Count == 0)
-            {
-                return RedirectToAction("Conference");
-                return RedirectToAction("Reserve");
-            }
 
-            var news = await _context.BlogPosts
+            var banners = await _context.Banners
+                .Include(b => b.Image)
+                .Include(b => b.Image.Category)
+                .Where(b => b.IsActive)
+                .OrderByDescending(b => b.Position)
+                .ToListAsync();
+
+            var blog = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Header.Category)
+                .Include(p => p.Author)
                 .Where(p => p.IsVisible == true)
-                .OrderByDescending(p => p.Date)
+                .OrderByDescending(p => p.Published)
+                .Take(3)
                 .ToListAsync();
 
-            var model = new HomeViewModel()
-            {
-                Slides = slides,
-                News = news.SkipLast(Math.Max(0, news.Count() - 3)).ToList(),
-            };
+            var model = new HomeViewModel();
+            model.Slider = slider;
+            model.Banners = banners;
+            model.Blog = blog;
+
             return View(model);
         }
 
@@ -98,29 +109,73 @@ namespace Fazilat.Controllers
 
         [Route("Blog/")]
         public async Task<IActionResult> Blog()
+
+        [Route("Blog/{offset?}")]
+        public async Task<IActionResult> Blog(int offset)
         {
-            return View(await _context.BlogPosts
-                .Where(m => m.IsVisible == true)
-                .OrderByDescending(m => m.Date)
-                .ToListAsync());
+            int limit = 5;
+
+            var postsCount = _context.Posts
+                .Where(p => p.IsVisible)
+                .Count();
+            int pageCount = (int)Math.Ceiling((double)postsCount / limit);
+            int offsetMax = pageCount - 1;
+
+            Post lastPost = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Header.Category)
+                .Include(p => p.Author)
+                .Where(p => p.IsVisible)
+                .OrderByDescending(p => p.Published)
+                .FirstOrDefaultAsync();
+
+            ICollection<Post> postsList = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Header.Category)
+                .Include(p => p.Author)
+                .Where(p => p.IsVisible)
+                .OrderByDescending(p => p.Published)
+                .Skip((offset * limit) + 1)
+                .Take(5)
+                .ToListAsync();
+
+            ICollection<AspNetUser> authorsList = await _context.AspNetUsers
+                .Include(u => u.Posts)
+                .Where(u => u.Posts
+                    .Any(p => p.IsVisible == true))
+                .ToListAsync();
+
+            BlogViewModels model = new BlogViewModels();
+            model.LastPost = lastPost;
+            model.PostsList = postsList;
+            model.Offset = offset;
+            model.hasPrevious = offset > 0;
+            model.hasNext = offset < offsetMax;
+            model.AuthorsList = authorsList;
+
+            return View(model);
         }
 
         [Route("Blog/Post/{id?}")]
-        public async Task<IActionResult> Post(string id)
+        public async Task<IActionResult> Post(Guid id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var blogPost = await _context.BlogPosts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (blogPost == null)
+            Post model = await _context.Posts
+                .Include(p => p.Header)
+                .Include(p => p.Header.Category)
+                .Include(p => p.Author)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if(model == null || !model.IsVisible)
             {
                 return NotFound();
             }
 
-            return View(blogPost);
+            return View(model);
         }
 
         [Route("Search/{title?}")]
