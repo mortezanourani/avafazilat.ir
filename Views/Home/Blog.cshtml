@@ -12,10 +12,11 @@
     @{
         var lastPost = Model.LastPost;
         var imageFile = lastPost.Header.FileName + lastPost.Header.Extension;
+        var imageDirectory = lastPost.Header.Category.NormalizedName.ToLower();
         var postAuthor = lastPost.Author.FirstName + ' ' + lastPost.Author.LastName;
         <div class="blog-post horizontal">
             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@lastPost.Id">
-                <img src="/images/blog/@imageFile" />
+                <img src="/images/@imageDirectory/@imageFile" />
             </a>
             <div class="blog-post-content">
                 <div class="blog-post-body">
@@ -35,7 +36,7 @@
                     </div>
                 </div>
                 <div class="blog-post-tags">
-                    Tags
+                    <!-- Tags -->
                 </div>
             </div>
         </div>
@@ -54,10 +55,11 @@
                     {
                         c++;
                         imageFile = post.Header.FileName + post.Header.Extension;
+                        imageDirectory = post.Header.Category.NormalizedName.ToLower();
                         postAuthor = post.Author.FirstName + ' ' + post.Author.LastName;
                         <div class="blog-post @(c == 3 ? "horizontal" : "vertical")">
                             <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
-                                <img src="/images/blog/@imageFile" />
+                                <img src="/images/@imageDirectory/@imageFile" />
                             </a>
                             <div class="blog-post-content">
                                 <div class="blog-post-body">
@@ -77,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="blog-post-tags">
-                                    Tags
+                                    <!-- Tags -->
                                 </div>
                             </div>
                         </div>
@@ -118,7 +120,7 @@
             <div>
                 <div class="sidebar-tags">
                     <h6>فهرست موضوعات</h6>
-                    <p>Post Tags</p>
+                    @* <p>Post Tags</p> *@
                 </div>
 
                 <div class="sidebar-authors">

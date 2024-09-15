@@ -2,12 +2,15 @@
 
 @{
     ViewData["Title"] = Model.Title;
+
+    var imageFile = Model.Header.FileName + Model.Header.Extension;
+    var imageDirectory = Model.Header.Category.NormalizedName.ToLower();
 }
 
 <section class="af-post-page">
     <article class="af-post-body">
         <header class="post-header">
-            <img src="/images/blog/@Model.Header.FileName@Model.Header.Extension" />
+            <img src="/images/@imageDirectory/@imageFile" />
         </header>
         <div class="post-body">
             @Html.Raw(Model.Body.Replace("\r\n", "<br />"))
@@ -25,7 +28,7 @@
                 @Model.Published
             </div>
             <div class="post-tags">
-                Model.Tags
+                <!-- Model.Tags -->
             </div>
         </div>
     </aside>
