@@ -182,7 +182,11 @@ namespace Fazilat.Areas.Panel.Controllers
                 return false;
             }
             string fileName = string.Join("", media.FileName, media.Extension);
-            string dirPath = Path.Combine("images", media.CategoryId.ToString());
+
+            var categoryName = _context.Categories
+                .FirstOrDefaultAsync(c => c.Id == media.CategoryId)
+                .Result.NormalizedName.ToLower();
+            string dirPath = Path.Combine("wwwroot/images", categoryName);
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -202,7 +206,11 @@ namespace Fazilat.Areas.Panel.Controllers
                 return false;
             }
             string fileName = string.Join("", media.FileName, media.Extension);
-            string dirPath = Path.Combine("images", media.CategoryId.ToString());
+
+            var categoryName = _context.Categories
+                .FirstOrDefaultAsync(c => c.Id == media.CategoryId)
+                .Result.NormalizedName.ToLower();
+            string dirPath = Path.Combine("wwwroot/images", categoryName);
             string filePath = Path.Combine(dirPath, fileName);
             System.IO.File.Delete(filePath);
             return true;
