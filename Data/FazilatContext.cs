@@ -58,6 +58,8 @@ public partial class FazilatContext : DbContext
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
+    public virtual DbSet<Landing> Landing { get; set; }
+    
     public virtual DbSet<Learner> Learners { get; set; }
 
     public virtual DbSet<Media> Medias { get; set; }
@@ -479,6 +481,21 @@ public partial class FazilatContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.FinancialRecords).HasForeignKey(d => d.UserId);
         });
         modelBuilder.Entity<FinancialRecord>(entity => entity.Ignore("PaymentReceiptFile"));
+
+        modelBuilder.Entity<Landing>(entity =>
+        {
+            entity.ToTable("Landing");
+
+            entity.HasIndex(e => e.Phone, "IX_Landing_Phone").IsUnique();
+
+            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Phone)
+                .IsRequired()
+                .HasMaxLength(256);
+            entity.Property(e => e.Submitted)
+                .IsRequired()
+                .HasDefaultValueSql("(format(getdate(),'yyyy-MM-dd','fa-IR'))");
+        });
 
         modelBuilder.Entity<Grade>(entity =>
         {
