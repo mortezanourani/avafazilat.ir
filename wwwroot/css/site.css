@@ -956,9 +956,11 @@ main:has(.af-blog-header){
 
 /* Landing Page */
 .landing-page {
-    margin: 0 -15px;
+    margin: 0;
     height: calc(100vh - 108px);
     background: linear-gradient(#90EBF3 60%, #10BBCA 60%, #10BBCA 80%, #fff 80%);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
     .landing-page .landing-content {
