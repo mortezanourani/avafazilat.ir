@@ -1,4 +1,4 @@
-﻿@import url(/fonts/font.css);
+﻿@import url(fontiran.css);
 
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
@@ -957,7 +957,7 @@ main:has(.af-blog-header){
 /* Landing Page */
 .landing-page {
     margin: 0;
-    height: calc(100vh - 108px);
+    min-height: calc(100vh - 108px);
     background: linear-gradient(#90EBF3 60%, #10BBCA 60%, #10BBCA 80%, #fff 80%);
     border-radius: 12px;
     overflow: hidden;
@@ -975,6 +975,10 @@ main:has(.af-blog-header){
             flex-basis: 60%;
             padding: 32px 24px 16px 0;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: stretch;
         }
 
             .landing-page .landing-content .row-1 .primary-title {
@@ -987,12 +991,13 @@ main:has(.af-blog-header){
                 color: #ffffff;
                 font-size: 24px;
                 font-weight: 600;
-                -webkit-text-stroke: 2px #1B549F;
+                -webkit-text-stroke: 1px #1B549F;
                 text-shadow: 2px 2px 4px gray;
             }
 
             .landing-page .landing-content .row-1 .title-text {
                 color: #E16625;
+                margin-bottom: 12px
             }
 
             .landing-page .landing-content .row-1 > div {
@@ -1004,22 +1009,23 @@ main:has(.af-blog-header){
             }
 
                 .landing-page .landing-content .row-1 > div .tags {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    justify-content: stretch;
-                    align-items: stretch;
+                    display: grid;
+                    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
                     gap: 12px;
+                    flex-grow: 1;
+                    flex-basis: 100%;
+                    align-self: stretch;
                 }
 
                     .landing-page .landing-content .row-1 > div .tags p {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         text-wrap: nowrap;
                         background: #91C43B;
                         border-radius: 999px;
-                        height: 36px;
-                        font-size: 12px;
-                        line-height: 28px;
-                        font-weight: 600;
+                        font-size: 14px;
+                        font-weight: bold;
                         padding: 4px 8px;
                         margin: 0;
                     }
@@ -1029,6 +1035,7 @@ main:has(.af-blog-header){
                     flex-direction: column;
                     justify-content: space-between;
                     align-items: stretch;
+                    align-self: stretch;
                     gap: 12px;
                 }
 
@@ -1039,7 +1046,8 @@ main:has(.af-blog-header){
                         gap: 6px;
                     }
 
-                        .landing-page .landing-content .row-1 > div .calendar .calendar-date > div {
+                        .landing-page .landing-content .row-1 > div .calendar .calendar-date > div,
+                        .landing-page .landing-content .row-1 > div .calendar .time {
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -1074,18 +1082,46 @@ main:has(.af-blog-header){
                                 transform: rotate(-90deg);
                             }
 
-                    .landing-page .landing-content .row-1 > div .calendar .calendar-location {
+                    .landing-page .landing-content .row-1 > div .calendar .time {
                         font-size: 16px;
-                        line-height: 18px;
                         font-weight: bold;
-                        margin: 0;
                         text-align: center;
-                        color: #E16625;
+                        color: #fff;
+                        padding: 6px;
+                    }
+
+            .landing-page .landing-content .row-1 a {
+                display: flex;
+                justify-content: stretch;
+                align-items: center;
+                margin-top: 12px;
+                gap: 6px;
+            }
+
+
+                .landing-page .landing-content .row-1 a span {
+                    display: flex;
+                    gap: 6px;
+                }
+
+                .landing-page .landing-content .row-1 a p {
+                    text-wrap: nowrap;
+                    font-size: 12px;
+                    color: dimgray;
+                }
+
+                    .landing-page .landing-content .row-1 a p.location {
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: #e16625;
                     }
 
         .landing-page .landing-content .row-2 {
             flex-basis: 20%;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
             .landing-page .landing-content .row-2 h5 {
@@ -1124,6 +1160,8 @@ main:has(.af-blog-header){
             flex-basis: 20%;
             overflow: hidden;
             padding: 0 24px;
+            display: flex;
+            flex-direction: column;
         }
 
             .landing-page .landing-content .row-3 form {
@@ -1193,6 +1231,15 @@ main:has(.af-blog-header){
             .landing-page .landing-content .row-1 {
                 padding: 24px 16px;
             }
+
+                .landing-page .landing-content .row-1 > div .tags {
+                    grid-template: repeat(4, 1fr) / 1fr;
+                }
+
+                .landing-page .landing-content .row-1 a {
+                    flex-direction: column;
+                    gap: 0;
+                }
 
             .landing-page .landing-content .row-3 {
                 text-align: center;

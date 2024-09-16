@@ -30,6 +30,7 @@ TestResults/
 # Web publish log #
 ###################
 *.Publish.xml
+*.pubxml
 #############
 # Resharper #
 #############
