@@ -23,57 +23,77 @@ public class AccountController : Controller
         _signInManager = signInManager;
     }
 
-    public IActionResult SignUp()
+    public IActionResult Index()
     {
-        return View();
+        AccountViewModel model = new AccountViewModel();
+        model.isLoginPage = true;
+        return View(model);
     }
 
     [HttpPost]
-    public async Task<IActionResult> SignUp([Bind("Username,FirstName,LastName,PhoneNumber,Password,PasswordRetype")] AccountSignUpViewModel signUpModel)
+    public async Task<IActionResult> Index(AccountViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            ApplicationUser user = new ApplicationUser();
-            await _userManager.SetUserNameAsync(user, signUpModel.Username);
-            await _userManager.SetPhoneNumberAsync(user, signUpModel.PhoneNumber);
-            var result = await _userManager.CreateAsync(user, signUpModel.Password);
-
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return View(model);
         }
 
-        ModelState.AddModelError(string.Empty, "خطایی رخ داده است.");
-        return View(signUpModel);
-    }
-
-    public IActionResult SignIn()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> SignIn([Bind("Username,Password")] AccountSignInViewModel signInModel)
-    {
-        var user = await _userManager.Users.Where(
-            u => u.UserName == signInModel.Username || u.PhoneNumber == signInModel.Username)
-            .FirstOrDefaultAsync();
-        if (user == null)
+        bool isLoginProcess = model.isLoginPage;
+        if(isLoginProcess)
         {
-            ModelState.AddModelError(string.Empty, "کاربری با این مشخصات ثبت نام نکرده است.");
+            AccountLoginViewModel loginModel = model.Login;
+
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == loginModel.PhoneNumber);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "کاربری با این مشخصات یافت نشد.");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
+                return View(model);
+            }
+
+            return RedirectToAction("Index", "Dashboard");
         }
         else
         {
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, signInModel.Password, false, false);
-            if (result.Succeeded)
+            AccountRegisterViewModel registerModel = model.Register;
+
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == registerModel.PhoneNumber);
+
+            if (user != null)
             {
-                return RedirectToAction("Index", "Dashboard", new { @area = "Account" });
+                ModelState.AddModelError(string.Empty, "کاربری با این مشخصات در سامانه حاضر است.");
+                return View(model);
             }
 
-            ModelState.AddModelError(string.Empty, "خطایی رخ داده است.");
+            user = new ApplicationUser();
+            user.FirstName = registerModel.FirstName;
+            user.LastName = registerModel.LastName;
+            await _userManager.SetUserNameAsync(user, registerModel.PhoneNumber);
+            await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
+
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            await _userManager.AddToRoleAsync(user, "User");
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("Index", "Dashboard");
         }
-        return View(signInModel);
     }
 
     [Authorize]

@@ -1,67 +1,85 @@
 ﻿@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
-
-    bool first = true;
 }
 
-@if(Model.Slides.Count() > 0)
-{
-<div id="sliderIndicators" class="carousel slide border border-success rounded-lg overflow-hidden ltr" data-ride="carousel">
-    <ol class="carousel-indicators">
-        @for (int c = 0; c < Model.Slides.Count(); c++)
+<header class="af-home-header">
+    <div class="af-home-slider">
+        @foreach (var slide in Model.Slider)
         {
-            var indicatorClass = (c == 0)
-                ? "active"
-                : string.Empty;
-            <li data-target="#sliderIndicators" data-slide-to="@c" class="@indicatorClass"></li>
-        }
-    </ol>
-    <div class="carousel-inner">
-        @foreach(var slide in Model.Slides)
-        {
-            var slideClass = (first)
-                ? "carousel-item active"
-                : "carousel-item";
-            first = false;
+            var imageFile = slide.Image.FileName + slide.Image.Extension;
+            var imageDirectory = slide.Image.Category.NormalizedName.ToLower();
 
-            <div class="@slideClass">
-                <a class="d-block w-100" href="@slide.Link">
-                    <img class="d-block w-100" src="/images/slide/@slide.Image">
+            <div class="slides">
+                <a href="@slide.Link">
+                    <img src="/images/@imageDirectory/@imageFile">
                 </a>
             </div>
         }
     </div>
-    <a class="carousel-control-prev" href="#sliderIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#sliderIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-}
 
-@if(Model.News.Count() > 0)
-{
-<div class="bg-white border border-success rounded-lg mt-4">
-    <h5 class="text-center p-3 m-0 border-bottom border-success">
-        آخرین اخبار آکادمی آوای فضیلت
-    </h5>
-    <div class="d-md-flex flex-wrap">
-    @foreach(var post in Model.News)
-    {
-        <div class="col-md-4 p-3 border-bottom">
-            <img class="w-100 rounded-lg border border-secondary mb-3" src="/images/blog/@post.Image" />
-            <h4 class="text-right mb-2">@post.Title</h4>
-            <p class="text-right">
-                @post.Content.Substring(0, 160)
-            </p>
-            @Html.ActionLink("متن کامل خبر", "Post", "Home", new { id = post.Id }, new { Class = "small" })
-        </div>
-    }
+    <div class="af-home-event">
+        <a asp-area="" asp-controller="Home" asp-action="Conference">
+            <img src="/images/event.png" />
+        </a>
     </div>
-</div>
-<a href="/blog/" class="d-block text-center p-3 m-0">اخبار بیشتر</a>
-}
+</header>
+
+@*
+<section class="af-home-banners">
+</section>
+ *@
+
+<section class="af-home-register-cta">
+    <h4>با یک حساب کاربری می توانید از تمامی خدمات فوق استفاده کنید.</h4>
+    <a class="btn btn-cta" asp-area="" asp-controller="Account" asp-action="Index">ثبت نام</a>
+</section>
+
+<section class="af-home-blog">
+    <div class="af-section-title-bar">
+        <h5 class="af-section-title">آخرین اخبار و مقالات</h5>
+        <a class="af-section-title-link" asp-area="" asp-controller="Home" asp-action="Blog">مشاهده تمامی مطالب</a>
+    </div>
+    <div class="af-home-blog-posts">
+        @{
+            bool horizontal = true; 
+            foreach (var post in Model.Blog)
+            {
+                var imageFile = post.Header.FileName + post.Header.Extension;
+                var imageDirectory = post.Header.Category.NormalizedName.ToLower();
+                var author = post.Author.FirstName + ' ' + post.Author.LastName;
+                <div class="blog-post @(horizontal ? "horizontal" : "vertical")">
+                    <a class="blog-post-image" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+                        <img src="/images/@imageDirectory/@imageFile" />
+                    </a>
+                    <div class="blog-post-content">
+                        <div class="blog-post-body">
+                            <a class="blog-post-summary" asp-area="" asp-controller="Home" asp-action="Post" asp-route-id="@post.Id">
+                                <h5>@post.Title</h5>
+                                <p>@post.Body</p>
+                            </a>
+                            <div class="blog-post-author">
+                                <div class="post-author">
+                                    <img src="/icons/author.svg" />
+                                    @author
+                                </div>
+                                <div class="post-publish">
+                                    <img src="/icons/publish.svg" />
+                                    @post.Published
+                                </div>
+                            </div>
+                        </div>
+                        <div class="blog-post-tags">
+                            <!-- Tags -->
+                        </div>
+                    </div>
+                </div>
+                horizontal = false;
+            }
+        }
+    </div>
+</section>
+
+<section class="af-contact-card">
+    @Html.PartialAsync("~/Views/_Components/_ContactCard.cshtml").Result
+</section>
