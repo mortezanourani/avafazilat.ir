@@ -25,7 +25,7 @@ namespace Fazilat.Areas.Panel.Controllers
         // GET: Panel/Conference
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Landing.ToListAsync());
+            return View(await _context.Landing.OrderBy(l => l.Submitted).ToListAsync());
         }
     }
 }
