@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Fazilat.Models;
+@inject UserManager<ApplicationUser> userManager;
+
+@{
+    ApplicationUser user = userManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+    string fullName = string.Join(" ", user.FirstName, user.LastName);
+
+    IList<string> userRoles = await userManager.GetRolesAsync(user);
+}
+
+<nav class="dashboard-nav">
+    @* Brand *@
+    <a class="dashboard-nav-brand" href="/">
+        <img class="brand-icon" src="/favicon.svg" />
+    </a>
+    <h3 class="dashboard-nav-name">@fullName</h3>
+
+    @* Main Menu *@
+    <div class="dashboard-nav-container">
+        <div class="dashboard-nav-search-bar">
+            <img src="/icons/dropdown-down.svg" />
+            @foreach(string role in userRoles)
+            {
+                <p>@role</p>
+            }
+        </div>
+        <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post">
+            <button class="dashboard-nav-signout">
+                <img src="/icons/signout.svg" />
+            </button>
+        </form>
+    </div>
+</nav>
