@@ -181,6 +181,76 @@ button {
 /* Button Type Styles *** END */
 
 /*
+ * DropDown Input Styles
+ **********************/
+.dropdown {
+    position: relative;
+    padding: 4px 8px;
+    width: inherit;
+    background: #FFFFFF;
+    border: 1px solid #292D32;
+    border-radius: 8px;
+}
+
+    .dropdown .dropdown-selected {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+        width: inherit;
+        height: 100%;
+    }
+
+        .dropdown .dropdown-selected img {
+            width: 20px;
+            height: 20px;
+            transition: all ease-in-out 300ms;
+        }
+
+        .dropdown .dropdown-selected hr {
+            margin: 0;
+            padding: 0;
+            border: none;
+            width: 2px;
+            height: inherit;
+            background: #A9A9A9;
+        }
+
+    .dropdown .dropdown-options {
+        position: absolute;
+        top: calc(100% + 16px);
+        right: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: stretch;
+        gap: 4px;
+        background: #fff;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 6px;
+        border-radius: 8px;
+        min-width: fit-content;
+    }
+
+        .dropdown .dropdown-options .dropdown-option {
+            background: transparent;
+            cursor: pointer;
+        }
+
+    .dropdown input:checked ~ .dropdown-selected img {
+        transform: rotate(540deg);
+    }
+
+    .dropdown input:not(:checked) ~ .dropdown-options {
+        display: none;
+    }
+/* DropDown Input Styles *** END */
+
+
+
+/*
  * Contact Card Styles
  ********************/
 .contact-card {

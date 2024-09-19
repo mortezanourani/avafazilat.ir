@@ -11,5 +11,12 @@ namespace Fazilat.Areas.Dashboard.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Index(string role)
+        {
+            ViewBag.Role = role;
+            return View();
+        }
     }
 }

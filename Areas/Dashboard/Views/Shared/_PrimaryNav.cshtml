@@ -18,12 +18,19 @@
 
     @* Main Menu *@
     <div class="dashboard-nav-container">
-        <div class="dashboard-nav-search-bar">
-            <img src="/icons/dropdown-down.svg" />
-            @foreach(string role in userRoles)
-            {
-                <p>@role</p>
-            }
+        <div class="dropdown dashboard-nav-role">
+            <input type="checkbox" hidden id="dashboard-nav-role" />
+            <label class="dropdown-selected" for="dashboard-nav-role">
+                <img src="/icons/dropdown.svg" />
+                <hr />
+                <p>@ViewBag.Role</p>
+            </label>
+            <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
+                @foreach (string role in userRoles)
+                {
+                    <input class="dropdown-option" name="role" type="submit" value="@role" />
+                }
+            </form>
         </div>
         <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post">
             <button class="dashboard-nav-signout">
