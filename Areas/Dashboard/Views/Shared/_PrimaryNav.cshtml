@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using Fazilat.Models;
+@using System.Text
+@using Fazilat.Models
+@using Fazilat.Areas.Dashboard.Models
 @inject UserManager<ApplicationUser> userManager;
 
 @{
@@ -7,6 +9,10 @@
     string fullName = string.Join(" ", user.FirstName, user.LastName);
 
     IList<string> userRoles = await userManager.GetRolesAsync(user);
+
+    byte[] selectedRole;
+    Context.Session.TryGetValue(PanelRole.Key, out selectedRole);
+    string panelRole = Encoding.UTF8.GetString(selectedRole);
 }
 
 <nav class="dashboard-nav">
@@ -23,12 +29,14 @@
             <label class="dropdown-selected" for="dashboard-nav-role">
                 <img src="/icons/dropdown.svg" />
                 <hr />
-                <p>@ViewBag.Role</p>
+                @* <p>@roleTitle.GetValueOrDefault(panelRole)</p> *@
+                <p>@PanelRole.GetTitle(panelRole)</p>
             </label>
             <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
                 @foreach (string role in userRoles)
                 {
-                    <input class="dropdown-option" name="role" type="submit" value="@role" />
+                    <button class="dropdown-option" name="role" type="submit" value="@role">@PanelRole.GetTitle(role)</button>
+                    @* <input class="dropdown-option" name="role" type="submit" value="@role" /> *@
                 }
             </form>
         </div>
