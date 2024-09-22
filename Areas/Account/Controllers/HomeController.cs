@@ -19,7 +19,7 @@ namespace Fazilat.Areas.Account.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly FazilatContext _context;
@@ -27,7 +27,7 @@ namespace Fazilat.Areas.Account.Controllers
         public HomeController(
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             IUserStore<ApplicationUser> userStore,
             FazilatContext context)
         {

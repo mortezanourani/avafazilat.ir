@@ -1,17 +1,21 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
 @using System.Text
 @using Fazilat.Models
-@using Fazilat.Areas.Dashboard.Models
 @inject UserManager<ApplicationUser> userManager;
+@inject RoleManager<ApplicationRole> roleManager;
 
 @{
-    ApplicationUser user = userManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+    ApplicationUser user = userManager.Users
+        .FirstOrDefault(u => u.UserName == User.Identity.Name);
     string fullName = string.Join(" ", user.FirstName, user.LastName);
 
-    IList<string> userRoles = await userManager.GetRolesAsync(user);
+    IList<string> userRolesNames = await userManager.GetRolesAsync(user);
+    IList<ApplicationRole> userRoles = await roleManager.Roles
+        .Where(r => userRolesNames.Contains(r.Name)).ToListAsync();
 
     byte[] selectedRole;
-    Context.Session.TryGetValue(PanelRole.Key, out selectedRole);
+    Context.Session.TryGetValue("PanelRole", out selectedRole);
     string panelRole = Encoding.UTF8.GetString(selectedRole);
 }
 
@@ -29,14 +33,12 @@
             <label class="dropdown-selected" for="dashboard-nav-role">
                 <img src="/icons/dropdown.svg" />
                 <hr />
-                @* <p>@roleTitle.GetValueOrDefault(panelRole)</p> *@
-                <p>@PanelRole.GetTitle(panelRole)</p>
+                <p>@panelRole</p>
             </label>
             <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
-                @foreach (string role in userRoles)
+                @foreach (ApplicationRole role in userRoles)
                 {
-                    <button class="dropdown-option" name="role" type="submit" value="@role">@PanelRole.GetTitle(role)</button>
-                    @* <input class="dropdown-option" name="role" type="submit" value="@role" /> *@
+                    <button class="dropdown-option" name="role" type="submit" value="@role.Name">@role.PersianName</button>
                 }
             </form>
         </div>

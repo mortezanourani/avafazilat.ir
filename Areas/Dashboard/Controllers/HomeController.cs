@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Fazilat.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
-using Fazilat.Areas.Dashboard.Models;
+using System.Threading.Tasks;
 
 namespace Fazilat.Areas.Dashboard.Controllers
 {
@@ -10,21 +13,30 @@ namespace Fazilat.Areas.Dashboard.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly RoleManager<ApplicationRole> _roleManager;
+
+        public HomeController(RoleManager<ApplicationRole> roleManager)
         {
-            if (HttpContext.Session.GetString(PanelRole.Key) == null)
+            _roleManager = roleManager;
+        }
+    
+        public async Task<IActionResult> Index()
+        {
+            if (HttpContext.Session.GetString("PanelRole") == null)
             {
-                HttpContext.Session.SetString(PanelRole.Key, "User");
+                HttpContext.Session.SetString("PanelRole", "User");
             }
-            string panelRole = HttpContext.Session.GetString(PanelRole.Key); 
-            ViewBag.Role = PanelRole.GetTitle(panelRole);
+
+            ApplicationRole panelRole = await _roleManager.Roles
+                .FirstOrDefaultAsync(r => r.Name == HttpContext.Session.GetString("PanelRole"));
+            ViewBag.Role = panelRole.PersianName;
             return View();
         }
 
         [HttpPost]
         public IActionResult Index(string role)
         {
-            HttpContext.Session.SetString(PanelRole.Key, role);
+            HttpContext.Session.SetString("PanelRole", role);
             return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
     }
