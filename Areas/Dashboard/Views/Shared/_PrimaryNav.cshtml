@@ -12,13 +12,15 @@
         .FirstOrDefault(u => u.UserName == User.Identity.Name);
     string fullName = string.Join(" ", user.FirstName, user.LastName);
 
-    IList<string> userRolesNames = await userManager.GetRolesAsync(user);
-    IList<ApplicationRole> userRoles = await roleManager.Roles
-        .Where(r => userRolesNames.Contains(r.Name)).ToListAsync();
+    IList<string> userRoles = await userManager.GetRolesAsync(user);
+    IList<ApplicationRole> userPanels = await roleManager.Roles
+        .Where(r => userRoles.Contains(r.Name))
+        .OrderBy(r => r.Level)
+        .ToListAsync();
 
-    string panelRoleName = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
-    ApplicationRole panelRole = await roleManager.Roles
-        .FirstOrDefaultAsync(r => r.Name == panelRoleName);
+    string panelRole = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
+    ApplicationRole userPanel = await roleManager.Roles
+        .FirstOrDefaultAsync(r => r.Id == panelRole);
 }
 
 <nav class="dashboard-nav">
@@ -35,12 +37,12 @@
             <label class="dropdown-selected" for="dashboard-nav-role">
                 <img src="/icons/dropdown.svg" />
                 <hr />
-                <p>@panelRole.PersianName</p>
+                <p>@userPanel.PersianName</p>
             </label>
             <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
-                @foreach (ApplicationRole role in userRoles)
+                @foreach (ApplicationRole panel in userPanels)
                 {
-                    <button class="dropdown-option" name="role" type="submit" value="@role.Name">@role.PersianName</button>
+                    <button class="dropdown-option" name="role" type="submit" value="@panel.Id">@panel.PersianName</button>
                 }
             </form>
         </div>

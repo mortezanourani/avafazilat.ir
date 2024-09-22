@@ -6,5 +6,8 @@ namespace Fazilat.Models
     {
         [PersonalData]
         public string PersianName { get; set; }
+
+        [PersonalData]
+        public int Level { get; set; }
     }
 }

@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,24 +17,21 @@ namespace Fazilat.Areas.Dashboard.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public HomeController(RoleManager<ApplicationRole> roleManager)
+        public HomeController(
+            UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager)
         {
+            _userManager = userManager;
             _roleManager = roleManager;
         }
     
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey) == null)
-            {
-                HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, "User");
-            }
-
-            ApplicationRole panelRole = await _roleManager.Roles
-                .FirstOrDefaultAsync(r => r.Name == HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey));
-            ViewBag.Role = panelRole.PersianName;
-            return View();
+            ApplicationRole userPanel = await GetPanelRole();
+            return View(userPanel);
         }
 
         [HttpPost]
@@ -39,6 +39,30 @@ namespace Fazilat.Areas.Dashboard.Controllers
         {
             HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, role);
             return RedirectToAction("Index", "Home", new { area = "Dashboard" });
+        }
+
+        private async Task<ApplicationRole> GetPanelRole()
+        {
+            string panelRole = HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey);
+            if (string.IsNullOrEmpty(panelRole))
+            {
+                ApplicationUser user = await _userManager.Users
+                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                IList<string> userRoles = await _userManager.GetRolesAsync(user);
+                ApplicationRole defaultPanel = await _roleManager.Roles
+                    .Where(r => userRoles.Contains(r.Name))
+                    .OrderBy(r => r.Level)
+                    .FirstOrDefaultAsync();
+
+                HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, defaultPanel.Id);
+                panelRole = defaultPanel.Id;
+            }
+
+            ApplicationRole userPanel = await _roleManager.Roles
+                .FirstOrDefaultAsync(r => r.Id == panelRole);
+
+            return userPanel;
         }
     }
 }
