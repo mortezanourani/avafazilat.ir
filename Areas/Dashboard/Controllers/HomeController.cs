@@ -1,4 +1,5 @@
-﻿using Fazilat.Models;
+﻿using Fazilat.Data;
+using Fazilat.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,13 +23,13 @@ namespace Fazilat.Areas.Dashboard.Controllers
     
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("PanelRole") == null)
+            if (HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey) == null)
             {
-                HttpContext.Session.SetString("PanelRole", "User");
+                HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, "User");
             }
 
             ApplicationRole panelRole = await _roleManager.Roles
-                .FirstOrDefaultAsync(r => r.Name == HttpContext.Session.GetString("PanelRole"));
+                .FirstOrDefaultAsync(r => r.Name == HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey));
             ViewBag.Role = panelRole.PersianName;
             return View();
         }
@@ -36,7 +37,7 @@ namespace Fazilat.Areas.Dashboard.Controllers
         [HttpPost]
         public IActionResult Index(string role)
         {
-            HttpContext.Session.SetString("PanelRole", role);
+            HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, role);
             return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
     }

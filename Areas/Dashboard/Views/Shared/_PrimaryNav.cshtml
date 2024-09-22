@@ -1,7 +1,9 @@
 ﻿@using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Identity
 @using System.Text
+@using Microsoft.AspNetCore.Http
 @using Fazilat.Models
+@using Fazilat.Data
 @inject UserManager<ApplicationUser> userManager;
 @inject RoleManager<ApplicationRole> roleManager;
 
@@ -14,9 +16,9 @@
     IList<ApplicationRole> userRoles = await roleManager.Roles
         .Where(r => userRolesNames.Contains(r.Name)).ToListAsync();
 
-    byte[] selectedRole;
-    Context.Session.TryGetValue("PanelRole", out selectedRole);
-    string panelRole = Encoding.UTF8.GetString(selectedRole);
+    string panelRoleName = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
+    ApplicationRole panelRole = await roleManager.Roles
+        .FirstOrDefaultAsync(r => r.Name == panelRoleName);
 }
 
 <nav class="dashboard-nav">
@@ -33,7 +35,7 @@
             <label class="dropdown-selected" for="dashboard-nav-role">
                 <img src="/icons/dropdown.svg" />
                 <hr />
-                <p>@panelRole</p>
+                <p>@panelRole.PersianName</p>
             </label>
             <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
                 @foreach (ApplicationRole role in userRoles)
