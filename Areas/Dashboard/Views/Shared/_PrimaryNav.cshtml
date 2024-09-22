@@ -1,0 +1,53 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+@using System.Text
+@using Microsoft.AspNetCore.Http
+@using Fazilat.Models
+@using Fazilat.Data
+@inject UserManager<ApplicationUser> userManager;
+@inject RoleManager<ApplicationRole> roleManager;
+
+@{
+    ApplicationUser user = userManager.Users
+        .FirstOrDefault(u => u.UserName == User.Identity.Name);
+    string fullName = string.Join(" ", user.FirstName, user.LastName);
+
+    IList<string> userRolesNames = await userManager.GetRolesAsync(user);
+    IList<ApplicationRole> userRoles = await roleManager.Roles
+        .Where(r => userRolesNames.Contains(r.Name)).ToListAsync();
+
+    string panelRoleName = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
+    ApplicationRole panelRole = await roleManager.Roles
+        .FirstOrDefaultAsync(r => r.Name == panelRoleName);
+}
+
+<nav class="dashboard-nav">
+    @* Brand *@
+    <a class="dashboard-nav-brand" href="/">
+        <img class="brand-icon" src="/favicon.svg" />
+    </a>
+    <h3 class="dashboard-nav-name">@fullName</h3>
+
+    @* Main Menu *@
+    <div class="dashboard-nav-container">
+        <div class="dropdown dashboard-nav-role">
+            <input type="checkbox" hidden id="dashboard-nav-role" />
+            <label class="dropdown-selected" for="dashboard-nav-role">
+                <img src="/icons/dropdown.svg" />
+                <hr />
+                <p>@panelRole.PersianName</p>
+            </label>
+            <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
+                @foreach (ApplicationRole role in userRoles)
+                {
+                    <button class="dropdown-option" name="role" type="submit" value="@role.Name">@role.PersianName</button>
+                }
+            </form>
+        </div>
+        <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post">
+            <button class="dashboard-nav-signout">
+                <img src="/icons/signout.svg" />
+            </button>
+        </form>
+    </div>
+</nav>

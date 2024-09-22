@@ -27,7 +27,6 @@ public class AccountController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-
             return RedirectToAction("Index", "Administrator", new { area = "Account" });
         }
 
@@ -135,6 +134,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> SignOut()
     {
+        HttpContext.Session.Clear();
         await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
