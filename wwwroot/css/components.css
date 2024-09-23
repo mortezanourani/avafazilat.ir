@@ -670,6 +670,7 @@ button {
             .panel-profile-card .profile-name .profile-fullname .profile-firstname {
                 margin: 0;
             }
+
             .panel-profile-card .profile-name .profile-fullname .profile-lastname {
                 font-weight: 300;
                 color: gray;
@@ -696,8 +697,39 @@ button {
             line-height: 21px;
         }
 
-        .panel-profile-card .profile-contact .profile-mail img,
-        .panel-profile-card .profile-contact .profile-phone img {
-            height: 21px;
-        }
+            .panel-profile-card .profile-contact .profile-mail img,
+            .panel-profile-card .profile-contact .profile-phone img {
+                height: 21px;
+            }
 /* Profile Card Component Styles *** END */
+
+/* 
+ * Provinces Card Component Styles
+ ********************************/
+.panel-provinces-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 24px;
+    padding: 16px;
+    margin: 0;
+    background: #ffffff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .1);
+    border-radius: 12px;
+    max-width: 33.33333%;
+    flex-grow: 1;
+}
+
+    .panel-provinces-card a {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        left: 16px;
+        top: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+/* Provinces Card Component Styles *** END */

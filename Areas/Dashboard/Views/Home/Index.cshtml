@@ -4,5 +4,6 @@
 {
     <section style="display: flex; flex-direction: row; gap: 16px;">
         @Html.PartialAsync("ProfileCard", Model.User).Result
+        @Html.PartialAsync("ProvincesCard", Model.User).Result
     </section>
 }
