@@ -1,11 +1,11 @@
 ﻿using Fazilat.Data;
 using Fazilat.Models;
+using Fazilat.Areas.Dashboard.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,8 +30,12 @@ namespace Fazilat.Areas.Dashboard.Controllers
     
         public async Task<IActionResult> Index()
         {
-            ApplicationRole userPanel = await GetPanelRole();
-            return View(userPanel);
+            HomeModel model = new HomeModel();
+            model.Panel = await GetPanelRole();
+            model.User = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            return View(model);
         }
 
         [HttpPost]

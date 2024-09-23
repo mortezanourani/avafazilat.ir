@@ -1,5 +1,8 @@
-﻿@model ApplicationRole
+﻿@model HomeModel
 
-<h1>
-    @Model.PersianName (@Model.Level)
-</h1>
+@if(Model.Panel.Level <= 2)
+{
+    <section style="display: flex; flex-direction: row; gap: 16px;">
+        @Html.PartialAsync("ProfileCard", Model.User).Result
+    </section>
+}
