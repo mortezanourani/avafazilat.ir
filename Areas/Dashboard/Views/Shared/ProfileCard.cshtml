@@ -1,0 +1,27 @@
+﻿@model ApplicationUser
+<div class="panel-profile-card">
+    <a class="panel-profile-setting-button" asp-area="Account" asp-controller="Home" asp-action="PersonalInfo">
+        <img src="/icons/gear.svg" />
+    </a>
+    <div class="profile-name">
+        <img class="profile-picture" />
+        <div class="profile-fullname">
+            <h3 class="profile-firstname">
+                @Model.FirstName
+            </h3>
+            <p class="profile-lastname">
+                @Model.LastName
+            </p>
+        </div>
+    </div>
+    <div class="profile-contact">
+        <p class="profile-phone">
+            <img src="/icons/phone-green.svg" />
+            @Model.PhoneNumber
+        </p>
+        <p class="profile-mail">
+            <img src="/icons/at-green.svg" />
+            @Model.Email
+        </p>
+    </div>
+</div>

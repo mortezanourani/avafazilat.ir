@@ -85,6 +85,7 @@ namespace Fazilat.Areas.Account.Controllers
             return View(passwordModel);
         }
 
+        [Route("Account/Profile/")]
         public async Task<IActionResult> PersonalInfo(string id)
         {
             if (!User.Identity.IsAuthenticated)

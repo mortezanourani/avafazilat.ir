@@ -1,1 +1,8 @@
-﻿<h3>@ViewBag.Role</h3>
+﻿@model HomeModel
+
+@if(Model.Panel.Level <= 2)
+{
+    <section style="display: flex; flex-direction: row; gap: 16px;">
+        @Html.PartialAsync("ProfileCard", Model.User).Result
+    </section>
+}

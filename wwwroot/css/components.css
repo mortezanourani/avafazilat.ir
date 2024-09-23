@@ -611,3 +611,93 @@ button {
         }
 }
 /* Leaderboard Component Styles *** END */
+
+/* 
+ * Profile Card Component Styles
+ ******************************/
+.panel-profile-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 24px;
+    padding: 16px;
+    margin: 0;
+    background: #ffffff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, .1);
+    border-radius: 12px;
+    max-width: 33.33333%;
+    flex-grow: 1;
+}
+
+    .panel-profile-card a {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        left: 16px;
+        top: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .panel-profile-card .profile-name {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+        .panel-profile-card .profile-name .profile-picture {
+            width: 64px;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 99px;
+            border: 2px solid #228B22;
+        }
+
+        .panel-profile-card .profile-name .profile-fullname {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+            .panel-profile-card .profile-name .profile-fullname .profile-lastname,
+            .panel-profile-card .profile-name .profile-fullname .profile-firstname {
+                margin: 0;
+            }
+            .panel-profile-card .profile-name .profile-fullname .profile-lastname {
+                font-weight: 300;
+                color: gray;
+            }
+
+    .panel-profile-card .profile-contact {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+        .panel-profile-card .profile-contact .profile-mail,
+        .panel-profile-card .profile-contact .profile-phone {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #292D32;
+            line-height: 21px;
+        }
+
+        .panel-profile-card .profile-contact .profile-mail img,
+        .panel-profile-card .profile-contact .profile-phone img {
+            height: 21px;
+        }
+/* Profile Card Component Styles *** END */
