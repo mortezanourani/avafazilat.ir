@@ -19,13 +19,16 @@ namespace Fazilat.Areas.Dashboard.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly FazilatContext _context;
 
         public HomeController(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            FazilatContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
     
         public async Task<IActionResult> Index()
@@ -34,6 +37,13 @@ namespace Fazilat.Areas.Dashboard.Controllers
             model.Panel = await GetPanelRole();
             model.User = await _userManager.Users
                 .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            if (model.Panel.Level == 0)
+            {
+                model.Provinces = await _context.Provinces
+                    .OrderBy(p => p.Name)
+                    .ToListAsync();
+            }
 
             return View(model);
         }

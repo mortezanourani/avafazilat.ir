@@ -1,9 +1,12 @@
 ﻿@model HomeModel
 
-@if(Model.Panel.Level <= 2)
-{
-    <section style="display: flex; flex-direction: row; gap: 16px;">
+<div class="panel-home">
+    @if (Model.Panel.Level <= 2)
+    {
         @Html.PartialAsync("ProfileCard", Model.User).Result
-        @Html.PartialAsync("ProvincesCard", Model.User).Result
-    </section>
-}
+    }
+    @if (Model.Panel.Level == 0)
+    {
+        @Html.PartialAsync("ProvincesCard", Model.Provinces).Result
+    }
+</div>
