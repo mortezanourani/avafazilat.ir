@@ -849,3 +849,42 @@ button {
                 color: #292D32;
             }
 /* Roles Card Component Styles *** END */
+
+/* 
+ * Users Card Component Styles
+ ****************************/
+.panel-users-card {
+    gap: 16px;
+    width: 100%;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+    .panel-users-card .users-wrapper {
+        overflow: hidden;
+    }
+
+        .panel-users-card .users-wrapper .users-list {
+            width: 100%;
+            row-gap: 12px;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+            .panel-users-card .users-wrapper .users-list thead {
+                color: #A9A9A9;
+            }
+
+            .panel-users-card .users-wrapper .users-list thead tr th:not(:first-child) {
+                text-align: center;
+            }
+
+            .panel-users-card .users-wrapper .users-list tbody tr {
+                background: #ffffff;
+            }
+
+            .panel-users-card .users-wrapper .users-list tbody h5 {
+                margin: 0;
+                padding: 12px 12px;
+            }
+/* Users Card Component Styles *** END */

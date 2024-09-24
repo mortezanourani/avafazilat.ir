@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ApplicationUser>
+
+<div class="panel-users-card">
+    <div class="users-wrapper">
+        <table class="users-list">
+            <thead>
+                <tr>
+                    <th>کاربر</th>
+                    <th>
+                        <a asp-area="Dashboard" asp-controller="Users" asp-action="Add">
+                            <img src="/icons/user-add-blue.svg" />
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ApplicationUser user in Model)
+                {
+                    <tr>
+                        <th>
+                            <h5>@user.FirstName @user.LastName</h5>
+                        </th>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

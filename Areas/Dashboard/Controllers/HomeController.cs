@@ -47,6 +47,8 @@ namespace Fazilat.Areas.Dashboard.Controllers
                 model.UserRoles = await _roleManager.Roles
                     .OrderBy(r => r.Level)
                     .ToListAsync();
+
+                model.Users = await _userManager.Users.Take(5).ToListAsync();
             }
 
             return View(model);
