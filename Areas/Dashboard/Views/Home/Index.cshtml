@@ -8,5 +8,7 @@
     @if (Model.Panel.Level == 0)
     {
         @Html.PartialAsync("ProvincesCard", Model.Provinces).Result
+
+        @Html.PartialAsync("RolesCard", Model.UserRoles).Result
     }
 </div>
