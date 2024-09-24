@@ -43,6 +43,10 @@ namespace Fazilat.Areas.Dashboard.Controllers
                 model.Provinces = await _context.Provinces
                     .OrderBy(p => p.Name)
                     .ToListAsync();
+
+                model.UserRoles = await _roleManager.Roles
+                    .OrderBy(r => r.Level)
+                    .ToListAsync();
             }
 
             return View(model);

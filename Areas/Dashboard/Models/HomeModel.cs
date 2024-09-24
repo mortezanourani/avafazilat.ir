@@ -10,4 +10,6 @@ public class HomeModel
     public ApplicationUser User { get; set; }
 
     public ICollection<Province> Provinces { get; set; }
+
+    public ICollection<ApplicationRole> UserRoles { get; set; }
 }
