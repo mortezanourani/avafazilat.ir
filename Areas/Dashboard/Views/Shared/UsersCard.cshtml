@@ -6,6 +6,8 @@
             <thead>
                 <tr>
                     <th>کاربر</th>
+                    <th>شماره تماس</th>
+                    <th>پست الکترونیک</th>
                     <th>
                         <a asp-area="Dashboard" asp-controller="Users" asp-action="Add">
                             <img src="/icons/user-add-blue.svg" />
@@ -18,9 +20,17 @@
                 {
                     <tr>
                         <th>
-                            <h5>@user.FirstName @user.LastName</h5>
+                            <img class="profile-picture" />
+                            <div>
+                                <h5>@user.FirstName @user.LastName</h5>
+                                <p>@user.UserName</p>
+                            </div>
                         </th>
-                        <td></td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <img src="/icons/action-dots.svg" />
+                        </td>
                     </tr>
                 }
             </tbody>
