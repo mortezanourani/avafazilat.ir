@@ -856,10 +856,14 @@ button {
 .panel-users-card {
     width: 100%;
     flex-grow: 1;
+    overflow: hidden;
 }
 
     .panel-users-card .users-wrapper {
         overflow: hidden;
+        overflow-x: scroll;
+        margin-bottom: -18px;
+        padding-bottom: 16px;
     }
 
         .panel-users-card .users-wrapper .users-list {
@@ -882,16 +886,11 @@ button {
                     text-align: center;
                     font-size: 14px;
                     line-height: 14px;
-                    font-weight: 600;
+                    font-weight: 500;
                 }
 
                 .panel-users-card .users-wrapper .users-list thead tr th:first-child {
                     text-align: right;
-                }
-
-                .panel-users-card .users-wrapper .users-list thead tr th:last-child {
-                    width: 58px;
-                    aspect-ratio: 1;
                 }
 
             .panel-users-card .users-wrapper .users-list tbody tr {
@@ -904,7 +903,7 @@ button {
                     text-align: center;
                     font-size: 14px;
                     line-height: 14px;
-                    font-weight: 500;
+                    font-weight: 400;
                 }
 
                     .panel-users-card .users-wrapper .users-list tbody tr th:first-child {
@@ -946,4 +945,28 @@ button {
                             line-height: 12px;
                             color: #a7a7a7;
                         }
+
+                .panel-users-card .users-wrapper .users-list tbody tr .row-action {
+                    padding: 0 4px;
+                    display: flex;
+                    flex-direction: row-reverse;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 12px;
+                }
+
+                    .panel-users-card .users-wrapper .users-list tbody tr .row-action .btn {
+                        display: inline-flex;
+                        padding: 8px;
+                        opacity: 0;
+                        transition: all ease-in 100ms;
+                    }
+
+                .panel-users-card .users-wrapper .users-list tbody tr:hover {
+                    background: #ffffff55;
+                }
+
+                .panel-users-card .users-wrapper .users-list tbody tr:hover .row-action .btn {
+                    opacity: 1;
+                }
 /* Users Card Component Styles *** END */

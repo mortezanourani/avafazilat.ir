@@ -8,6 +8,7 @@
                     <th>کاربر</th>
                     <th>شماره تماس</th>
                     <th>پست الکترونیک</th>
+                    <th>وضعیت</th>
                     <th>
                         <a asp-area="Dashboard" asp-controller="Users" asp-action="Add">
                             <img src="/icons/user-add-blue.svg" />
@@ -28,8 +29,16 @@
                         </th>
                         <td>@user.PhoneNumber</td>
                         <td>@user.Email</td>
+                        <td></td>
                         <td>
-                            <img src="/icons/action-dots.svg" />
+                            <div class="row-action">
+                                <a class="btn" asp-area="Dashboard" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id">
+                                    <img src="/icons/user-edit.svg" />
+                                </a>
+                                <a class="btn" asp-area="Dashboard" asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id">
+                                    <img src="/icons/user-delete.svg" />
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 }
