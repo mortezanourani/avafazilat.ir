@@ -115,6 +115,20 @@ button {
         text-wrap: nowrap;
     }
 
+    a.btn-icon,
+    button.btn-icon {
+        padding: 0;
+        width: 36px;
+        height: 36px;
+    }
+
+        a.btn-icon img,
+        button.btn-icon img {
+            height: 22px;
+            aspect-ratio: 1;
+            object-fit: contain;
+        }
+
     a.btn-ghost,
     button.btn-ghost {
         border: 2px solid #292D32;
@@ -873,31 +887,51 @@ button {
             border-spacing: 0 8px;
         }
 
-            .panel-users-card .users-wrapper .users-list thead {
-                color: #A9A9A9;
+            .panel-users-card .users-wrapper .users-list .row-action {
+                padding: 0 4px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 6px;
             }
 
-            .panel-users-card .users-wrapper .users-list thead tr th:not(:first-child) {
-                text-align: center;
-            }
-
-                .panel-users-card .users-wrapper .users-list thead tr th {
-                    padding: 4px 12px;
-                    text-align: center;
-                    font-size: 14px;
-                    line-height: 14px;
-                    font-weight: 500;
+                .panel-users-card .users-wrapper .users-list thead tr {
+                    color: #A9A9A9;
                 }
 
-                .panel-users-card .users-wrapper .users-list thead tr th:first-child {
-                    text-align: right;
-                }
+                    .panel-users-card .users-wrapper .users-list thead tr th {
+                        padding: 4px 8px;
+                        text-align: center;
+                        font-size: 14px;
+                        line-height: 14px;
+                        font-weight: 600;
+                    }
+
+                    .panel-users-card .users-wrapper .users-list thead tr th:first-child {
+                        text-align: right;
+                    }
 
             .panel-users-card .users-wrapper .users-list tbody tr {
                 background: #ffffff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+                transition: all ease-in-out 100ms;
             }
 
-                .panel-users-card .users-wrapper .users-list tbody tr th,
+                .panel-users-card .users-wrapper .users-list tbody tr .row-action {
+                    opacity: 0;
+                    transition: all ease-in-out 100ms;
+                }
+
+                .panel-users-card .users-wrapper .users-list tbody tr:hover {
+                    background: #e7e7e7;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+                }
+
+                    .panel-users-card .users-wrapper .users-list tbody tr:hover .row-action {
+                        opacity: 1;
+                    }
+
                 .panel-users-card .users-wrapper .users-list tbody tr td {
                     padding: 8px;
                     text-align: center;
@@ -906,45 +940,49 @@ button {
                     font-weight: 400;
                 }
 
-                    .panel-users-card .users-wrapper .users-list tbody tr th:first-child {
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: flex-start;
-                        align-items: center;
-                        gap: 12px;
-                    }
+                .panel-users-card .users-wrapper .users-list tbody tr th .user-profile {
+                    padding: 8px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 12px;
+                }
 
-                    .panel-users-card .users-wrapper .users-list tbody tr th .profile-picture {
+                    .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-picture {
                         width: 42px;
                         aspect-ratio: 1;
-                        min-width: 42px;
                         object-fit: cover;
                         border: 1px solid #a7a7a7;
                         border-radius: 4px;
                     }
 
-                    .panel-users-card .users-wrapper .users-list tbody tr th:first-child > div {
+                    .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name {
                         display: flex;
                         flex-direction: column;
                         justify-content: center;
                         align-items: stretch;
-                        gap: 8px;
+                        gap: 12px;
                     }
 
-                        .panel-users-card .users-wrapper .users-list tbody tr th:first-child > div p,
-                        .panel-users-card .users-wrapper .users-list tbody tr th:first-child > div h5 {
+                        .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name h5 {
                             margin: 0;
-                            font-size: 13px;
-                            line-height: 13px;
+                            font-size: 14px;
+                            line-height: 14px;
                             text-wrap: nowrap;
+                            font-weight: 500;
                         }
 
-                        .panel-users-card .users-wrapper .users-list tbody tr th:first-child > div p {
+                        .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name p {
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 14px;
+                            text-wrap: nowrap;
                             font-weight: 300;
-                            font-size: 12px;
-                            line-height: 12px;
                             color: #a7a7a7;
                         }
+/*
+
 
                 .panel-users-card .users-wrapper .users-list tbody tr .row-action {
                     padding: 0 4px;
@@ -961,12 +999,4 @@ button {
                         opacity: 0;
                         transition: all ease-in 100ms;
                     }
-
-                .panel-users-card .users-wrapper .users-list tbody tr:hover {
-                    background: #ffffff55;
-                }
-
-                .panel-users-card .users-wrapper .users-list tbody tr:hover .row-action .btn {
-                    opacity: 1;
-                }
 /* Users Card Component Styles *** END */

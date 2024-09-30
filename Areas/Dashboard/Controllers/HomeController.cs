@@ -49,8 +49,7 @@ namespace Fazilat.Areas.Dashboard.Controllers
                     .ToListAsync();
 
                 model.Users = await _userManager.Users
-                    .OrderBy(u => u.ConcurrencyStamp)
-                    .Take(5)
+                    .Take(10)
                     .OrderBy(u => u.LastName)
                     .ToListAsync();
             }
