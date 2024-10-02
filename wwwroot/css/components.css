@@ -115,6 +115,20 @@ button {
         text-wrap: nowrap;
     }
 
+    a.btn-icon,
+    button.btn-icon {
+        padding: 0;
+        width: 36px;
+        height: 36px;
+    }
+
+        a.btn-icon img,
+        button.btn-icon img {
+            height: 22px;
+            aspect-ratio: 1;
+            object-fit: contain;
+        }
+
     a.btn-ghost,
     button.btn-ghost {
         border: 2px solid #292D32;
@@ -849,3 +863,122 @@ button {
                 color: #292D32;
             }
 /* Roles Card Component Styles *** END */
+
+/* 
+ * Users Card Component Styles
+ ****************************/
+.panel-users-card {
+    width: 100%;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+    .panel-users-card .users-wrapper {
+        overflow: hidden;
+        overflow-x: scroll;
+        margin-bottom: -18px;
+        padding-bottom: 16px;
+    }
+
+        .panel-users-card .users-wrapper .users-list {
+            width: 100%;
+            row-gap: 12px;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+            .panel-users-card .users-wrapper .users-list .row-action {
+                padding: 0 4px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 6px;
+            }
+
+                .panel-users-card .users-wrapper .users-list thead tr {
+                    color: #A9A9A9;
+                }
+
+                    .panel-users-card .users-wrapper .users-list thead tr th {
+                        padding: 4px 8px;
+                        text-align: center;
+                        font-size: 14px;
+                        line-height: 14px;
+                        font-weight: 600;
+                    }
+
+                    .panel-users-card .users-wrapper .users-list thead tr th:first-child {
+                        text-align: right;
+                    }
+
+            .panel-users-card .users-wrapper .users-list tbody tr {
+                background: #ffffff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+                transition: all ease-in-out 100ms;
+            }
+
+                .panel-users-card .users-wrapper .users-list tbody tr .row-action {
+                    opacity: 0;
+                    transition: all ease-in-out 100ms;
+                }
+
+                .panel-users-card .users-wrapper .users-list tbody tr:hover {
+                    background: #e7e7e7;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+                }
+
+                    .panel-users-card .users-wrapper .users-list tbody tr:hover .row-action {
+                        opacity: 1;
+                    }
+
+                .panel-users-card .users-wrapper .users-list tbody tr td {
+                    padding: 8px;
+                    text-align: center;
+                    font-size: 14px;
+                    line-height: 14px;
+                    font-weight: 400;
+                }
+
+                .panel-users-card .users-wrapper .users-list tbody tr th .user-profile {
+                    padding: 8px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 12px;
+                }
+
+                    .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-picture {
+                        width: 42px;
+                        aspect-ratio: 1;
+                        object-fit: cover;
+                        border: 1px solid #a7a7a7;
+                        border-radius: 4px;
+                    }
+
+                    .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: stretch;
+                        gap: 12px;
+                    }
+
+                        .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name h5 {
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 14px;
+                            text-wrap: nowrap;
+                            font-weight: 500;
+                        }
+
+                        .panel-users-card .users-wrapper .users-list tbody tr th .user-profile .profile-name p {
+                            margin: 0;
+                            font-size: 14px;
+                            line-height: 14px;
+                            text-wrap: nowrap;
+                            font-weight: 300;
+                            color: #a7a7a7;
+                        }
+/* Users Card Component Styles *** END */
