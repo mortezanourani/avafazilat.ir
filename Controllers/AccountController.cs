@@ -27,7 +27,7 @@ public class AccountController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("Index", "Administrator", new { area = "Account" });
+            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
 
         AccountViewModel model = new AccountViewModel();

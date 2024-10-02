@@ -82,7 +82,6 @@ namespace Fazilat.Areas.Dashboard.Controllers
                     .ToListAsync();
 
                 model.Users = await _userManager.Users
-                    .Take(10)
                     .OrderBy(u => u.LastName)
                     .ToListAsync();
             }
