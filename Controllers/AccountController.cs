@@ -27,7 +27,7 @@ public class AccountController : Controller
     {
         if (User.Identity.IsAuthenticated)
         {
-            return RedirectToAction("Index", "Administrator", new { area = "Account" });
+            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
 
         AccountViewModel model = new AccountViewModel();
@@ -63,8 +63,7 @@ public class AccountController : Controller
                 return View(model);
             }
 
-            return RedirectToAction("Index", "Administrator", new { area = "Account" });
-            //return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Dashboard");
         }
         else
         {
@@ -98,8 +97,7 @@ public class AccountController : Controller
             await _userManager.AddToRoleAsync(user, "User");
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            return RedirectToAction("Index", "Administrator", new { area = "Account" });
-            //return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 

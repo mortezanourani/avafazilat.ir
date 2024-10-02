@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Province>
+
+<div class="panel-card panel-provinces-card" id="panel-provinces-card">
+    <a class="panel-card-action" asp-area="Dashboard" asp-controller="Provinces" asp-action="Add">
+        <img src="/icons/add-square-blue.svg" />
+    </a>
+    <h4 class="panel-card-title">فهرست استان ها</h4>
+    <div class="provinces-wrapper">
+        <div class="provinces-list">
+            @foreach(Province province in Model)
+            {
+                <p>@province.Name</p>
+            }
+        </div>
+    </div>
+</div>

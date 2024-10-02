@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ApplicationRole>
+@inject UserManager<ApplicationUser> userManager
+
+<div class="panel-card panel-roles-card">
+    <a class="panel-card-action" asp-area="Dashboard" asp-controller="Roles" asp-action="Add">
+        <img src="/icons/add-square-blue.svg" />
+    </a>
+    <h4 class="panel-card-title">فهرست استان ها</h4>
+    <div class="roles-wrapper">
+        <div class="roles-list">
+            @foreach(ApplicationRole role in Model)
+            {
+                <details>
+                    <summary>
+                        <div>
+                            <h5>@role.PersianName</h5>
+                            <p>@role.Name</p>
+                        </div>
+                        <img src="/icons/user-group.svg" />
+                    </summary>
+                    <ul>
+                        @foreach (ApplicationUser user in 
+                            userManager.GetUsersInRoleAsync(role.Name).Result
+                                .OrderByDescending(u => u.ConcurrencyStamp)
+                                .Take(10)
+                                .OrderBy(u => u.LastName)
+                                .ToList())
+                        {
+                            <li>@user.FirstName @user.LastName</li>
+                        }
+                    </ul>
+                </details>
+            }
+        </div>
+    </div>
+</div>
