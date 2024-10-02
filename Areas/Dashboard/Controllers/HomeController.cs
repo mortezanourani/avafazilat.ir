@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.Security.Claims;
 
 namespace Fazilat.Areas.Dashboard.Controllers
 {
@@ -30,7 +32,38 @@ namespace Fazilat.Areas.Dashboard.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-    
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Migration()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            foreach (ApplicationUser user in users)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+
+                var userGivenName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
+                if (user.FirstName != null && userGivenName == null)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
+                }
+
+                var userSurName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
+                if (user.LastName != null && userSurName == null)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
+                }
+
+                var userDateOfBirth = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.DateOfBirth);
+                if (user.BirthDate != null && userDateOfBirth == null)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate));
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Index()
         {
             HomeModel model = new HomeModel();

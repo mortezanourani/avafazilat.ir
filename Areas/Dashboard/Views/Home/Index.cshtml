@@ -1,10 +1,8 @@
 ﻿@model HomeModel
 
 <div class="panel-home">
-    @if (Model.Panel.Level <= 2)
-    {
-        @Html.PartialAsync("ProfileCard", Model.User).Result
-    }
+    @Html.PartialAsync("ProfileCard", Model.User).Result
+    
     @if (Model.Panel.Level == 0)
     {
         @Html.PartialAsync("ProvincesCard", Model.Provinces).Result
