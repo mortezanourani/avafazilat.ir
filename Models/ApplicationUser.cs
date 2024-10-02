@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Fazilat.Models;
 
@@ -13,4 +14,7 @@ public class ApplicationUser : IdentityUser
 
     [PersonalData]
     public string BirthDate { get; set; }
+
+    [PersonalData]
+    public string Registered { get; }
 }
