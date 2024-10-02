@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fazilat.Models.ViewModels;
+namespace Fazilat.Areas.Account.Models;
 
-public class AccountRegisterViewModel
+public class RegisterViewModel
 {
     [Required]
     [Display(Name = "نام")]

@@ -13,111 +13,110 @@ using System.Threading.Tasks;
 using System;
 using System.Security.Claims;
 
-namespace Fazilat.Areas.Dashboard.Controllers
+namespace Fazilat.Areas.Dashboard.Controllers;
+
+[Area("Dashboard")]
+[Authorize]
+public class HomeController : Controller
 {
-    [Area("Dashboard")]
-    [Authorize]
-    public class HomeController : Controller
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly FazilatContext _context;
+
+    public HomeController(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<ApplicationRole> roleManager,
+        FazilatContext context)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly FazilatContext _context;
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _context = context;
+    }
 
-        public HomeController(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
-            FazilatContext context)
+    [Authorize(Roles = "Administrator")]
+    public async Task<IActionResult> Migration()
+    {
+        var users = await _userManager.Users.ToListAsync();
+
+        foreach (ApplicationUser user in users)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _context = context;
-        }
+            var userClaims = await _userManager.GetClaimsAsync(user);
 
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Migration()
-        {
-            var users = await _userManager.Users.ToListAsync();
-
-            foreach (ApplicationUser user in users)
+            var userGivenName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
+            if (user.FirstName != null && userGivenName == null)
             {
-                var userClaims = await _userManager.GetClaimsAsync(user);
-
-                var userGivenName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-                if (user.FirstName != null && userGivenName == null)
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
-                }
-
-                var userSurName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-                if (user.LastName != null && userSurName == null)
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
-                }
-
-                var userDateOfBirth = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.DateOfBirth);
-                if (user.BirthDate != null && userDateOfBirth == null)
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate));
-                }
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
             }
 
-            return RedirectToAction("Index");
+            var userSurName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
+            if (user.LastName != null && userSurName == null)
+            {
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
+            }
+
+            var userDateOfBirth = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.DateOfBirth);
+            if (user.BirthDate != null && userDateOfBirth == null)
+            {
+                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate));
+            }
         }
 
-        public async Task<IActionResult> Index()
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        HomeModel model = new HomeModel();
+        model.Panel = await GetPanelRole();
+        model.User = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+        if (model.Panel.Level == 0)
         {
-            HomeModel model = new HomeModel();
-            model.Panel = await GetPanelRole();
-            model.User = await _userManager.Users
+            model.Provinces = await _context.Provinces
+                .OrderBy(p => p.Name)
+                .ToListAsync();
+
+            model.UserRoles = await _roleManager.Roles
+                .OrderBy(r => r.Level)
+                .ToListAsync();
+
+            model.Users = await _userManager.Users
+                .OrderBy(u => u.LastName)
+                .ToListAsync();
+        }
+
+        return View(model);
+    }
+
+    [HttpPost]
+    public IActionResult Index(string role)
+    {
+        HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, role);
+        return RedirectToAction("Index", "Home", new { area = "Dashboard" });
+    }
+
+    private async Task<ApplicationRole> GetPanelRole()
+    {
+        string panelRole = HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey);
+        if (string.IsNullOrEmpty(panelRole))
+        {
+            ApplicationUser user = await _userManager.Users
                 .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
 
-            if (model.Panel.Level == 0)
-            {
-                model.Provinces = await _context.Provinces
-                    .OrderBy(p => p.Name)
-                    .ToListAsync();
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+            ApplicationRole defaultPanel = await _roleManager.Roles
+                .Where(r => userRoles.Contains(r.Name))
+                .OrderBy(r => r.Level)
+                .FirstOrDefaultAsync();
 
-                model.UserRoles = await _roleManager.Roles
-                    .OrderBy(r => r.Level)
-                    .ToListAsync();
-
-                model.Users = await _userManager.Users
-                    .OrderBy(u => u.LastName)
-                    .ToListAsync();
-            }
-
-            return View(model);
+            HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, defaultPanel.Id);
+            panelRole = defaultPanel.Id;
         }
 
-        [HttpPost]
-        public IActionResult Index(string role)
-        {
-            HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, role);
-            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
-        }
+        ApplicationRole userPanel = await _roleManager.Roles
+            .FirstOrDefaultAsync(r => r.Id == panelRole);
 
-        private async Task<ApplicationRole> GetPanelRole()
-        {
-            string panelRole = HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey);
-            if (string.IsNullOrEmpty(panelRole))
-            {
-                ApplicationUser user = await _userManager.Users
-                    .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-
-                IList<string> userRoles = await _userManager.GetRolesAsync(user);
-                ApplicationRole defaultPanel = await _roleManager.Roles
-                    .Where(r => userRoles.Contains(r.Name))
-                    .OrderBy(r => r.Level)
-                    .FirstOrDefaultAsync();
-
-                HttpContext.Session.SetString(ApplicationKeys.PanleRoleKey, defaultPanel.Id);
-                panelRole = defaultPanel.Id;
-            }
-
-            ApplicationRole userPanel = await _roleManager.Roles
-                .FirstOrDefaultAsync(r => r.Id == panelRole);
-
-            return userPanel;
-        }
+        return userPanel;
     }
 }
