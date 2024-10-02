@@ -981,22 +981,4 @@ button {
                             font-weight: 300;
                             color: #a7a7a7;
                         }
-/*
-
-
-                .panel-users-card .users-wrapper .users-list tbody tr .row-action {
-                    padding: 0 4px;
-                    display: flex;
-                    flex-direction: row-reverse;
-                    justify-content: flex-start;
-                    align-items: center;
-                    gap: 12px;
-                }
-
-                    .panel-users-card .users-wrapper .users-list tbody tr .row-action .btn {
-                        display: inline-flex;
-                        padding: 8px;
-                        opacity: 0;
-                        transition: all ease-in 100ms;
-                    }
 /* Users Card Component Styles *** END */
