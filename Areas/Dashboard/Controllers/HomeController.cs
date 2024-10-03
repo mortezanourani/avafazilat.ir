@@ -59,6 +59,32 @@ public class HomeController : Controller
             {
                 await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate));
             }
+
+            var userExpired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired);
+            if (userExpired == null)
+            {
+                if (user.PhoneNumber == user.UserName)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Active"));
+                }
+                else
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Expired"));
+                }
+            }
+
+            var userExpiration = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration);
+            if (userExpiration == null)
+            {
+                if (user.PhoneNumber == user.UserName)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, "1403-08-01"));
+                }
+                else
+                {
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, "1403-01-01"));
+                }
+            }
         }
 
         return RedirectToAction("Index");
@@ -70,6 +96,8 @@ public class HomeController : Controller
         model.Panel = await GetPanelRole();
         model.User = await _userManager.Users
             .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+        model.User.FirstName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+        model.User.LastName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
 
         if (model.Panel.Level == 0)
         {
@@ -81,9 +109,20 @@ public class HomeController : Controller
                 .OrderBy(r => r.Level)
                 .ToListAsync();
 
-            model.Users = await _userManager.Users
-                .OrderBy(u => u.LastName)
+            List<ApplicationUser> users = await _userManager.Users
                 .ToListAsync();
+            foreach (ApplicationUser user in users)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                user.FirstName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+                user.LastName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
+                user.Expired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired)?.Value;
+            }
+            model.Users = users
+                .OrderBy(u => u.LastName)
+                .OrderByDescending(u => u.Registered)
+                .Take(10)
+                .ToList();
         }
 
         return View(model);

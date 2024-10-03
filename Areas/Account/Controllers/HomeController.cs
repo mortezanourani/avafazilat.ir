@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Fazilat.Models;
 using Fazilat.Areas.Account.Models;
+using System;
 
 namespace Fazilat.Areas.Account.Controllers;
 
@@ -82,8 +83,7 @@ public class HomeController : Controller
             }
 
             user = new ApplicationUser();
-            user.FirstName = registerModel.FirstName;
-            user.LastName = registerModel.LastName;
+            user.Registered = DateTime.UtcNow.ToString("yyyy-MM-dd");
             await _userManager.SetUserNameAsync(user, registerModel.PhoneNumber);
             await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
             var result = await _userManager.CreateAsync(user, registerModel.Password);
@@ -95,6 +95,10 @@ public class HomeController : Controller
                 }
                 return View(model);
             }
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, registerModel.FirstName));
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, registerModel.LastName));
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration,  DateTime.UtcNow.AddMonths(1).ToString("yyyy-MM-dd")));
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Active"));
 
             await _userManager.AddToRoleAsync(user, "User");
 
