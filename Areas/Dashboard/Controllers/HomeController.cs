@@ -42,24 +42,6 @@ public class HomeController : Controller
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
 
-            var userGivenName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-            if (user.FirstName != null && userGivenName == null)
-            {
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.GivenName, user.FirstName));
-            }
-
-            var userSurName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName);
-            if (user.LastName != null && userSurName == null)
-            {
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Surname, user.LastName));
-            }
-
-            var userDateOfBirth = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.DateOfBirth);
-            if (user.BirthDate != null && userDateOfBirth == null)
-            {
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate));
-            }
-
             var userExpired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired);
             if (userExpired == null)
             {
@@ -73,18 +55,28 @@ public class HomeController : Controller
                 }
             }
 
-            var userExpiration = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration);
-            if (userExpiration == null)
-            {
-                if (user.PhoneNumber == user.UserName)
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, "1403-08-01"));
-                }
-                else
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, "1403-01-01"));
-                }
-            }
+            //var userExpiration = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration);
+            //if (userExpiration == null)
+            //{
+            //    if (user.PhoneNumber == user.UserName)
+            //    {
+            //        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, DateTime.Now.AddMonths(1).ToString()));
+            //    }
+            //    else
+            //    {
+            //        var expiration = await _context.UserLimitations
+            //            .FirstOrDefaultAsync(l => l.UserId == user.Id);
+
+            //        if (expiration != null)
+            //        {
+            //            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, expiration.Expiration.ToString()));
+            //        }
+            //        else
+            //        {
+            //            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, DateTime.Now.AddYears(-1).ToString()));
+            //        }
+            //    }
+            //}
         }
 
         return RedirectToAction("Index");
@@ -96,8 +88,6 @@ public class HomeController : Controller
         model.Panel = await GetPanelRole();
         model.User = await _userManager.Users
             .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
-        model.User.FirstName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
-        model.User.LastName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
 
         if (model.Panel.Level == 0)
         {
@@ -114,8 +104,6 @@ public class HomeController : Controller
             foreach (ApplicationUser user in users)
             {
                 var userClaims = await _userManager.GetClaimsAsync(user);
-                user.FirstName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
-                user.LastName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value;
                 user.Expired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired)?.Value;
             }
             model.Users = users

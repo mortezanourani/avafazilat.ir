@@ -15,7 +15,7 @@ public partial class Transaction
 
     public string ReferenceNumber { get; set; }
 
-    public string Paid { get; set; }
+    public DateTime Paid { get; set; }
 
     public string Status { get; set; }
 

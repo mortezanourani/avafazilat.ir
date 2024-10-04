@@ -9,5 +9,5 @@ public partial class Landing
 
     public string Phone { get; set; }
 
-    public string Submitted { get; set; }
+    public DateTime Submitted { get; set; }
 }

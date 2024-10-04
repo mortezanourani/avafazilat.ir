@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fazilat.Models;
 
 public class ApplicationUser : IdentityUser
 {
-    [NotMapped]
+    [PersonalData]
     public string FirstName { get; set; }
 
-    [NotMapped]
+    [PersonalData]
     public string LastName { get; set; }
 
-    [NotMapped]
-    public string BirthDate { get; set; }
+    [PersonalData]
+    public DateTime? BirthDate { get; set; }
 
     [NotMapped]
     public string Expired { get; set; }
@@ -21,5 +22,5 @@ public class ApplicationUser : IdentityUser
     public string Expiration { get; set; }
 
     [PersonalData]
-    public string Registered { get; set; }
+    public DateTime Registered { get; set; }
 }

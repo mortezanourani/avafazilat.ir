@@ -13,9 +13,9 @@ public partial class Schedule
 
     public Guid Name { get; set; }
 
-    public string Start { get; set; }
+    public DateTime Start { get; set; }
 
-    public string Finish { get; set; }
+    public DateTime Finish { get; set; }
 
     public string Instruction { get; set; }
 

@@ -11,7 +11,7 @@ public partial class AspNetUser
 
     public string LastName { get; set; }
 
-    public string BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
 
     public string UserName { get; set; }
 

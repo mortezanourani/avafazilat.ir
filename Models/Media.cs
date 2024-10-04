@@ -13,7 +13,7 @@ public partial class Media
 
     public Guid CategoryId { get; set; }
 
-    public string Uploaded { get; set; }
+    public DateTime Uploaded { get; set; }
 
     public virtual ICollection<Banner> Banners { get; set; } = new List<Banner>();
 

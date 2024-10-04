@@ -15,7 +15,7 @@ public partial class Slide1
 
     public string Link { get; set; }
 
-    public string Created { get; set; }
+    public DateTime Created { get; set; }
 
     public bool IsVisible { get; set; }
 

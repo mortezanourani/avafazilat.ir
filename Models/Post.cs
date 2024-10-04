@@ -17,7 +17,7 @@ public partial class Post
 
     public bool IsVisible { get; set; }
 
-    public string Published { get; set; }
+    public DateTime Published { get; set; }
 
     public virtual AspNetUser Author { get; set; }
 

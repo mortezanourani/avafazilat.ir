@@ -19,7 +19,7 @@ public partial class Message1
 
     public string Body { get; set; }
 
-    public string Submitted { get; set; }
+    public DateTime Submitted { get; set; }
 
     public bool IsRead { get; set; }
 
