@@ -1,0 +1,37 @@
+﻿@model Fazilat.Areas.Dashboard.Models.AddMediaViewModel
+
+@{
+    ViewData["Title"] = "آپلود فایل";
+}
+
+<div class="panel-media-add">
+    <div class="media-add-title-bar">
+        <a class="btn btn-icon panel-card" asp-area="Dashboard" asp-controller="Album" asp-action="Index" asp-route-name="@Model.Category.Name">
+            <img src="/icons/back-arrow.svg" />
+        </a>
+        <h4>آپلود فایل در آلبوم « @Model.Category.PersianName »</h4>
+    </div>
+    <div class="media-add-upload-form">
+        <form class="panel-card" asp-action="Add" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CategoryId"/>
+            <div class="form-group">
+                <input asp-for="File" class="form-control" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn-cta">
+                <span class="login-title">
+                    <img src="/icons/upload-w.svg" />
+                    آپلود
+                </span>
+            </button>
+        </form>
+        <div class="media-upload-preview">
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1125,3 +1125,81 @@ button {
     }
 }
 /* Album Card Component Styles *** END */
+
+/*
+ * Media Add Page Styles
+ **********************/
+.panel-media-add {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+}
+
+    .panel-media-add .media-add-title-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .panel-media-add .media-add-title-bar a {
+            width: auto;
+            aspect-ratio: 1.5;
+            transition: all ease 250ms;
+        }
+
+        .panel-media-add .media-add-title-bar a:hover {
+            background: #ffffff;
+        }
+
+        .panel-media-add .media-add-title-bar a img {
+            height: 18px;
+        }
+
+        .panel-media-add .media-add-title-bar h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+    .panel-media-add .media-add-upload-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+        .panel-media-add .media-add-upload-form > * {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            gap: 12px;
+        }
+
+        .panel-media-add .media-add-upload-form form {
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-media-add .media-add-upload-form form button {
+            min-width: 160px;
+        }
+
+        .panel-media-add .media-add-upload-form .media-upload-preview {
+            justify-content: stretch;
+            align-items: stretch;
+            align-self: stretch;
+        }
+
+@media (max-width: 480px) {
+    .panel-media-add .media-add-upload-form form {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+}
+/* Media Add Page Styles *** END */

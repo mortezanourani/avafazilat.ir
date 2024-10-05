@@ -39,7 +39,7 @@
             @foreach (Media media in Model.Category.Media)
             {
                 string imageFile = media.FileName + media.Extension;
-                <a asp-area="Dashboard" asp-controller="Media" asp-action="Edit" asp-route-id="@media.Id">
+                <a asp-area="Dashboard" asp-controller="Media" asp-action="Details" asp-route-id="@media.Id">
                     <img src="/images/@imagesDirectory/@imageFile" />
                 </a>
             }
