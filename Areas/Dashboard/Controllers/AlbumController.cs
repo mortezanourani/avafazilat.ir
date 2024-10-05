@@ -21,7 +21,7 @@ namespace Fazilat.Areas.Dashboard.Controllers
             _context = context;
         }
 
-        [Route("Dashboard/Album/")]
+        [Route("Dashboard/Albums/")]
         public async Task<IActionResult> Index()
         {
             AlbumViewMode album = new AlbumViewMode();
