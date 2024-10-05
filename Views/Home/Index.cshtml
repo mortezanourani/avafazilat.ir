@@ -25,13 +25,21 @@
     </div>
 </header>
 
-@*
 <section class="af-home-banners">
+    <div class="banners-wrapper">
+        @foreach (Banner banner in Model.Banners)
+        {
+            var imageFile = string.Join("", banner.Image.FileName, banner.Image.Extension);
+            var imageDirectory = banner.Image.Category.NormalizedName.ToLower();
+            <a class="banner" href="@banner.Link">
+                <img src="/images/@imageDirectory/@imageFile" />
+            </a>
+        }
+    </div>
 </section>
- *@
 
 <section class="af-home-register-cta">
-    <h4>با یک حساب کاربری می توانید از تمامی خدمات فوق استفاده کنید.</h4>
+    <h4>با یک حساب کاربری می توانید از تمامی خدمات این سامانه استفاده کنید.</h4>
     <a class="btn btn-cta" asp-area="" asp-controller="Account" asp-action="Index">ثبت نام</a>
 </section>
 
