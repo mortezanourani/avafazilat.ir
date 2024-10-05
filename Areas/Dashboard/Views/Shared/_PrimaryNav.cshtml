@@ -21,6 +21,10 @@
     string panelRole = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
     ApplicationRole userPanel = await roleManager.Roles
         .FirstOrDefaultAsync(r => r.Id == panelRole);
+    if (userPanel == null)
+    {
+        userPanel = userPanels.FirstOrDefault();
+    }
 }
 
 <nav class="dashboard-nav">

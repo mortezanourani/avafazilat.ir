@@ -1,0 +1,33 @@
+﻿@model AlbumViewMode
+
+@{
+    ViewData["Title"] = "Index";
+    string imagesDirectory = Model.Category.Name.ToLower();
+}
+
+<div class="panel-album-card">
+    <h3 class="panel-album-title">آلبوم تصاویر</h3>
+    <div class="albums-bar">
+        <div class="albums-list">
+            @foreach (Category category in Model.Categories)
+            {
+                string activeClass = category.Id != Model.Category.Id
+                    ? string.Empty
+                    : "active";
+                <a class="album-item @activeClass" asp-area="Dashboard" asp-controller="Album" asp-action="Index" asp-route-name="@category.Name">
+                    <h4>@category.PersianName</h4>
+                    <p>@category.Name</p>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="panel-card album-media-list">
+        @foreach (Media media in Model.Category.Media)
+        {
+            string imageFile = media.FileName + media.Extension;
+            <a asp-area="Dashboard" asp-controller="Media" asp-action="Edit" asp-route-id="@media.Id">
+                <img src="/images/@imagesDirectory/@imageFile" />
+            </a>
+        }
+    </div>
+</div>
