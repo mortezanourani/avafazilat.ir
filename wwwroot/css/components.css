@@ -1203,3 +1203,15 @@ button {
     }
 }
 /* Media Add Page Styles *** END */
+
+/*
+ * User Profile Card Styles
+ *************************/
+.panel-account-settings {
+
+}
+
+    .panel-account-settings .panel-card {
+        gap: 16px;
+    }
+/* User Profile Card Styles *** END */

@@ -1,0 +1,70 @@
+﻿@model ApplicationUser
+
+<div class="panel-settings">
+    <h4>پروفایل</h4>
+    <div class="panel-card">
+        <h4 class="panel-card-title">مشخصات فردی</h4>
+        <form asp-action="UpdateName">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="input en">
+                <img src="/icons/user.svg" />
+                <input asp-for="UserName" placeholder="کد ملی" />
+            </div>
+            <div class="input">
+                <img src="/icons/user.svg" />
+                <input asp-for="FirstName" placeholder="نام" />
+            </div>
+            <div class="input">
+                <img src="/icons/phone.svg" />
+                <input asp-for="LastName" placeholder="نام خانوادگی" />
+            </div>
+            <div class="input en">
+                <img src="/icons/phone.svg" />
+                <input asp-for="BirthDate" placeholder="تاریخ تولد" />
+            </div>
+            <button type="submit" class="btn-cta submit-button">
+                <span class="login-title">
+                    <img src="/icons/secure-accept.svg" />
+                    به روز رسانی
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="panel-card">
+        <h4 class="panel-card-title">اطلاعات تماس</h4>
+        <form asp-action="UpdateContact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="input en">
+                <img src="/icons/phone.svg" />
+                <input asp-for="PhoneNumber" placeholder="شماره موبایل" />
+            </div>
+            <div class="input en">
+                <img src="/icons/at.svg" />
+                <input asp-for="Email" placeholder="پست الکترونیک" />
+            </div>
+            <button type="submit" class="btn-cta submit-button">
+                <span class="login-title">
+                    <img src="/icons/secure-accept.svg" />
+                    به روز رسانی
+                </span>
+            </button>
+        </form>
+    </div>
+    <div class="panel-card">
+        <h4 class="panel-card-title">رمز عبور</h4>
+        <form asp-action="ChangePassword">
+            <button type="submit" class="btn-cta submit-button">
+                <span class="login-title">
+                    <img src="/icons/secure-accept.svg" />
+                    به روز رسانی
+                </span>
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

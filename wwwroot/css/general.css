@@ -21,6 +21,7 @@ body {
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         text-align: right;
+        text-decoration: none;
     }
 
 header .af-section-title-bar,
