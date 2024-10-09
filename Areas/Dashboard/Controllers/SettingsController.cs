@@ -25,7 +25,7 @@ public class SettingsController : Controller
         return View(user);
     }
 
-    [Authorize("Administrator")]
+    [Authorize(Roles = "Administrator")]
     [Route("Dashboard/Settings/{id?}")]
     public async Task<IActionResult> Index(string id)
     {

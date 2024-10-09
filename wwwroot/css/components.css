@@ -1145,20 +1145,6 @@ button {
         gap: 12px;
     }
 
-        .panel-media-add .media-add-title-bar a {
-            width: auto;
-            aspect-ratio: 1.5;
-            transition: all ease 250ms;
-        }
-
-        .panel-media-add .media-add-title-bar a:hover {
-            background: #ffffff;
-        }
-
-        .panel-media-add .media-add-title-bar a img {
-            height: 18px;
-        }
-
         .panel-media-add .media-add-title-bar h4 {
             margin: 0;
             font-size: 16px;
@@ -1205,13 +1191,68 @@ button {
 /* Media Add Page Styles *** END */
 
 /*
- * User Profile Card Styles
- *************************/
-.panel-account-settings {
-
+ * Panel Settings Page Styles
+ ***************************/
+.panel-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
 }
 
-    .panel-account-settings .panel-card {
+    .panel-settings .settings-title-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .panel-settings .settings-title-bar h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+    .panel-settings .settings-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
         gap: 16px;
     }
-/* User Profile Card Styles *** END */
+
+        .panel-settings .settings-content .settings-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+            .panel-settings .settings-content .settings-row.settings-personal-row {
+                flex-direction: row;
+            }
+            .panel-settings .settings-content .settings-row.settings-contact-row {
+                flex-direction: row-reverse;
+            }
+            .panel-settings .settings-content .settings-row.settings-password-row {
+                flex-direction: row;
+            }
+
+            .panel-settings .settings-content .settings-row form {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                gap: 12px;
+                flex-grow: 0;
+                flex-basis: 50%;
+            }
+
+            .panel-settings .settings-content .settings-row .form-validation {
+                flex-grow: 1;
+                flex-basis: 50%;
+            }
+
+/* Panel Settings Page Styles *** END */
