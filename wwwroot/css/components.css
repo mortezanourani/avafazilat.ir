@@ -147,41 +147,46 @@ button {
         color: #FFFFFF;
     }
 
-    a:has(button):hover {
-        text-decoration: none;
-    }
-    button.btn-next,
-    button.btn-previous {
-        padding: 6px 12px;
-        border: 1px solid #292D32;
-        line-height: 0;
-        color: #292D32;
-        gap: 8px;
+a:has(button):hover {
+    text-decoration: none;
+}
+
+button.btn-next,
+button.btn-previous {
+    padding: 6px 12px;
+    border: 1px solid #292D32;
+    line-height: 0;
+    color: #292D32;
+    gap: 8px;
+}
+
+    button.btn-next:after,
+    button.btn-previous:before {
+        height: 18px;
+        content: url('/icons/next.svg');
     }
 
-        button.btn-next:after,
-        button.btn-previous:before {
-            height: 18px;
-            content: url('/icons/next.svg');
-        }
-        button.btn-next:after {
-            content: url('/icons/next.svg');
-        }
-        button.btn-previous:before {
-            content: url('/icons/previous.svg');
-        }
+    button.btn-next:after {
+        content: url('/icons/next.svg');
+    }
 
-        button:disabled.btn-next,
-        button:disabled.btn-previous {
-            border-color: #a9a9a9;
-            color: #a9a9a9;
-        }
-            button:disabled.btn-next:after {
-                content: url('/icons/next-d.svg');
-            }
-            button:disabled.btn-previous:before {
-                content: url('/icons/previous-d.svg');
-            }
+    button.btn-previous:before {
+        content: url('/icons/previous.svg');
+    }
+
+button:disabled.btn-next,
+button:disabled.btn-previous {
+    border-color: #a9a9a9;
+    color: #a9a9a9;
+}
+
+    button:disabled.btn-next:after {
+        content: url('/icons/next-d.svg');
+    }
+
+    button:disabled.btn-previous:before {
+        content: url('/icons/previous-d.svg');
+    }
 
 @media (max-width: 480px) {
     button.btn-next,
@@ -255,9 +260,9 @@ button {
             cursor: pointer;
         }
 
-        .dropdown .dropdown-options .dropdown-option:hover {
-            background: rgba(0, 0, 0, .05);
-        }
+            .dropdown .dropdown-options .dropdown-option:hover {
+                background: rgba(0, 0, 0, .05);
+            }
 
     .dropdown input:checked ~ .dropdown-selected img {
         transform: rotate(180deg);
@@ -354,13 +359,13 @@ button {
         }
 
 
-        .contact-card .contact-info img {
-            height: 24px;
-        }
+            .contact-card .contact-info img {
+                height: 24px;
+            }
 
-        .contact-card .contact-info h5 {
-            font-size: 16px;
-        }
+            .contact-card .contact-info h5 {
+                font-size: 16px;
+            }
 }
 /* Contact Card Styles *** END */
 
@@ -407,12 +412,12 @@ button {
         overflow: hidden;
     }
 
-        .blog-post .blog-post-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: none;
-        }
+    .blog-post .blog-post-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: none;
+    }
 
     .blog-post .blog-post-content {
         display: flex;
@@ -529,9 +534,9 @@ button {
         flex-basis: 5%;
     }
 
-    .leaderboard button img {
-        height: 32px;
-    }
+        .leaderboard button img {
+            height: 32px;
+        }
 
     .leaderboard .leaders-list {
         display: flex;
@@ -552,47 +557,47 @@ button {
         margin-bottom: -33px;
     }
 
-    .leaderboard .leaders-list .leader {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        padding: 16px 16px 32px;
-        gap: 16px;
-        background: #FFFFFF;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 12px;
-        /* Inside auto layout */
-        flex: none;
-        order: 0;
-        align-self: stretch;
-        flex-grow: 0;
-        flex-basis: calc(25% - 12px);
-    }
-
-        .leaderboard .leaders-list .leader img.leader-profile {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            border-radius: 8px;
-            overflow: hidden;
+        .leaderboard .leaders-list .leader {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 16px 16px 32px;
+            gap: 16px;
+            background: #FFFFFF;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            /* Inside auto layout */
+            flex: none;
+            order: 0;
+            align-self: stretch;
+            flex-grow: 0;
+            flex-basis: calc(25% - 12px);
         }
 
-        .leaderboard .leaders-list .leader .leader-name {
-            margin: 0;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 18px;
-            text-align: right;
-            color: #292D32;
-        }
+            .leaderboard .leaders-list .leader img.leader-profile {
+                width: 100%;
+                aspect-ratio: 1;
+                object-fit: cover;
+                border-radius: 8px;
+                overflow: hidden;
+            }
 
-        .leaderboard .leaders-list .leader .leader-role {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            text-align: right;
-            color: #292D32;
-        }
+            .leaderboard .leaders-list .leader .leader-name {
+                margin: 0;
+                margin-bottom: 12px;
+                font-weight: 600;
+                font-size: 18px;
+                text-align: right;
+                color: #292D32;
+            }
+
+            .leaderboard .leaders-list .leader .leader-role {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 24px;
+                text-align: right;
+                color: #292D32;
+            }
 
 @media (max-width: 1023px) {
     .leaderboard .leaders-list {
@@ -600,9 +605,9 @@ button {
         flex-basis: 100%;
     }
 
-    .leaderboard .leaders-list .leader {
-        flex-basis: calc(33% - 8px);
-    }
+        .leaderboard .leaders-list .leader {
+            flex-basis: calc(33% - 8px);
+        }
 }
 
 @media (max-width: 480px) {
@@ -620,9 +625,9 @@ button {
             margin-bottom: -12px;
         }
 
-        .leaderboard .leaders-list .leader {
-            flex-basis: 75%;
-        }
+            .leaderboard .leaders-list .leader {
+                flex-basis: 75%;
+            }
 }
 /* Leaderboard Component Styles *** END */
 
@@ -819,9 +824,11 @@ button {
                 font-weight: 300;
                 color: #292D32;
             }
-            .panel-roles-card .roles-wrapper .roles-list details:last-child {
-                border-bottom: none;
-            }
+
+                .panel-roles-card .roles-wrapper .roles-list details:last-child {
+                    border-bottom: none;
+                }
+
                 .panel-roles-card .roles-wrapper .roles-list details summary {
                     list-style: none;
                     display: flex;
@@ -855,13 +862,13 @@ button {
                             color: #c7c7c7;
                         }
 
-            .panel-roles-card .roles-wrapper .roles-list details ul {
-                margin: 0;
-                padding: 4px 16px 4px 0;
-                font-size: 12px;
-                font-weight: 300;
-                color: #292D32;
-            }
+                .panel-roles-card .roles-wrapper .roles-list details ul {
+                    margin: 0;
+                    padding: 4px 16px 4px 0;
+                    font-size: 12px;
+                    font-weight: 300;
+                    color: #292D32;
+                }
 /* Roles Card Component Styles *** END */
 
 /* 
@@ -896,17 +903,17 @@ button {
                 gap: 6px;
             }
 
-                .panel-users-card .users-wrapper .users-list thead tr {
-                    color: #A9A9A9;
-                }
+            .panel-users-card .users-wrapper .users-list thead tr {
+                color: #A9A9A9;
+            }
 
-                    .panel-users-card .users-wrapper .users-list thead tr th {
-                        padding: 4px 8px;
-                        text-align: center;
-                        font-size: 14px;
-                        line-height: 14px;
-                        font-weight: 600;
-                    }
+                .panel-users-card .users-wrapper .users-list thead tr th {
+                    padding: 4px 8px;
+                    text-align: center;
+                    font-size: 14px;
+                    line-height: 14px;
+                    font-weight: 600;
+                }
 
                     .panel-users-card .users-wrapper .users-list thead tr th:first-child {
                         text-align: right;
@@ -1100,11 +1107,11 @@ button {
             overflow: hidden;
         }
 
-        .panel-album-card .album-media-list > a img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-        }
+            .panel-album-card .album-media-list > a img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
 
 @media (max-width: 1023px) {
     .panel-album-card .album-media-list > a {
@@ -1171,9 +1178,9 @@ button {
             align-items: center;
         }
 
-        .panel-media-add .media-add-upload-form form button {
-            min-width: 160px;
-        }
+            .panel-media-add .media-add-upload-form form button {
+                min-width: 160px;
+            }
 
         .panel-media-add .media-add-upload-form .media-upload-preview {
             justify-content: stretch;
@@ -1198,7 +1205,7 @@ button {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 16px;
+    gap: 32px;
 }
 
     .panel-settings .settings-title-bar {
@@ -1220,7 +1227,7 @@ button {
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
-        gap: 16px;
+        gap: 64px;
     }
 
         .panel-settings .settings-content .settings-row {
@@ -1228,16 +1235,16 @@ button {
             flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 16px;
+            gap: 48px;
         }
+
             .panel-settings .settings-content .settings-row.settings-personal-row {
                 flex-direction: row;
             }
-            .panel-settings .settings-content .settings-row.settings-contact-row {
-                flex-direction: row-reverse;
-            }
+
+            .panel-settings .settings-content .settings-row.settings-contact-row,
             .panel-settings .settings-content .settings-row.settings-password-row {
-                flex-direction: row;
+                flex-direction: row-reverse;
             }
 
             .panel-settings .settings-content .settings-row form {
@@ -1247,12 +1254,59 @@ button {
                 align-items: stretch;
                 gap: 12px;
                 flex-grow: 0;
-                flex-basis: 50%;
+                flex-basis: 40%;
+            }
+
+            .panel-settings .settings-content .settings-row.settings-contact-row form,
+            .panel-settings .settings-content .settings-row.settings-password-row form {
+                margin-top: 48px;
             }
 
             .panel-settings .settings-content .settings-row .form-validation {
                 flex-grow: 1;
-                flex-basis: 50%;
+                flex-basis: 60%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: stretch;
+                gap: 16px;
+            }
+
+            .panel-settings .settings-content .settings-row form .submit-wrapper {
+                margin-top: 24px;
+                display: flex;
+                flex-direction: row;
+                justify-content: stretch;
+                align-items: center;
+                gap: 12px;
+            }
+
+                .panel-settings .settings-content .settings-row form .submit-wrapper .input {
+                    flex-grow: 1;
+                    flex-basis: 60%;
+                }
+
+                .panel-settings .settings-content .settings-row form .submit-wrapper button {
+                    flex-grow: 0;
+                    flex-basis: 40%;
+                }
+
+            .panel-settings .settings-content .settings-row .form-validation .validation-item span {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 11px;
+            }
+
+                .panel-settings .settings-content .settings-row .form-validation .validation-item span img {
+                    width: 21px;
+                    object-fit: contain;
+                    aspect-ratio: 1;
+                }
+
+            .panel-settings .settings-content .settings-row .form-validation .validation-item p {
+                padding-right: 32px;
             }
 
 /* Panel Settings Page Styles *** END */
