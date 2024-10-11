@@ -1238,16 +1238,16 @@ button:disabled.btn-previous {
             gap: 48px;
         }
 
-            .panel-settings .settings-content .settings-row.settings-personal-row {
+            .panel-settings .settings-content .settings-row.settings-profile-row {
                 flex-direction: row;
             }
 
-            .panel-settings .settings-content .settings-row.settings-contact-row,
+            .panel-settings .settings-content .settings-row.settings-communication-row,
             .panel-settings .settings-content .settings-row.settings-password-row {
                 flex-direction: row-reverse;
             }
 
-            .panel-settings .settings-content .settings-row form {
+            .panel-settings .settings-content .settings-row form > div {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -1257,7 +1257,7 @@ button:disabled.btn-previous {
                 flex-basis: 40%;
             }
 
-            .panel-settings .settings-content .settings-row.settings-contact-row form,
+            .panel-settings .settings-content .settings-row.settings-communication-row form,
             .panel-settings .settings-content .settings-row.settings-password-row form {
                 margin-top: 48px;
             }

@@ -17,7 +17,7 @@ public class ApplicationUser : IdentityUser
 
     [PersonalData]
     [Display(Name = "تاریخ تولد")]
-    public DateTime? BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
 
     [NotMapped]
     public string Expired { get; set; }
@@ -28,5 +28,5 @@ public class ApplicationUser : IdentityUser
 
     [PersonalData]
     [Display(Name = "تاریخ ثبت نام")]
-    public DateTime Registered { get; set; }
+    public DateOnly Registered { get; set; }
 }

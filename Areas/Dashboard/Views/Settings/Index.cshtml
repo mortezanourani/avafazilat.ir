@@ -1,4 +1,4 @@
-﻿@model ApplicationUser
+﻿@model SettingsViewModel
 
 <div class="panel-settings">
     <div class="settings-title-bar">
@@ -8,38 +8,41 @@
         <h4>حساب کاربری</h4>
     </div>
     <div class="settings-content">
-        <div class="settings-row settings-personal-row">
-            <form class="panel-card" asp-action="UpdateName">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="input en">
-                    <img src="/icons/personal-card.svg" />
-                    <input asp-for="UserName" placeholder="کد ملی" />
-                </div>
-                <div class="input">
-                    <img src="/icons/user-firstname.svg" />
-                    <input asp-for="FirstName" placeholder="نام" />
-                </div>
-                <div class="input">
-                    <img src="/icons/user-lastname.svg" />
-                    <input asp-for="LastName" placeholder="نام خانوادگی" />
-                </div>
-                <div class="input en">
-                    <img src="/icons/calendar.svg" />
-                    <input asp-for="BirthDate" placeholder="تاریخ تولد" />
-                </div>
-                <div class="submit-wrapper">
+        <div class="settings-row settings-profile-row">
+            <form asp-action="UpdateProfile" method="post">
+                <div class="panel-card">
+                    <input type="hidden" asp-for="Profile.Id" />
                     <div class="input en">
-                        <img src="/icons/password.svg" />
-                        <input placeholder="رمزعبور کنونی" />
+                        <img src="/icons/personal-card.svg" />
+                        <input asp-for="Profile.UserName" placeholder="کد ملی" />
                     </div>
-                    <button type="submit" class="btn-cta submit-button">
-                        <span class="login-title">
-                            <img src="/icons/secure-accept.svg" />
-                            به روز رسانی
-                        </span>
-                    </button>
+                    <div class="input">
+                        <img src="/icons/user-firstname.svg" />
+                        <input asp-for="Profile.FirstName" placeholder="نام" />
+                    </div>
+                    <div class="input">
+                        <img src="/icons/user-lastname.svg" />
+                        <input asp-for="Profile.LastName" placeholder="نام خانوادگی" />
+                    </div>
+                    <div class="input en">
+                        <img src="/icons/calendar.svg" />
+                        <input asp-for="Profile.BirthDate" placeholder="تاریخ تولد" />
+                    </div>
+                    <div class="submit-wrapper">
+                        <div class="input en">
+                            <img src="/icons/password.svg" />
+                            <input asp-for="Profile.Password" placeholder="رمزعبور" />
+                        </div>
+                        <button type="submit" class="btn-cta submit-button">
+                            <span class="login-title">
+                                <img src="/icons/secure-accept.svg" />
+                                به روز رسانی
+                            </span>
+                        </button>
+                    </div>
                 </div>
+                <div asp-validation-summary="All"></div>
+                <span asp-validation-for="Profile.UserName" class="text-danger"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">مشخصات فردی</h4>
@@ -81,30 +84,32 @@
                 </div>
             </div>
         </div>
-        <div class="panel-card settings-row settings-contact-row">
-            <form asp-action="UpdateContact">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="input en">
-                    <img src="/icons/phone.svg" />
-                    <input asp-for="PhoneNumber" placeholder="شماره موبایل" />
-                </div>
-                <div class="input en">
-                    <img src="/icons/at.svg" />
-                    <input asp-for="Email" placeholder="پست الکترونیک" />
-                </div>
-                <div class="submit-wrapper">
+        <div class="panel-card settings-row settings-communication-row">
+            <form asp-action="UpdateCommunication">
+                <div>
+                    <input type="hidden" asp-for="Communication.Id" />
                     <div class="input en">
-                        <img src="/icons/password.svg" />
-                        <input placeholder="رمزعبور کنونی" />
+                        <img src="/icons/phone.svg" />
+                        <input asp-for="Communication.PhoneNumber" placeholder="شماره موبایل" />
                     </div>
-                    <button type="submit" class="btn-cta submit-button">
-                        <span class="login-title">
-                            <img src="/icons/secure-accept.svg" />
-                            به روز رسانی
-                        </span>
-                    </button>
+                    <div class="input en">
+                        <img src="/icons/at.svg" />
+                        <input asp-for="Communication.Email" placeholder="پست الکترونیک" />
+                    </div>
+                    <div class="submit-wrapper">
+                        <div class="input en">
+                            <img src="/icons/password.svg" />
+                            <input asp-for="Communication.Password" placeholder="رمزعبور" />
+                        </div>
+                        <button type="submit" class="btn-cta submit-button">
+                            <span class="login-title">
+                                <img src="/icons/secure-accept.svg" />
+                                به روز رسانی
+                            </span>
+                        </button>
+                    </div>
                 </div>
+                <span asp-validation-for="Communication" class="text-danger"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">اطلاعات تماس</h4>
@@ -133,27 +138,31 @@
             </div>
         </div>
         <div class="settings-row settings-password-row">
-            <form class="panel-card" asp-action="ChangePassword">
-                <div class="input en">
-                    <img src="/icons/password.svg" />
-                    <input placeholder="رمزعبور جدید" />
-                </div>
-                <div class="input en">
-                    <img src="/icons/password.svg" />
-                    <input placeholder="تکرار رمزعبور جدید" />
-                </div>
-                <div class="submit-wrapper">
+            <form asp-action="ChangePassword">
+                <div class="panel-card">
+                    <input type="hidden" asp-for="Password.Id" />
                     <div class="input en">
                         <img src="/icons/password.svg" />
-                        <input placeholder="رمزعبور کنونی" />
+                        <input asp-for="Password.NewPassword" placeholder="رمزعبور جدید" />
                     </div>
-                    <button type="submit" class="btn-cta submit-button">
-                        <span class="login-title">
-                            <img src="/icons/secure-accept.svg" />
-                            به روز رسانی
-                        </span>
-                    </button>
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Password.ConfirmNewPassword" placeholder="تکرار رمزعبور جدید" />
+                    </div>
+                    <div class="submit-wrapper">
+                        <div class="input en">
+                            <img src="/icons/password.svg" />
+                            <input asp-for="Password.Password" placeholder="رمزعبور کنونی" />
+                        </div>
+                        <button type="submit" class="btn-cta submit-button">
+                            <span class="login-title">
+                                <img src="/icons/secure-accept.svg" />
+                                به روز رسانی
+                            </span>
+                        </button>
+                    </div>
                 </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">رمز عبور</h4>

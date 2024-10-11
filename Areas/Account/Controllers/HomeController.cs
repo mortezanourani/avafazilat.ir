@@ -85,7 +85,7 @@ public class HomeController : Controller
             user = new ApplicationUser();
             user.FirstName = registerModel.FirstName;
             user.LastName = registerModel.LastName;
-            user.Registered = DateTime.Now;
+            user.Registered = DateOnly.FromDateTime(DateTime.Now);
             await _userManager.SetUserNameAsync(user, registerModel.PhoneNumber);
             await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
             var result = await _userManager.CreateAsync(user, registerModel.Password);
