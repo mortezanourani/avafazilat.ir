@@ -9,7 +9,7 @@
     </div>
     <div class="settings-content">
         <div class="settings-row settings-profile-row">
-            <form asp-action="UpdateProfile" method="post">
+            <form asp-action="Index" method="post">
                 <div class="panel-card">
                     <input type="hidden" asp-for="Profile.Id" />
                     <div class="input en">
@@ -41,8 +41,10 @@
                         </button>
                     </div>
                 </div>
-                <div asp-validation-summary="All"></div>
-                <span asp-validation-for="Profile.UserName" class="text-danger"></span>
+                <span asp-validation-for="Profile.UserName"></span>
+                <span asp-validation-for="Profile.FirstName"></span>
+                <span asp-validation-for="Profile.LastName"></span>
+                <span asp-validation-for="Profile.BirthDate"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">مشخصات فردی</h4>
@@ -85,7 +87,7 @@
             </div>
         </div>
         <div class="panel-card settings-row settings-communication-row">
-            <form asp-action="UpdateCommunication">
+            <form asp-action="Index" method="post">
                 <div>
                     <input type="hidden" asp-for="Communication.Id" />
                     <div class="input en">
@@ -109,7 +111,8 @@
                         </button>
                     </div>
                 </div>
-                <span asp-validation-for="Communication" class="text-danger"></span>
+                <span asp-validation-for="Communication.PhoneNumber"></span>
+                <span asp-validation-for="Communication.Email"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">اطلاعات تماس</h4>
@@ -138,7 +141,7 @@
             </div>
         </div>
         <div class="settings-row settings-password-row">
-            <form asp-action="ChangePassword">
+            <form asp-action="Index" method="post">
                 <div class="panel-card">
                     <input type="hidden" asp-for="Password.Id" />
                     <div class="input en">
@@ -162,7 +165,9 @@
                         </button>
                     </div>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <span asp-validation-for="Password.NewPassword"></span>
+                <span asp-validation-for="Password.ConfirmNewPassword"></span>
+                <span asp-validation-for="Password.Password"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">رمز عبور</h4>
