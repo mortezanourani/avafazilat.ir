@@ -8,10 +8,11 @@
         <h4>حساب کاربری</h4>
     </div>
     <div class="settings-content">
+        <span asp-validation-for="Password"></span>
         <div class="settings-row settings-profile-row">
             <form asp-action="Index" method="post">
                 <div class="panel-card">
-                    <input type="hidden" asp-for="Profile.Id" />
+                    <input type="hidden" asp-for="Id" />
                     <div class="input en">
                         <img src="/icons/personal-card.svg" />
                         <input asp-for="Profile.UserName" placeholder="کد ملی" />
@@ -31,7 +32,7 @@
                     <div class="submit-wrapper">
                         <div class="input en">
                             <img src="/icons/password.svg" />
-                            <input asp-for="Profile.Password" placeholder="رمزعبور" />
+                            <input asp-for="Password" placeholder="رمزعبور" />
                         </div>
                         <button type="submit" class="btn-cta submit-button">
                             <span class="login-title">
@@ -89,7 +90,7 @@
         <div class="panel-card settings-row settings-communication-row">
             <form asp-action="Index" method="post">
                 <div>
-                    <input type="hidden" asp-for="Communication.Id" />
+                    <input type="hidden" asp-for="Id" />
                     <div class="input en">
                         <img src="/icons/phone.svg" />
                         <input asp-for="Communication.PhoneNumber" placeholder="شماره موبایل" />
@@ -101,7 +102,7 @@
                     <div class="submit-wrapper">
                         <div class="input en">
                             <img src="/icons/password.svg" />
-                            <input asp-for="Communication.Password" placeholder="رمزعبور" />
+                            <input asp-for="Password" placeholder="رمزعبور" />
                         </div>
                         <button type="submit" class="btn-cta submit-button">
                             <span class="login-title">
@@ -143,19 +144,19 @@
         <div class="settings-row settings-password-row">
             <form asp-action="Index" method="post">
                 <div class="panel-card">
-                    <input type="hidden" asp-for="Password.Id" />
+                    <input type="hidden" asp-for="Id" />
                     <div class="input en">
                         <img src="/icons/password.svg" />
-                        <input asp-for="Password.NewPassword" placeholder="رمزعبور جدید" />
+                        <input asp-for="Security.NewPassword" placeholder="رمزعبور جدید" />
                     </div>
                     <div class="input en">
                         <img src="/icons/password.svg" />
-                        <input asp-for="Password.ConfirmNewPassword" placeholder="تکرار رمزعبور جدید" />
+                        <input asp-for="Security.ConfirmNewPassword" placeholder="تکرار رمزعبور جدید" />
                     </div>
                     <div class="submit-wrapper">
                         <div class="input en">
                             <img src="/icons/password.svg" />
-                            <input asp-for="Password.Password" placeholder="رمزعبور کنونی" />
+                            <input asp-for="Password" placeholder="رمزعبور کنونی" />
                         </div>
                         <button type="submit" class="btn-cta submit-button">
                             <span class="login-title">
@@ -165,9 +166,8 @@
                         </button>
                     </div>
                 </div>
-                <span asp-validation-for="Password.NewPassword"></span>
-                <span asp-validation-for="Password.ConfirmNewPassword"></span>
-                <span asp-validation-for="Password.Password"></span>
+                <span asp-validation-for="Security.NewPassword"></span>
+                <span asp-validation-for="Security.ConfirmNewPassword"></span>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">رمز عبور</h4>
