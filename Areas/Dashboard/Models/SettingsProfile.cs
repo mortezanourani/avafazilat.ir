@@ -4,13 +4,13 @@ namespace Fazilat.Areas.Dashboard.Models;
 
 public class SettingsProfile
 {
-    [Required]
+    [Required(ErrorMessage = "وارد کردن کد ملی الزامی است.")]
     public string UserName { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "وارد کردن نام الزامی است.")]
     public string FirstName { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "وارد کردن نام خانوادگی الزامی است.")]
     public string LastName { get; set; }
 
     public string BirthDate { get; set; }

@@ -1205,7 +1205,7 @@ button:disabled.btn-previous {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;
-    gap: 32px;
+    gap: 16px;
 }
 
     .panel-settings .settings-title-bar {
@@ -1230,6 +1230,18 @@ button:disabled.btn-previous {
         gap: 64px;
     }
 
+        .panel-settings .settings-content .wrong-credential {
+            margin-bottom: -48px;
+        }
+            .panel-settings .settings-content .wrong-credential:not(:empty) {
+                background: #ff3030;
+                border-bottom: 4px solid #ffffff;
+                padding: 16px;
+                font-size: 14px;
+                font-weight: 300;
+                color: #ffffff;
+            }
+
         .panel-settings .settings-content .settings-row {
             display: flex;
             flex-direction: row;
@@ -1247,7 +1259,7 @@ button:disabled.btn-previous {
                 flex-direction: row-reverse;
             }
 
-            .panel-settings .settings-content .settings-row form > div {
+            .panel-settings .settings-content .settings-row form {
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
@@ -1257,10 +1269,25 @@ button:disabled.btn-previous {
                 flex-basis: 40%;
             }
 
+            .panel-settings .settings-content .settings-row form .field-validation-error {
+                display: block;
+                margin-bottom: 8px;
+                padding-right: 12px;
+                border-right: 3px solid #ff4040;
+                color: #ff4040;
+                font-weight: 400;
+                font-size: 14px;
+            }
+
             .panel-settings .settings-content .settings-row.settings-communication-row form,
             .panel-settings .settings-content .settings-row.settings-password-row form {
                 margin-top: 48px;
             }
+
+                .panel-settings .settings-content .settings-row.settings-communication-row form .field-validation-error {
+                    padding-left: 0;
+                    margin-right: 0px;
+                }
 
             .panel-settings .settings-content .settings-row .form-validation {
                 flex-grow: 1;
@@ -1273,7 +1300,6 @@ button:disabled.btn-previous {
             }
 
             .panel-settings .settings-content .settings-row form .submit-wrapper {
-                margin-top: 24px;
                 display: flex;
                 flex-direction: row;
                 justify-content: stretch;
@@ -1309,4 +1335,28 @@ button:disabled.btn-previous {
                 padding-right: 32px;
             }
 
+@media (max-width: 480px) {
+    .panel-settings .settings-content .settings-row {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+    }
+        .panel-settings .settings-content .settings-row.settings-profile-row,
+        .panel-settings .settings-content .settings-row.settings-communication-row,
+        .panel-settings .settings-content .settings-row.settings-password-row {
+            flex-direction: column-reverse;
+        }
+
+            .panel-settings .settings-content .settings-row.settings-communication-row form,
+            .panel-settings .settings-content .settings-row.settings-password-row form {
+                margin-top: 0;
+            }
+            
+        .panel-settings .settings-content .settings-row form .submit-wrapper {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 12px;
+        }
+}
 /* Panel Settings Page Styles *** END */

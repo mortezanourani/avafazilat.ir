@@ -8,44 +8,44 @@
         <h4>حساب کاربری</h4>
     </div>
     <div class="settings-content">
-        <span asp-validation-for="Password"></span>
+        <span asp-validation-for="Password" class="wrong-credential"></span>
         <div class="settings-row settings-profile-row">
-            <form asp-action="Index" method="post">
-                <div class="panel-card">
-                    <input type="hidden" asp-for="Id" />
-                    <div class="input en">
-                        <img src="/icons/personal-card.svg" />
-                        <input asp-for="Profile.UserName" placeholder="کد ملی" />
-                    </div>
-                    <div class="input">
-                        <img src="/icons/user-firstname.svg" />
-                        <input asp-for="Profile.FirstName" placeholder="نام" />
-                    </div>
-                    <div class="input">
-                        <img src="/icons/user-lastname.svg" />
-                        <input asp-for="Profile.LastName" placeholder="نام خانوادگی" />
-                    </div>
-                    <div class="input en">
-                        <img src="/icons/calendar.svg" />
-                        <input asp-for="Profile.BirthDate" placeholder="تاریخ تولد" />
-                    </div>
-                    <div class="submit-wrapper">
-                        <div class="input en">
-                            <img src="/icons/password.svg" />
-                            <input asp-for="Password" placeholder="رمزعبور" />
-                        </div>
-                        <button type="submit" class="btn-cta submit-button">
-                            <span class="login-title">
-                                <img src="/icons/secure-accept.svg" />
-                                به روز رسانی
-                            </span>
-                        </button>
-                    </div>
+            <form class="panel-card" asp-action="Index" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="input en">
+                    <img src="/icons/personal-card.svg" />
+                    <input asp-for="Profile.UserName" placeholder="کد ملی" />
                 </div>
-                <span asp-validation-for="Profile.UserName"></span>
-                <span asp-validation-for="Profile.FirstName"></span>
-                <span asp-validation-for="Profile.LastName"></span>
-                <span asp-validation-for="Profile.BirthDate"></span>
+                <div class="input">
+                    <img src="/icons/user-firstname.svg" />
+                    <input asp-for="Profile.FirstName" placeholder="نام" />
+                </div>
+                <div class="input">
+                    <img src="/icons/user-lastname.svg" />
+                    <input asp-for="Profile.LastName" placeholder="نام خانوادگی" />
+                </div>
+                <div class="input en">
+                    <img src="/icons/calendar.svg" />
+                    <input asp-for="Profile.BirthDate" placeholder="تاریخ تولد" />
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Profile.UserName"></span>
+                    <span asp-validation-for="Profile.FirstName"></span>
+                    <span asp-validation-for="Profile.LastName"></span>
+                    <span asp-validation-for="Profile.BirthDate"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Password" placeholder="رمز عبور" />
+                    </div>
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">مشخصات فردی</h4>
@@ -81,39 +81,39 @@
                 <div class="validation-item">
                     <span>
                         <img src="/icons/password.svg" />
-                        <h4>رمزعبور:</h4>
+                        <h4>رمز عبور:</h4>
                     </span>
-                    <p>به جهت اطمینان از اینکه اقدام به تغییر مشخصات فردی توسط صاحب این حساب کاربری صورت می پذیرد وارد کردن رمزعبور الزامی می باشد.</p>
+                    <p>به جهت اطمینان از اینکه اقدام به تغییر مشخصات فردی توسط صاحب این حساب کاربری صورت می پذیرد وارد کردن رمز عبور الزامی می باشد.</p>
                 </div>
             </div>
         </div>
         <div class="panel-card settings-row settings-communication-row">
             <form asp-action="Index" method="post">
-                <div>
-                    <input type="hidden" asp-for="Id" />
-                    <div class="input en">
-                        <img src="/icons/phone.svg" />
-                        <input asp-for="Communication.PhoneNumber" placeholder="شماره موبایل" />
-                    </div>
-                    <div class="input en">
-                        <img src="/icons/at.svg" />
-                        <input asp-for="Communication.Email" placeholder="پست الکترونیک" />
-                    </div>
-                    <div class="submit-wrapper">
-                        <div class="input en">
-                            <img src="/icons/password.svg" />
-                            <input asp-for="Password" placeholder="رمزعبور" />
-                        </div>
-                        <button type="submit" class="btn-cta submit-button">
-                            <span class="login-title">
-                                <img src="/icons/secure-accept.svg" />
-                                به روز رسانی
-                            </span>
-                        </button>
-                    </div>
+                <input type="hidden" asp-for="Id" />
+                <div class="input en">
+                    <img src="/icons/phone.svg" />
+                    <input asp-for="Communication.PhoneNumber" placeholder="شماره موبایل" />
                 </div>
-                <span asp-validation-for="Communication.PhoneNumber"></span>
-                <span asp-validation-for="Communication.Email"></span>
+                <div class="input en">
+                    <img src="/icons/at.svg" />
+                    <input asp-for="Communication.Email" placeholder="پست الکترونیک" />
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Communication.PhoneNumber"></span>
+                    <span asp-validation-for="Communication.Email"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Password" placeholder="رمز عبور" />
+                    </div>
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">اطلاعات تماس</h4>
@@ -135,51 +135,51 @@
                 <div class="validation-item">
                     <span>
                         <img src="/icons/password.svg" />
-                        <h4>رمزعبور:</h4>
+                        <h4>رمز عبور:</h4>
                     </span>
-                    <p>به جهت اطمینان از اینکه اقدام به تغییر اطلاعات تماس توسط صاحب این حساب کاربری صورت می پذیرد وارد کردن رمزعبور الزامی می باشد.</p>
+                    <p>به جهت اطمینان از اینکه اقدام به تغییر اطلاعات تماس توسط صاحب این حساب کاربری صورت می پذیرد وارد کردن رمز عبور الزامی می باشد.</p>
                 </div>
             </div>
         </div>
         <div class="settings-row settings-password-row">
-            <form asp-action="Index" method="post">
-                <div class="panel-card">
-                    <input type="hidden" asp-for="Id" />
-                    <div class="input en">
-                        <img src="/icons/password.svg" />
-                        <input asp-for="Security.NewPassword" placeholder="رمزعبور جدید" />
-                    </div>
-                    <div class="input en">
-                        <img src="/icons/password.svg" />
-                        <input asp-for="Security.ConfirmNewPassword" placeholder="تکرار رمزعبور جدید" />
-                    </div>
-                    <div class="submit-wrapper">
-                        <div class="input en">
-                            <img src="/icons/password.svg" />
-                            <input asp-for="Password" placeholder="رمزعبور کنونی" />
-                        </div>
-                        <button type="submit" class="btn-cta submit-button">
-                            <span class="login-title">
-                                <img src="/icons/secure-accept.svg" />
-                                به روز رسانی
-                            </span>
-                        </button>
-                    </div>
+            <form class="panel-card" asp-action="Index" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="input en">
+                    <img src="/icons/password.svg" />
+                    <input asp-for="Security.NewPassword" placeholder="رمز عبور جدید" />
                 </div>
-                <span asp-validation-for="Security.NewPassword"></span>
-                <span asp-validation-for="Security.ConfirmNewPassword"></span>
+                <div class="input en">
+                    <img src="/icons/password.svg" />
+                    <input asp-for="Security.ConfirmNewPassword" placeholder="تکرار رمز عبور جدید" />
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Security.NewPassword"></span>
+                    <span asp-validation-for="Security.ConfirmNewPassword"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Password" placeholder="رمز عبور کنونی" />
+                    </div>
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
             </form>
             <div class="form-validation">
                 <h4 class="panel-card-title">رمز عبور</h4>
-                <p>جهت تغییر رمزعبور خود، می بایست رمزعبور کنونی خود را بدانید. اگر رمزعبور کنونی خود را به یاد نمی آورید لطفا به مدیریت سامانه اطلاع دهید تا نسبت به تعریف رمزعبور جدید (موقت) برای شما اقدام نمایند.</p>
+                <p>جهت تغییر رمز عبور خود، می بایست رمز عبور کنونی خود را بدانید. اگر رمز عبور فعلی خود را به یاد نمی آورید لطفا به مدیریت سامانه اطلاع دهید تا نسبت به تعریف رمز عبور جدید (موقت) برای شما اقدام نمایند.</p>
                 <div class="validation-item">
                     <span>
                         <img src="/icons/password.svg" />
-                        <h4>رمزعبور فعلی و جدید:</h4>
+                        <h4>رمز عبور فعلی و جدید:</h4>
                     </span>
-                    <p>در فرم مربوطه فیلد اول رمزعبور جدیدی است که می خواهید برای حساب کاربری خود تعیین نمایید.</p>
-                    <p>جهت اطمینان از اینکه رمزعبور خود را درست وارد نموده اید می بایست رمزعبور جدید خود را در فیلد دوم مجددا وارد نمایید. بدیهی است که در صورت مغایرت این دو رمزعبور تغییر نخواهد کرد.</p>
-                    <p>فیلد سوم رمزعبور فعلی شماست که به جهت اطمینان از اینکه اقدام به تغییر رمزعبور توسط صاحب این حساب کاربری صورت می پذیرد الزامی می باشد.</p>
+                    <p>در فرم مربوطه فیلد اول رمز عبور جدیدی است که می خواهید برای حساب کاربری خود تعیین نمایید.</p>
+                    <p>جهت اطمینان از اینکه رمز عبور خود را درست وارد نموده اید می بایست رمز عبور جدید خود را در فیلد دوم مجددا وارد نمایید. بدیهی است که در صورت مغایرت این دو رمز عبور تغییر نخواهد کرد.</p>
+                    <p>فیلد سوم رمز عبور فعلی شماست که به جهت اطمینان از اینکه اقدام به تغییر رمز عبور توسط صاحب این حساب کاربری صورت می پذیرد الزامی می باشد.</p>
                 </div>
             </div>
         </div>
