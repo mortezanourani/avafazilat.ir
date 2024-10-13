@@ -18,11 +18,14 @@ namespace Fazilat.Areas.Dashboard.Controllers;
 public class SettingsController : Controller
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
     public SettingsController(
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     [HttpGet]
@@ -42,7 +45,6 @@ public class SettingsController : Controller
         communication.Email = user.Email;
 
         SettingsViewModel settings = new SettingsViewModel();
-        settings.Id = user.Id;
         settings.Profile = profile;
         settings.Communication = communication;
 
@@ -53,7 +55,7 @@ public class SettingsController : Controller
     [Route("Dashboard/Settings/")]
     public async Task<IActionResult> Index(SettingsViewModel settings)
     {
-        ApplicationUser user = await _userManager.FindByIdAsync(settings.Id);
+        ApplicationUser user = await _userManager.GetUserAsync(User);
 
         if (!ModelState.IsValid)
         {
@@ -93,18 +95,23 @@ public class SettingsController : Controller
             }
             await _userManager.UpdateAsync(user);
 
-            var setUserName = await _userManager.SetUserNameAsync(user, settings.Profile.UserName);
-            if (!setUserName.Succeeded)
+            if (user.UserName != settings.Profile.UserName)
             {
-                foreach (var error in setUserName.Errors)
+                var setUserName = await _userManager.SetUserNameAsync(user, settings.Profile.UserName);
+                if (!setUserName.Succeeded)
                 {
-                    if (error.Code == "DuplicateUserName")
+                    foreach (var error in setUserName.Errors)
                     {
-                        ModelState.AddModelError("Profile.UserName", "نام کاربری وارد شده در سامانه وجود دارد.");
+                        if (error.Code == "DuplicateUserName")
+                        {
+                            ModelState.AddModelError("Profile.UserName", "نام کاربری وارد شده در سامانه وجود دارد.");
+                        }
                     }
+
+                    return View(settings);
                 }
 
-                return View(settings);
+                await _signInManager.SignInAsync(user, isPersistent: false);
             }
         }
 

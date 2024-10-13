@@ -108,35 +108,6 @@ public class HomeController : Controller
     }
 
     [Authorize]
-    [Route("Account/ChangePassword/")]
-    public IActionResult ChangePassword()
-    {
-        return View();
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("Account/ChangePassword/")]
-    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-    {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home", new { @area = "Dashboard" });
-                }
-            }
-        }
-
-        ModelState.AddModelError(string.Empty, "خطایی رخ داده است.");
-        return View(model);
-    }
-
-    [Authorize]
     [HttpPost]
     [Route("Account/SignOut/")]
     public async Task<IActionResult> SignOut()

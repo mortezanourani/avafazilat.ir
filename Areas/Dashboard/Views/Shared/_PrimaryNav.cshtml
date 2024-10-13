@@ -8,8 +8,7 @@
 @inject RoleManager<ApplicationRole> roleManager;
 
 @{
-    ApplicationUser user = userManager.Users
-        .FirstOrDefault(u => u.UserName == User.Identity.Name);
+    ApplicationUser user = userManager.GetUserAsync(User).Result;
     string fullName = string.Join(" ", user.FirstName, user.LastName);
 
     IList<string> userRoles = await userManager.GetRolesAsync(user);

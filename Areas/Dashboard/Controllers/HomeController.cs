@@ -33,61 +33,11 @@ public class HomeController : Controller
         _context = context;
     }
 
-    [Authorize(Roles = "Administrator")]
-    public async Task<IActionResult> Migration()
-    {
-        var users = await _userManager.Users.ToListAsync();
-
-        foreach (ApplicationUser user in users)
-        {
-            var userClaims = await _userManager.GetClaimsAsync(user);
-
-            var userExpired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired);
-            if (userExpired == null)
-            {
-                if (user.PhoneNumber == user.UserName)
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Active"));
-                }
-                else
-                {
-                    await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Expired"));
-                }
-            }
-
-            //var userExpiration = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expiration);
-            //if (userExpiration == null)
-            //{
-            //    if (user.PhoneNumber == user.UserName)
-            //    {
-            //        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, DateTime.Now.AddMonths(1).ToString()));
-            //    }
-            //    else
-            //    {
-            //        var expiration = await _context.UserLimitations
-            //            .FirstOrDefaultAsync(l => l.UserId == user.Id);
-
-            //        if (expiration != null)
-            //        {
-            //            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, expiration.Expiration.ToString()));
-            //        }
-            //        else
-            //        {
-            //            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration, DateTime.Now.AddYears(-1).ToString()));
-            //        }
-            //    }
-            //}
-        }
-
-        return RedirectToAction("Index");
-    }
-
     public async Task<IActionResult> Index()
     {
         HomeModel model = new HomeModel();
         model.Panel = await GetPanelRole();
-        model.User = await _userManager.Users
-            .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+        model.User = await _userManager.GetUserAsync(User);
 
         if (model.Panel.Level == 0)
         {
@@ -128,8 +78,7 @@ public class HomeController : Controller
         string panelRole = HttpContext.Session.GetString(ApplicationKeys.PanleRoleKey);
         if (string.IsNullOrEmpty(panelRole))
         {
-            ApplicationUser user = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
             ApplicationRole defaultPanel = await _roleManager.Roles

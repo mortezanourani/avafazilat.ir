@@ -1236,7 +1236,7 @@ button:disabled.btn-previous {
             .panel-settings .settings-content .wrong-credential:not(:empty) {
                 background: #ff3030;
                 border-bottom: 4px solid #ffffff;
-                padding: 16px;
+                padding: 10px 16px;
                 font-size: 14px;
                 font-weight: 300;
                 color: #ffffff;
@@ -1251,11 +1251,6 @@ button:disabled.btn-previous {
         }
 
             .panel-settings .settings-content .settings-row.settings-profile-row {
-                flex-direction: row;
-            }
-
-            .panel-settings .settings-content .settings-row.settings-communication-row,
-            .panel-settings .settings-content .settings-row.settings-password-row {
                 flex-direction: row-reverse;
             }
 
@@ -1289,7 +1284,7 @@ button:disabled.btn-previous {
                     margin-right: 0px;
                 }
 
-            .panel-settings .settings-content .settings-row .form-validation {
+            .panel-settings .settings-content .settings-row .form-helps {
                 flex-grow: 1;
                 flex-basis: 60%;
                 display: flex;
@@ -1317,7 +1312,7 @@ button:disabled.btn-previous {
                     flex-basis: 40%;
                 }
 
-            .panel-settings .settings-content .settings-row .form-validation .validation-item span {
+            .panel-settings .settings-content .settings-row .form-helps .help-item span {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-start;
@@ -1325,15 +1320,30 @@ button:disabled.btn-previous {
                 gap: 11px;
             }
 
-                .panel-settings .settings-content .settings-row .form-validation .validation-item span img {
+                .panel-settings .settings-content .settings-row .form-helps .help-item span img {
                     width: 21px;
                     object-fit: contain;
                     aspect-ratio: 1;
                 }
 
-            .panel-settings .settings-content .settings-row .form-validation .validation-item p {
+            .panel-settings .settings-content .settings-row .form-helps .help-item p {
                 padding-right: 32px;
+                color: #726E60;
+                font-weight: 300;
             }
+
+@media (max-width: 1023px) {
+    .panel-settings .settings-content .settings-row form {
+        max-width: 40%;
+    }
+
+        .panel-settings .settings-content .settings-row form .submit-wrapper {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 12px;
+        }
+}
 
 @media (max-width: 480px) {
     .panel-settings .settings-content .settings-row {
@@ -1341,10 +1351,13 @@ button:disabled.btn-previous {
         justify-content: flex-start;
         align-items: stretch;
     }
-        .panel-settings .settings-content .settings-row.settings-profile-row,
-        .panel-settings .settings-content .settings-row.settings-communication-row,
-        .panel-settings .settings-content .settings-row.settings-password-row {
-            flex-direction: column-reverse;
+
+        .panel-settings .settings-content .settings-row form {
+            max-width: none;
+        }
+
+        .panel-settings .settings-content .settings-row.settings-profile-row {
+            flex-direction: column;
         }
 
             .panel-settings .settings-content .settings-row.settings-communication-row form,
