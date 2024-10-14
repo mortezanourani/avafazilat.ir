@@ -257,6 +257,7 @@ button:disabled.btn-previous {
             display: block;
             padding: 6px 12px;
             background: transparent;
+            text-wrap: nowrap;
             cursor: pointer;
         }
 
@@ -678,6 +679,7 @@ button:disabled.btn-previous {
     max-width: 33.33333%;
     flex-grow: 1;
     height: 224px;
+    overflow: hidden;
 }
 
     .panel-profile-card .profile-name {
@@ -739,6 +741,12 @@ button:disabled.btn-previous {
             .panel-profile-card .profile-contact .profile-phone img {
                 height: 21px;
             }
+
+@media (max-width: 480px) {
+    .panel-profile-card {
+        max-width: none;
+    }
+}
 /* Profile Card Component Styles *** END */
 
 /* 
@@ -782,6 +790,17 @@ button:disabled.btn-previous {
                 border-radius: 6px;
                 flex-grow: 1;
             }
+
+@media (max-width: 480px) {
+    .panel-provinces-card {
+        max-width: none;
+    }
+
+        .panel-provinces-card .provinces-wrapper .provinces-list {
+            padding-left: 8px;
+            margin-left: -8px;
+        }
+}
 /* Provinces Card Component Styles *** END */
 
 /* 
@@ -869,6 +888,17 @@ button:disabled.btn-previous {
                     font-weight: 300;
                     color: #292D32;
                 }
+
+@media (max-width: 480px) {
+    .panel-roles-card {
+        max-width: none;
+    }
+
+        .panel-roles-card .roles-wrapper .roles-list {
+            padding-left: 8px;
+            margin-left: -8px;
+        }
+}
 /* Roles Card Component Styles *** END */
 
 /* 
@@ -988,6 +1018,12 @@ button:disabled.btn-previous {
                             font-weight: 300;
                             color: #a7a7a7;
                         }
+
+@media (max-width: 480px) {
+    .panel-users-card .users-wrapper .users-list tbody tr .row-action {
+        opacity: 1;
+    }
+}
 /* Users Card Component Styles *** END */
 
 /*

@@ -57,9 +57,9 @@ public class HomeController : Controller
                 user.Expired = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Expired)?.Value;
             }
             model.Users = users
-                .OrderBy(u => u.LastName)
                 .OrderByDescending(u => u.Registered)
                 .Take(10)
+                .OrderBy(u => u.LastName)
                 .ToList();
         }
 
