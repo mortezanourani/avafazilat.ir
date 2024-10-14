@@ -28,7 +28,6 @@ public class SettingsController : Controller
         _signInManager = signInManager;
     }
 
-    [HttpGet]
     [Route("Dashboard/Settings/")]
     public async Task<IActionResult> Index()
     {

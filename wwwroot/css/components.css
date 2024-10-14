@@ -1409,3 +1409,148 @@ button:disabled.btn-previous {
         }
 }
 /* Panel Settings Page Styles *** END */
+
+/*
+ * Panel Users Edit Page Styles
+ *****************************/
+.panel-user-edit {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+}
+
+    .panel-user-edit .user-edit-title-bar {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 12px;
+    }
+
+        .panel-user-edit .user-edit-title-bar h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 500;
+            text-wrap: nowrap;
+        }
+
+    .panel-user-edit .user-edit-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+        .panel-user-edit .user-edit-content .forms-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            align-items: stretch;
+            gap: 16px;
+            flex-grow: 1;
+            min-width: 0;
+        }
+            .panel-user-edit .user-edit-content .forms-wrapper:first-child {
+                flex-basis: calc(40% - 8px);
+            }
+            .panel-user-edit .user-edit-content .forms-wrapper:last-child {
+                flex-basis: calc(60% - 8px);
+            }
+
+        .panel-user-edit .user-edit-content form {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+            .panel-user-edit .user-edit-content form .inputs-wrapper {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+                .panel-user-edit .user-edit-content form .inputs-wrapper .input {
+                    flex-grow: 1;
+                }
+
+            .panel-user-edit .user-edit-content form .submit-wrapper {
+                display: flex;
+                flex-direction: row;
+                justify-content: stretch;
+                align-items: stretch;
+                margin-top: auto;
+            }
+
+                .panel-user-edit .user-edit-content form .submit-wrapper button {
+                    flex-grow: 1;
+                    background: #1a73e8;
+                }
+
+            .panel-user-edit .user-edit-content form.user-communication .submit-wrapper,
+            .panel-user-edit .user-edit-content form.user-security .submit-wrapper {
+                width: 100%;
+                max-width: calc(50% - 6px);
+                margin-right: auto;
+            }
+
+            .panel-user-edit .user-edit-content form.user-security .submit-wrapper button {
+                background: #ff4040;
+            }
+
+            .panel-user-edit .user-edit-content form .field-validation-error {
+                display: block;
+                margin-bottom: 8px;
+                padding-right: 12px;
+                border-right: 3px solid #ff4040;
+                color: #ff4040;
+                font-weight: 400;
+                font-size: 14px;
+            }
+
+@media (max-width: 1023px) {
+        .panel-user-edit .user-edit-content .forms-wrapper:first-child,
+        .panel-user-edit .user-edit-content .forms-wrapper:last-child {
+            flex-basis: calc(50% - 8px);
+        }
+
+        .panel-user-edit .user-edit-content form .inputs-wrapper {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .panel-user-edit .user-edit-content form.user-communication .submit-wrapper,
+        .panel-user-edit .user-edit-content form.user-security .submit-wrapper {
+            max-width: none;
+        }
+}
+
+@media (max-width: 480px) {
+    .panel-user-edit .user-edit-content {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+        .panel-user-edit .user-edit-content .forms-wrapper:first-child,
+        .panel-user-edit .user-edit-content .forms-wrapper:last-child {
+            flex-basis: auto;
+        }
+
+        .panel-user-edit .user-edit-content form .inputs-wrapper {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .panel-user-edit .user-edit-content form.user-communication .submit-wrapper,
+        .panel-user-edit .user-edit-content form.user-security .submit-wrapper {
+            max-width: none;
+        }
+}
+/* Panel Users Edit Page Styles *** END */
