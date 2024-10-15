@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ApplicationUser>
+
+<div class="panel-users-card">
+    <div class="users-wrapper">
+        <table class="users-list">
+            <thead>
+                <tr>
+                    <th>کاربر</th>
+                    <th>شماره تماس</th>
+                    <th>پست الکترونیک</th>
+                    <th>وضعیت</th>
+                    <th>
+                        <div class="row-action">
+                            <a class="btn btn-icon" asp-area="Dashboard" asp-controller="Users" asp-action="Add">
+                                <img src="/icons/user-add-blue.svg" />
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ApplicationUser user in Model)
+                {
+                    <tr>
+                        <th>
+                            <div class="user-profile">
+                                <img class="profile-picture" />
+                                <div class="profile-name">
+                                    <h5>@user.FirstName @user.LastName</h5>
+                                    <p>@user.UserName</p>
+                                </div>
+                            </div>
+                        </th>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.Email</td>
+                        <td>@user.Expired</td>
+                        <td>
+                            <div class="row-action">
+                                <a class="btn btn-icon" asp-area="Dashboard" asp-controller="Users" asp-action="Index" asp-route-id="@user.Id">
+                                    <img src="/icons/user-edit.svg" />
+                                </a>
+                                <a class="btn btn-icon" asp-area="Dashboard" asp-controller="Users" asp-action="Delete" asp-route-id="@user.Id">
+                                    <img src="/icons/user-delete.svg" />
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

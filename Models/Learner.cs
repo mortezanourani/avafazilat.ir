@@ -21,7 +21,7 @@ public partial class Learner
 
     public string TrackingCode { get; set; }
 
-    public string Registered { get; set; }
+    public DateTime Registered { get; set; }
 
     public virtual ICollection<Workshop> Workshops { get; set; } = new List<Workshop>();
 }

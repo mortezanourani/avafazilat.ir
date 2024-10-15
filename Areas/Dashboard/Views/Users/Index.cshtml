@@ -1,0 +1,112 @@
+﻿@model UserSettingsViewModel
+
+@{
+    string fullName = string.Join(" ", Model.Profile.FirstName, Model.Profile.LastName);
+}
+
+<div class="panel-user-edit">
+    <div class="user-edit-title-bar">
+        <a class="btn btn-icon panel-card" asp-area="Dashboard" asp-controller="Home" asp-action="Index">
+            <img src="/icons/panel-back.svg" />
+        </a>
+        <h4>ویرایش پروفایل « @fullName »</h4>
+    </div>
+    <div class="user-edit-content">
+        <div class="forms-wrapper">
+            <form class="panel-card user-profile" asp-action="Index" method="post">
+                <h4 class="panel-card-title">مشخصات فردی</h4>
+                <input type="hidden" asp-for="Id" />
+                <div class="input en">
+                    <img src="/icons/personal-card.svg" />
+                    <input asp-for="Profile.UserName" placeholder="کد ملی" />
+                </div>
+                <div class="input">
+                    <img src="/icons/user-firstname.svg" />
+                    <input asp-for="Profile.FirstName" placeholder="نام" />
+                </div>
+                <div class="input">
+                    <img src="/icons/user-lastname.svg" />
+                    <input asp-for="Profile.LastName" placeholder="نام خانوادگی" />
+                </div>
+                <div class="input en">
+                    <img src="/icons/calendar.svg" />
+                    <input asp-for="Profile.BirthDate" placeholder="تاریخ تولد" />
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Profile.UserName"></span>
+                    <span asp-validation-for="Profile.FirstName"></span>
+                    <span asp-validation-for="Profile.LastName"></span>
+                    <span asp-validation-for="Profile.BirthDate"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="forms-wrapper">
+            <form class="panel-card user-communication" asp-action="Index" method="post">
+                <h4 class="panel-card-title">اطلاعات تماس</h4>
+                <input type="hidden" asp-for="Id" />
+                <div class="inputs-wrapper">
+                    <div class="input en">
+                        <img src="/icons/phone.svg" />
+                        <input asp-for="Communication.PhoneNumber" placeholder="شماره موبایل" />
+                    </div>
+                    <div class="input en">
+                        <img src="/icons/at.svg" />
+                        <input asp-for="Communication.Email" placeholder="پست الکترونیک" />
+                    </div>
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Communication.PhoneNumber"></span>
+                    <span asp-validation-for="Communication.Email"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
+            </form>
+            <form class="panel-card user-security" asp-action="Index" method="post">
+                <h4 class="panel-card-title">تغییر رمز عبور کاربر</h4>
+                <input type="hidden" asp-for="Id" />
+                <div class="inputs-wrapper">
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Security.NewPassword" placeholder="رمز عبور جدید" />
+                    </div>
+                    <div class="input en">
+                        <img src="/icons/password.svg" />
+                        <input asp-for="Security.ConfirmNewPassword" placeholder="تکرار رمز عبور جدید" />
+                    </div>
+                </div>
+                <div class="form-validations">
+                    <span asp-validation-for="Security.NewPassword"></span>
+                    <span asp-validation-for="Security.ConfirmNewPassword"></span>
+                </div>
+                <div class="submit-wrapper">
+                    <button type="submit" class="btn-cta submit-button">
+                        <span class="login-title">
+                            <img src="/icons/secure-accept.svg" />
+                            به روز رسانی
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

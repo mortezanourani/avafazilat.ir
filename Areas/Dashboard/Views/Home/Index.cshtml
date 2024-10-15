@@ -1,1 +1,14 @@
-﻿<h3>Dashboard</h3>
+﻿@model HomeModel
+
+<div class="panel-home">
+    @Html.PartialAsync("ProfileCard", Model.User).Result
+    
+    @if (Model.Panel.Level == 0)
+    {
+        @Html.PartialAsync("ProvincesCard", Model.Provinces).Result
+
+        @Html.PartialAsync("RolesCard", Model.UserRoles).Result
+        
+        @Html.PartialAsync("UsersCard", Model.Users).Result
+    }
+</div>

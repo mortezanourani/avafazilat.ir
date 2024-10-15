@@ -7,7 +7,7 @@ public partial class ActivityReport
 {
     public string UserId { get; set; }
 
-    public string Day { get; set; }
+    public DateTime Day { get; set; }
 
     public Guid TaskId { get; set; }
 

@@ -1,189 +1,119 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.IO;
-using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Fazilat.Areas.Account.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Security.Claims;
 using Fazilat.Models;
-using Fazilat.Data;
+using Fazilat.Areas.Account.Models;
+using System;
 
-namespace Fazilat.Areas.Account.Controllers
+namespace Fazilat.Areas.Account.Controllers;
+
+[Area("Account")]
+public class HomeController : Controller
 {
-    [Area("Account")]
-    public class HomeController : Controller
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    private readonly SignInManager<ApplicationUser> _signInManager;
+
+    public HomeController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager)
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
-        private readonly FazilatContext _context;
+        _userManager = userManager;
+        _signInManager = signInManager;
+    }
 
-        public HomeController(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IUserStore<ApplicationUser> userStore,
-            FazilatContext context)
+    [Route("Account/")]
+    public IActionResult Index()
+    {
+        if (User.Identity.IsAuthenticated)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _userStore = userStore;
-            _emailStore = (IUserEmailStore<ApplicationUser>)_userStore;
-            _context = context;
+            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Logout()
+        AccountViewModel model = new AccountViewModel();
+        model.isLoginPage = true;
+        return View(model);
+    }
+
+    [HttpPost]
+    [Route("Account/")]
+    public async Task<IActionResult> Index(AccountViewModel model)
+    {
+        if (!ModelState.IsValid)
         {
-            await _signInManager.SignOutAsync();
-            return Redirect("/");
+            return View(model);
         }
 
-        public IActionResult ChangePassword()
+        bool isLoginProcess = model.isLoginPage;
+        if (isLoginProcess)
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
+            LoginViewModel loginModel = model.Login;
 
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(PasswordModel passwordModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(passwordModel);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == loginModel.PhoneNumber);
             if (user == null)
             {
-                TempData.Add("StatusMessage", "Error: نام کاربری وارد شده یافت نشد. شما در حال فعالیت برای تغییر رمز عبور فرد دیگری هستید.");
-                return RedirectToAction("Login");
+                ModelState.AddModelError(string.Empty, "کاربری با این مشخصات یافت نشد.");
+                return View(model);
             }
 
-            var result = await _userManager.ChangePasswordAsync(user, passwordModel.CurrentPassword, passwordModel.NewPassword);
-            if (result.Succeeded)
+            var result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
+            if (!result.Succeeded)
             {
-                TempData.Add("StatusMessage", "رمز عبور با موفقیت تغییر کرد.");
-                return RedirectToAction();
+                ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
+                return View(model);
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-            return View(passwordModel);
+            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
-
-        public async Task<IActionResult> PersonalInfo(string id)
+        else
         {
-            if (!User.Identity.IsAuthenticated)
+            RegisterViewModel registerModel = model.Register;
+
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.PhoneNumber == registerModel.PhoneNumber);
+
+            if (user != null)
             {
-                return RedirectToAction("Login");
+                ModelState.AddModelError(string.Empty, "کاربری با این مشخصات در سامانه حاضر است.");
+                return View(model);
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (!string.IsNullOrEmpty(id))
+            user = new ApplicationUser();
+            user.FirstName = registerModel.FirstName;
+            user.LastName = registerModel.LastName;
+            user.Registered = DateOnly.FromDateTime(DateTime.Now);
+            await _userManager.SetUserNameAsync(user, registerModel.PhoneNumber);
+            await _userManager.SetPhoneNumberAsync(user, registerModel.PhoneNumber);
+            var result = await _userManager.CreateAsync(user, registerModel.Password);
+            if (!result.Succeeded)
             {
-                user = await _userManager.FindByIdAsync(id);
-            }
-
-            var userInfo = await _context.UserInformations
-                .FirstOrDefaultAsync(i => i.UserId == user.Id);
-
-            PersianCalendar persianCalendar = new PersianCalendar();
-            DateTime birthDate = (userInfo.BirthDate != null)
-                ? userInfo.BirthDate.Value.ToDateTime(TimeOnly.MinValue)
-                : DateTime.Now;
-            var birthDateDay = persianCalendar.GetDayOfMonth(birthDate);
-            var birthDateMonth = persianCalendar.GetMonth(birthDate);
-            var birthDateYear = persianCalendar.GetYear(birthDate);
-
-            string nationalCode = await _userManager.GetUserNameAsync(user);
-            string phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            InformationModel personalInfo = new InformationModel()
-            {
-                UserId = user.Id,
-                NationalCode = nationalCode,
-                FirstName = userInfo.FirstName,
-                LastName = userInfo.LastName,
-                Day = birthDateDay,
-                Month = birthDateMonth,
-                Year = birthDateYear,
-                PhoneNumber = phoneNumber,
-                Province = userInfo.Province,
-                BirthCertificate = userInfo.BirthCertificate,
-            };
-            return View(personalInfo);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PersonalInfo(InformationModel personalInfo)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(personalInfo);
-            }
-
-            var user = await _userManager.FindByIdAsync(personalInfo.UserId);
-
-            PersianCalendar persianCalendar = new PersianCalendar();
-            var birthDate = DateOnly.FromDateTime(persianCalendar.ToDateTime(
-                personalInfo.Year,
-                personalInfo.Month,
-                personalInfo.Day,
-                0, 0, 0, 0));
-
-            if (personalInfo.BirthCertificateFile != null)
-            {
-                using (var memoryStream = new MemoryStream())
+                foreach (var error in result.Errors)
                 {
-                    await personalInfo.BirthCertificateFile.CopyToAsync(memoryStream);
-                    if (memoryStream.Length < 1048576)
-                    {
-                        personalInfo.BirthCertificate = memoryStream.ToArray();
-                    }
-                    else
-                    {
-                        TempData.Add("StatusMessage", "Error: حجم فایل انتخاب شده بیش از یک مگابایت است.");
-                        return View(personalInfo);
-                    }
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
+                return View(model);
             }
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expiration,  DateTime.Now.AddMonths(1).ToString()));
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Expired, "Active"));
 
-            var userInfo = new UserInformation()
-            {
-                UserId = user.Id,
-                FirstName = personalInfo.FirstName,
-                LastName = personalInfo.LastName,
-                BirthDate = birthDate,
-                Province = personalInfo.Province,
-                BirthCertificate = personalInfo.BirthCertificate
-            };
+            await _userManager.AddToRoleAsync(user, "User");
 
-            try
-            {
-                await _userManager.SetPhoneNumberAsync(user, personalInfo.PhoneNumber);
-                _context.Attach(userInfo).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                TempData.Add("StatusMessage", "مشخصات فردی با موفقیت به روز رسانی شد.");
-            }
-            catch (Exception exception)
-            {
-                TempData.Add("StatusMessage", exception.Message);
-            }
-            return RedirectToAction();
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return RedirectToAction("Index", "Home", new { area = "Dashboard" });
         }
+    }
+
+    [Authorize]
+    [HttpPost]
+    [Route("Account/SignOut/")]
+    public async Task<IActionResult> SignOut()
+    {
+        HttpContext.Session.Clear();
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home", new { @area = string.Empty });
     }
 }

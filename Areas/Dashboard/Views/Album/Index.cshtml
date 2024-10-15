@@ -1,0 +1,48 @@
+﻿@model AlbumViewMode
+
+@{
+    ViewData["Title"] = "Index";
+    string imagesDirectory = Model.Category.Name.ToLower();
+}
+
+<div class="panel-album-card">
+    <h3 class="panel-album-title">آلبوم تصاویر</h3>
+    <div class="albums-bar">
+        <div class="albums-list">
+            @foreach (Category category in Model.Categories)
+            {
+                bool disabled = category.Id == Model.Category.Id;
+                if (disabled)
+                {
+                    <a class="album-item active">
+                        <h4>@category.PersianName</h4>
+                        <p>@category.Name</p>
+                    </a>
+                } else
+                {
+                    <a class="album-item" asp-area="Dashboard" asp-controller="Album" asp-action="Index" asp-route-name="@category.Name">
+                        <h4>@category.PersianName</h4>
+                        <p>@category.Name</p>
+                    </a>
+                }
+            }
+        </div>
+    </div>
+    <div class="panel-card">
+        <div class="album-media-title-bar">
+            <h4>تصاویر آلبوم @Model.Category.PersianName</h4>
+            <a class="btn btn-icon" asp-area="Dashboard" asp-controller="Media" asp-action="Add" asp-route-category="@Model.Category.Name">
+                <img src="/icons/add-square-blue.svg" />
+            </a>
+        </div>
+        <div class="album-media-list">
+            @foreach (Media media in Model.Category.Media)
+            {
+                string imageFile = media.FileName + media.Extension;
+                <a asp-area="Dashboard" asp-controller="Media" asp-action="Details" asp-route-id="@media.Id">
+                    <img src="/images/@imagesDirectory/@imageFile" />
+                </a>
+            }
+        </div>
+    </div>
+</div>

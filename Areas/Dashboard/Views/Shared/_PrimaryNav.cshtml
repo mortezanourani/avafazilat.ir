@@ -1,0 +1,58 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity
+@using System.Text
+@using Microsoft.AspNetCore.Http
+@using Fazilat.Models
+@using Fazilat.Data
+@inject UserManager<ApplicationUser> userManager;
+@inject RoleManager<ApplicationRole> roleManager;
+
+@{
+    ApplicationUser user = userManager.GetUserAsync(User).Result;
+    string fullName = string.Join(" ", user.FirstName, user.LastName);
+
+    IList<string> userRoles = await userManager.GetRolesAsync(user);
+    IList<ApplicationRole> userPanels = await roleManager.Roles
+        .Where(r => userRoles.Contains(r.Name))
+        .OrderBy(r => r.Level)
+        .ToListAsync();
+
+    string panelRole = Context.Session.GetString(ApplicationKeys.PanleRoleKey);
+    ApplicationRole userPanel = await roleManager.Roles
+        .FirstOrDefaultAsync(r => r.Id == panelRole);
+    if (userPanel == null)
+    {
+        userPanel = userPanels.FirstOrDefault();
+    }
+}
+
+<nav class="dashboard-nav">
+    @* Brand *@
+    <a class="dashboard-nav-brand" href="/">
+        <img class="brand-icon" src="/favicon.svg" />
+    </a>
+    <h3 class="dashboard-nav-name">@fullName</h3>
+
+    @* Main Menu *@
+    <div class="dashboard-nav-container">
+        <div class="dropdown dashboard-nav-role">
+            <input type="checkbox" hidden id="dashboard-nav-role" />
+            <label class="dropdown-selected" for="dashboard-nav-role">
+                <img src="/icons/dropdown.svg" />
+                <hr />
+                <p>@userPanel.PersianName</p>
+            </label>
+            <form class="dropdown-options" asp-area="Dashboard" asp-controller="Home" asp-action="Index" method="post">
+                @foreach (ApplicationRole panel in userPanels)
+                {
+                    <button class="dropdown-option" name="role" type="submit" value="@panel.Id">@panel.PersianName</button>
+                }
+            </form>
+        </div>
+        <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post">
+            <button class="dashboard-nav-signout">
+                <img src="/icons/signout.svg" />
+            </button>
+        </form>
+    </div>
+</nav>

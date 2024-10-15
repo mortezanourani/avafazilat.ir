@@ -7,9 +7,9 @@ public partial class Invoice
 {
     public Guid Id { get; set; }
 
-    public string Issued { get; set; }
+    public DateTime Issued { get; set; }
 
-    public string DueDate { get; set; }
+    public DateTime DueDate { get; set; }
 
     public string CustomerId { get; set; }
 
