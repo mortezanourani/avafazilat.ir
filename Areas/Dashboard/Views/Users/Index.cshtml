@@ -13,8 +13,9 @@
     </div>
     <div class="user-edit-content">
         <div class="forms-wrapper">
-            <form class="panel-card user-profile" asp-action="UpdateProfile" method="post">
+            <form class="panel-card user-profile" asp-action="Index" method="post">
                 <h4 class="panel-card-title">مشخصات فردی</h4>
+                <input type="hidden" asp-for="Id" />
                 <div class="input en">
                     <img src="/icons/personal-card.svg" />
                     <input asp-for="Profile.UserName" placeholder="کد ملی" />
@@ -48,8 +49,9 @@
             </form>
         </div>
         <div class="forms-wrapper">
-            <form class="panel-card user-communication" asp-action="UpdateCommunication" method="post">
+            <form class="panel-card user-communication" asp-action="Index" method="post">
                 <h4 class="panel-card-title">اطلاعات تماس</h4>
+                <input type="hidden" asp-for="Id" />
                 <div class="inputs-wrapper">
                     <div class="input en">
                         <img src="/icons/phone.svg" />
@@ -73,8 +75,9 @@
                     </button>
                 </div>
             </form>
-            <form class="panel-card user-security" asp-action="ChangePassword" method="post">
+            <form class="panel-card user-security" asp-action="Index" method="post">
                 <h4 class="panel-card-title">تغییر رمز عبور کاربر</h4>
+                <input type="hidden" asp-for="Id" />
                 <div class="inputs-wrapper">
                     <div class="input en">
                         <img src="/icons/password.svg" />

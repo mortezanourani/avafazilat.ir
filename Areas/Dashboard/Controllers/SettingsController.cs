@@ -61,18 +61,18 @@ public class SettingsController : Controller
             if (settings.Profile == null)
             {
                 settings.Profile = new SettingsProfile();
+                settings.Profile.UserName = user.UserName;
+                settings.Profile.FirstName = user.FirstName;
+                settings.Profile.LastName = user.LastName;
+                settings.Profile.BirthDate = user.BirthDate.ToString();
             }
-            settings.Profile.UserName = user.UserName;
-            settings.Profile.FirstName = user.FirstName;
-            settings.Profile.LastName = user.LastName;
-            settings.Profile.BirthDate = user.BirthDate.ToString();
 
             if (settings.Communication == null)
             {
                 settings.Communication = new SettingsCommunication();
+                settings.Communication.PhoneNumber = user.PhoneNumber;
+                settings.Communication.Email = user.Email;
             }
-            settings.Communication.PhoneNumber = user.PhoneNumber;
-            settings.Communication.Email = user.Email;
 
             return View(settings);
         }
@@ -81,6 +81,23 @@ public class SettingsController : Controller
         if (!authorized)
         {
             ModelState.AddModelError("Password", "رمزعبور وارد شده صحیح نمی باشد. شما مجاز به ثبت تغییرات اعمال شده نیستید.");
+
+            if (settings.Profile == null)
+            {
+                settings.Profile = new SettingsProfile();
+                settings.Profile.UserName = user.UserName;
+                settings.Profile.FirstName = user.FirstName;
+                settings.Profile.LastName = user.LastName;
+                settings.Profile.BirthDate = user.BirthDate.ToString();
+            }
+
+            if (settings.Communication == null)
+            {
+                settings.Communication = new SettingsCommunication();
+                settings.Communication.PhoneNumber = user.PhoneNumber;
+                settings.Communication.Email = user.Email;
+            }
+
             return View(settings);
         }
 
@@ -106,12 +123,18 @@ public class SettingsController : Controller
                             ModelState.AddModelError("Profile.UserName", "نام کاربری وارد شده در سامانه وجود دارد.");
                         }
                     }
-
-                    return View(settings);
                 }
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
             }
+        }
+        else
+        {
+            settings.Profile = new SettingsProfile();
+            settings.Profile.UserName = user.UserName;
+            settings.Profile.FirstName = user.FirstName;
+            settings.Profile.LastName = user.LastName;
+            settings.Profile.BirthDate = user.BirthDate.ToString();
         }
 
         if (settings.Communication != null)
@@ -133,11 +156,12 @@ public class SettingsController : Controller
                     ModelState.AddModelError("Communication.Email", error.Description);
                 }
             }
-
-            if (!ModelState.IsValid)
-            {
-                return View(settings);
-            }
+        }
+        else
+        {
+            settings.Communication = new SettingsCommunication();
+            settings.Communication.PhoneNumber = user.PhoneNumber;
+            settings.Communication.Email = user.Email;
         }
 
         if (settings.Security != null)
@@ -149,8 +173,12 @@ public class SettingsController : Controller
                 {
                     ModelState.AddModelError("Security.NewPassword", error.Description);
                 }
-                return View(settings);
             }
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(settings);
         }
 
         return RedirectToAction("Index");
