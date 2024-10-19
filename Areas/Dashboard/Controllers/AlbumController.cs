@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Fazilat.Data;
 using Fazilat.Models;
 using Fazilat.Areas.Dashboard.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fazilat.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Administrator, Manager")]
     public class AlbumController : Controller
     {
         private readonly FazilatContext _context;
@@ -21,25 +23,25 @@ namespace Fazilat.Areas.Dashboard.Controllers
             _context = context;
         }
 
-        [Route("Dashboard/Albums/")]
-        public async Task<IActionResult> Index()
-        {
-            AlbumViewMode album = new AlbumViewMode();
-            album.Categories = await _context.Categories
-                .ToListAsync();
-            album.Category = await _context.Categories
-                .Include(c => c.Media)
-                .FirstOrDefaultAsync(c => c.NormalizedName == "Uncategorized".ToUpper());
+        //[Route("Dashboard/Albums/")]
+        //public async Task<IActionResult> Index()
+        //{
+        //    AlbumViewMode album = new AlbumViewMode();
+        //    album.Categories = await _context.Categories
+        //        .ToListAsync();
+        //    album.Category = await _context.Categories
+        //        .Include(c => c.Media)
+        //        .FirstOrDefaultAsync(c => c.NormalizedName == "Uncategorized".ToUpper());
 
-            return View(album);
-        }
+        //    return View(album);
+        //}
 
         [Route("Dashboard/Album/{name?}/")]
         public async Task<IActionResult> Index(string name)
         {
             if (name == null)
             {
-                return NotFound();
+                name = "Uncategorized";
             }
 
             AlbumViewMode album = new AlbumViewMode();

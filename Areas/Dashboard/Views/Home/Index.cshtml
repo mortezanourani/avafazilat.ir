@@ -9,6 +9,9 @@
 
         @Html.PartialAsync("RolesCard", Model.UserRoles).Result
         
+        <div class="panel-card" style="flex-basis: 100%;">
+            <a asp-area="Dashboard" asp-controller="Album" asp-action="Index">آلبوم تصاویر</a>
+        </div>
         @Html.PartialAsync("UsersCard", Model.Users).Result
     }
 </div>

@@ -11,10 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 using Fazilat.Areas.Dashboard.Models;
 using System.IO;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Fazilat.Areas.Dashboard.Controllers
 {
     [Area("Dashboard")]
+    [Authorize(Roles = "Administrator, Manager")]
     public class MediaController : Controller
     {
         private readonly FazilatContext _context;
