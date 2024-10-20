@@ -1,9 +1,11 @@
 ﻿/*
  * Inputs Styles
  **************/
-input {
+input,
+textarea {
     outline: none;
     border: none;
+    resize: none;
 }
 
 .input {
@@ -35,7 +37,8 @@ input {
         height: 20px;
     }
 
-    .input input {
+    .input input,
+    .input textarea {
         direction: rtl;
         height: auto;
         padding: 0px 12px 0 0;
@@ -52,6 +55,12 @@ input {
         flex-grow: 1;
         flex-basis: 80%;
         min-width: 0;
+    }
+
+    .input textarea,
+    .input textarea:focus {
+        border: none;
+        padding: 0;
     }
 
         .input input:has(+input) {
@@ -1652,3 +1661,124 @@ button:disabled.btn-previous {
                     margin: auto;
                 }
 /* Panel Blog Posts Page Styles *** END */
+
+/* 
+ * Panel Blog Add Page Styles
+ ***************************/
+.panel-blog-add {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+    .panel-blog-add .title-header-wrapper,
+    .panel-blog-add .blog-body {
+        flex-basis: calc(50% - 8px);
+        height: calc(100vh - 220px);
+    }
+
+    .panel-blog-add .submit-wrapper {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .panel-blog-add .title-header-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+        .panel-blog-add .title-header-wrapper .blog-header {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+            .panel-blog-add .title-header-wrapper .blog-header .media-list {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 12px;
+                flex-wrap: wrap;
+                overflow-y: scroll;
+                margin-left: -20px;
+                padding-left: 4px;
+                height: 100%;
+            }
+
+                .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: stretch;
+                    align-items: stretch;
+                    aspect-ratio: 1.75;
+                    max-width: calc(33.33333% - 8px);
+                    flex-basis: 100%;
+                    flex-grow: 1;
+                    border-radius: 8px;
+                    border: 1px solid #a9a9a9;
+                    background: #ffffff;
+                    overflow: hidden;
+                }
+
+                    .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item input {
+                        display: none;
+                    }
+
+                    .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        opacity: 0.6;
+                    }
+
+                    .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item:has(:checked) img {
+                        opacity: 1;
+                    }
+
+@media (max-width: 1024px) {
+    .panel-blog-add .title-header-wrapper .blog-header .media-list {
+        margin-left: -4px;
+        padding-left: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .panel-blog-add {
+        flex-direction: column;
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+    }
+
+        .panel-blog-add .title-header-wrapper .blog-header {
+            height: 76px;
+            margin-bottom: -4px;
+        }
+
+            .panel-blog-add .title-header-wrapper .blog-header .media-list {
+                margin: 0;
+                padding: 0;
+                padding-bottom: 4px;
+                margin-bottom: -4px;
+                flex-wrap: nowrap;
+            }
+
+                .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item {
+                    min-height: 100%;
+                    max-width: none;
+                }
+
+        .panel-blog-add .blog-body {
+            flex-basis: 50vh;
+            height: auto;
+        }
+}
+    /* Panel Blog Add Page Styles *** END */

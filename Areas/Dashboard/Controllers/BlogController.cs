@@ -54,9 +54,13 @@ public class BlogController : Controller
     }
 
     // GET: Dashboard/Blog/Create
-    public IActionResult Add()
+    public async Task<IActionResult> Add()
     {
-        ViewData["HeaderId"] = new SelectList(_context.Medias, "Id", "FileName");
+        ViewData["HeaderId"] = await _context.Medias
+            .Include(m => m.Category)
+            .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+            .ToListAsync();
+
         return View();
     }
 
