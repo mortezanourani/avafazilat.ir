@@ -17,11 +17,11 @@
             <div class="media-list">
                 @foreach (Media media in ViewData["HeaderId"] as IEnumerable<Media>)
                 {
-                    string mediaFileName = string.Join("/", "images", media.Category.Name.ToLower(), media.FileName + media.Extension);
+                    string mediaFileName = string.Join("/", "/images", media.Category.Name.ToLower(), media.FileName + media.Extension);
 
                     <label class="media-item" for="@media.Id">
                         <input type="radio" id="@media.Id" asp-for="HeaderId" value="@media.Id" />
-                        <img src="mediaFileName" />
+                        <img src="@mediaFileName" />
                     </label>
                 }
             </div>
