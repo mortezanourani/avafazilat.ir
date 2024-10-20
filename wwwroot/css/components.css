@@ -258,6 +258,7 @@ button:disabled.btn-previous {
             padding: 6px 12px;
             background: transparent;
             text-wrap: nowrap;
+            color: #111111;
             cursor: pointer;
         }
 
@@ -745,6 +746,7 @@ button:disabled.btn-previous {
 @media (max-width: 480px) {
     .panel-profile-card {
         max-width: none;
+        flex-basis: 100%;
     }
 }
 /* Profile Card Component Styles *** END */
@@ -794,6 +796,7 @@ button:disabled.btn-previous {
 @media (max-width: 480px) {
     .panel-provinces-card {
         max-width: none;
+        flex-basis: 100%;
     }
 
         .panel-provinces-card .provinces-wrapper .provinces-list {
@@ -892,6 +895,7 @@ button:disabled.btn-previous {
 @media (max-width: 480px) {
     .panel-roles-card {
         max-width: none;
+        flex-basis: 100%;
     }
 
         .panel-roles-card .roles-wrapper .roles-list {
@@ -1554,3 +1558,97 @@ button:disabled.btn-previous {
         }
 }
 /* Panel Users Edit Page Styles *** END */
+
+/* 
+ * Panel Blog Posts Page Styles
+ *****************************/
+.panel-blog-title-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+}
+
+    .panel-blog-title-bar h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+.blog-wrapper {
+    overflow: hidden;
+    overflow-x: scroll;
+    margin-bottom: -18px;
+    padding-bottom: 16px;
+}
+
+    .blog-wrapper .posts-list {
+        width: 100%;
+        row-gap: 12px;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+
+        .blog-wrapper .posts-list .row-action {
+            padding: 0 4px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .blog-wrapper .posts-list thead tr {
+            color: #A9A9A9;
+        }
+
+            .blog-wrapper .posts-list thead tr th {
+                padding: 4px 8px;
+                text-align: center;
+                font-size: 14px;
+                line-height: 14px;
+                font-weight: 600;
+            }
+
+                .blog-wrapper .posts-list thead tr th:first-child {
+                    text-align: right;
+                }
+
+        .blog-wrapper .posts-list tbody tr {
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+            transition: all ease-in-out 100ms;
+        }
+
+            .blog-wrapper .posts-list tbody tr .row-action {
+                opacity: 0;
+                transition: all ease-in-out 100ms;
+            }
+
+            .blog-wrapper .posts-list tbody tr:hover {
+                background: #e7e7e7;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
+            }
+
+                .blog-wrapper .posts-list tbody tr:hover .row-action {
+                    opacity: 1;
+                }
+
+            .blog-wrapper .posts-list tbody tr td {
+                padding: 8px;
+                text-align: center;
+                font-size: 14px;
+                line-height: 14px;
+                font-weight: 400;
+            }
+
+                .blog-wrapper .posts-list tbody tr td:first-child {
+                    text-align: right;
+                    text-wrap: nowrap;
+                }
+
+                .blog-wrapper .posts-list tbody tr td > a {
+                    margin: auto;
+                }
+/* Panel Blog Posts Page Styles *** END */

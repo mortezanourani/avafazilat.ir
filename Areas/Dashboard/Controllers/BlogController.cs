@@ -25,7 +25,11 @@ public class BlogController : Controller
     // GET: Dashboard/Blog
     public async Task<IActionResult> Index()
     {
-        var fazilatContext = _context.Posts.Include(p => p.Author).Include(p => p.Header);
+        var fazilatContext = _context.Posts
+            .Include(p => p.Author)
+            .Include(p => p.Header)
+            .Include(p => p.Header.Category)
+            .OrderByDescending(p => p.Published);
         return View(await fazilatContext.ToListAsync());
     }
 
@@ -50,7 +54,7 @@ public class BlogController : Controller
     }
 
     // GET: Dashboard/Blog/Create
-    public IActionResult Create()
+    public IActionResult Add()
     {
         ViewData["HeaderId"] = new SelectList(_context.Medias, "Id", "FileName");
         return View();
@@ -61,7 +65,7 @@ public class BlogController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,HeaderId,Title,Body,IsVisible,Published")] Post post)
+    public async Task<IActionResult> Add([Bind("Id,HeaderId,Title,Body,IsVisible,Published")] Post post)
     {
         if (ModelState.IsValid)
         {

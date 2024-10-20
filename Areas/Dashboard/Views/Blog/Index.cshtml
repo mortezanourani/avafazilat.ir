@@ -1,65 +1,62 @@
 ﻿@model IEnumerable<Fazilat.Models.Post>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Body)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsVisible)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Published)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Header)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Body)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVisible)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Published)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Header.FileName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="panel-blog-title-bar">
+    <a class="btn btn-icon panel-card" asp-area="Dashboard" asp-controller="Home" asp-action="Index">
+        <img src="/icons/panel-back.svg" />
+    </a>
+    <h4>فهرست مقالات بلاگ</h4>
+</div>
+<div class="blog-wrapper">
+    <table class="posts-list">
+        <thead>
+            <tr>
+                <th>عنوان</th>
+                <th>وضعیت</th>
+                <th>تاریخ انتشار</th>
+                <th>نویسنده</th>
+                <th>هدر مقاله</th>
+                <th>
+                    <div class="row-action">
+                        <a class="btn btn-icon" asp-area="Dashboard" asp-controller="Blog" asp-action="Add">
+                            <img src="/icons/post-add-blue.svg" />
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsVisible)
+                    </td>
+                    <td>
+                        @item.Published.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        @string.Join(" ", item.Author.FirstName, item.Author.LastName)
+                    </td>
+                    <td>
+                        <a class="btn btn-icon" href="/images/@item.Header.Category.Name.ToLower()/@item.Header.FileName@item.Header.Extension" target="_blank">
+                            <img src="/icons/external-link.svg" />
+                        </a>
+                    </td>
+                    <td>
+                        <div class="row-action">
+                            <a class="btn btn-icon" asp-action="Edit" asp-route-id="@item.Id">
+                                <img src="/icons/post-edit.svg" />
+                            </a>
+                            <a class="btn btn-icon" asp-action="Delete" asp-route-id="@item.Id">
+                                <img src="/icons/post-delete.svg" />
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

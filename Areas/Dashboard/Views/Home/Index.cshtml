@@ -9,9 +9,23 @@
 
         @Html.PartialAsync("RolesCard", Model.UserRoles).Result
         
-        <div class="panel-card" style="flex-basis: 100%;">
-            <a asp-area="Dashboard" asp-controller="Album" asp-action="Index">آلبوم تصاویر</a>
+        <div class="panel-card" style="flex-basis: calc(50% - 8px);">
+            <h4 class="panel-card-title">آلبوم تصاویر</h4>
+            <a class="panel-card-action" asp-area="Dashboard" asp-controller="Album" asp-action="Index">
+                <img src="/icons/image-list-blue.svg" />
+            </a>
         </div>
+
+        <div class="panel-card" style="flex-basis: calc(50% - 8px);">
+            <h4 class="panel-card-title">مدیریت وبلاگ</h4>
+            <a class="panel-card-action" style="left: 52px;" asp-area="Dashboard" asp-controller="Blog" asp-action="Index">
+                <img src="/icons/inbox-blue.svg" />
+            </a>
+            <a class="panel-card-action" asp-area="Dashboard" asp-controller="Blog" asp-action="Add">
+                <img src="/icons/add-square-blue.svg" />
+            </a>
+        </div>
+
         @Html.PartialAsync("UsersCard", Model.Users).Result
     }
 </div>
