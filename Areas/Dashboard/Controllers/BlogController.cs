@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Fazilat.Data;
 using Fazilat.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Fazilat.Areas.Dashboard.Controllers;
 
@@ -15,14 +16,17 @@ namespace Fazilat.Areas.Dashboard.Controllers;
 [Authorize(Roles = "Administrator")]
 public class BlogController : Controller
 {
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly FazilatContext _context;
 
-    public BlogController(FazilatContext context)
+    public BlogController(
+        UserManager<ApplicationUser> userManager,
+        FazilatContext context)
     {
+        _userManager = userManager;
         _context = context;
     }
 
-    // GET: Dashboard/Blog
     public async Task<IActionResult> Index()
     {
         var fazilatContext = _context.Posts
@@ -53,7 +57,6 @@ public class BlogController : Controller
         return View(post);
     }
 
-    // GET: Dashboard/Blog/Create
     public async Task<IActionResult> Add()
     {
         ViewData["HeaderId"] = await _context.Medias
@@ -64,23 +67,25 @@ public class BlogController : Controller
         return View();
     }
 
-    // POST: Dashboard/Blog/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Add([Bind("Id,HeaderId,Title,Body,IsVisible,Published")] Post post)
+    public async Task<IActionResult> Add(Post post)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            post.Id = Guid.NewGuid();
-            _context.Add(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewData["HeaderId"] = await _context.Medias
+                .Include(m => m.Category)
+                .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+                .ToListAsync();
+     
+            return View(post);
         }
-        ViewData["AuthorId"] = new SelectList(_context.AspNetUsers, "Id", "Id", post.AuthorId);
-        ViewData["HeaderId"] = new SelectList(_context.Medias, "Id", "Extension", post.HeaderId);
-        return View(post);
+
+        //post.Id = Guid.NewGuid();
+        post.AuthorId = _userManager.GetUserId(User);
+        _context.Add(post);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     // GET: Dashboard/Blog/Edit/5
@@ -138,7 +143,6 @@ public class BlogController : Controller
         return View(post);
     }
 
-    // GET: Dashboard/Blog/Delete/5
     public async Task<IActionResult> Delete(Guid? id)
     {
         if (id == null)
@@ -158,7 +162,6 @@ public class BlogController : Controller
         return View(post);
     }
 
-    // POST: Dashboard/Blog/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)

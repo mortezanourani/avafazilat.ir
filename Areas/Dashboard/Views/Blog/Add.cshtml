@@ -31,14 +31,13 @@
         <textarea asp-for="Body" placeholder="متن مقاله"></textarea>
     </div>
     <div class="submit-wrapper">
-        <div class="form-group form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
-            </label>
-        </div>
+        <label class="blog-visibility">
+            <input class="form-check-input" asp-for="IsVisible" />
+            نمایش داده شود
+        </label>
         <button type="submit" class="btn btn-cta">
             <span>
-                <img src="/icons/post-add-w.svg" />
+                @* <img src="/icons/post-add-w.svg" /> *@
                 تایید
             </span>
         </button>

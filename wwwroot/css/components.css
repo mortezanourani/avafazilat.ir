@@ -659,6 +659,10 @@ button:disabled.btn-previous {
     border-radius: 12px;
 }
 
+    .panel-card.panel-mini-card {
+        flex-basis: calc(50% - 8px);
+    }
+
     .panel-card .panel-card-action {
         position: absolute;
         width: 24px;
@@ -679,6 +683,12 @@ button:disabled.btn-previous {
         font-weight: 600;
         color: #000000;
     }
+
+@media (max-width: 480px) {
+    .panel-card.panel-mini-card {
+        flex-basis: 100%;
+    }
+}
 /* Panel Cards Component Styles *** END */
 
 /* 
@@ -1075,6 +1085,7 @@ button:disabled.btn-previous {
 
             .panel-album-card .albums-bar .albums-list .album-item {
                 min-height: 90px;
+                min-width: 180px;
                 aspect-ratio: 2;
                 display: flex;
                 flex-direction: column;
@@ -1618,6 +1629,7 @@ button:disabled.btn-previous {
                 font-size: 14px;
                 line-height: 14px;
                 font-weight: 600;
+                text-wrap: nowrap;
             }
 
                 .blog-wrapper .posts-list thead tr th:first-child {
@@ -1650,11 +1662,12 @@ button:disabled.btn-previous {
                 font-size: 14px;
                 line-height: 14px;
                 font-weight: 400;
+                text-wrap: nowrap;
             }
 
                 .blog-wrapper .posts-list tbody tr td:first-child {
                     text-align: right;
-                    text-wrap: nowrap;
+                    font-weight: 500;
                 }
 
                 .blog-wrapper .posts-list tbody tr td > a {
@@ -1685,7 +1698,7 @@ button:disabled.btn-previous {
         display: flex;
         justify-content: flex-end;
         align-items: stretch;
-        gap: 12px;
+        gap: 16px;
     }
 
     .panel-blog-add .title-header-wrapper {
@@ -1744,6 +1757,25 @@ button:disabled.btn-previous {
                         opacity: 1;
                     }
 
+    .panel-blog-add .submit-wrapper button {
+        background: #1a73e8;
+        max-width: calc(12.5% - 12px);
+        flex-grow: 1;
+    }
+
+    .panel-blog-add .submit-wrapper .blog-visibility {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #a7a7a7;
+        max-width: calc(37.5% - 12px);
+        flex-grow: 1;
+    }
+
 @media (max-width: 1024px) {
     .panel-blog-add .title-header-wrapper .blog-header .media-list {
         margin-left: -4px;
@@ -1780,5 +1812,13 @@ button:disabled.btn-previous {
             flex-basis: 50vh;
             height: auto;
         }
+
+        .panel-blog-add .submit-wrapper button {
+            max-width: calc(25% - 8px);
+        }
+
+        .panel-blog-add .submit-wrapper .blog-visibility {
+            max-width: calc(75% - 8px);
+        }
 }
-    /* Panel Blog Add Page Styles *** END */
+/* Panel Blog Add Page Styles *** END */
