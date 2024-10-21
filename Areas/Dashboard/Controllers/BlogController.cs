@@ -101,8 +101,12 @@ public class BlogController : Controller
         {
             return NotFound();
         }
-        ViewData["AuthorId"] = new SelectList(_context.AspNetUsers, "Id", "Id", post.AuthorId);
-        ViewData["HeaderId"] = new SelectList(_context.Medias, "Id", "Extension", post.HeaderId);
+
+        ViewData["HeaderId"] = await _context.Medias
+            .Include(m => m.Category)
+            .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+            .ToListAsync();
+
         return View(post);
     }
 

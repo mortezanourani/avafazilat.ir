@@ -1,58 +1,50 @@
 ﻿@model Fazilat.Models.Post
 
-@{
-    ViewData["Title"] = "Edit";
-}
+<div class="panel-blog-title-bar">
+    <a class="btn btn-icon panel-card" asp-area="Dashboard" asp-controller="Blog" asp-action="Index">
+        <img src="/icons/panel-back.svg" />
+    </a>
+    <h4>ویرایش پست</h4>
+</div>
+<form class="panel-blog-add" asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="AuthorId" />
+    <input type="hidden" asp-for="Published" />
+    <div class="title-header-wrapper">
+        <div class="input blog-title">
+            <span>عنوان</span>
+            <input asp-for="Title" placeholder="عنوان" />
+        </div>
+        <div class="blog-header">
+            <div class="media-list">
+                @foreach (Media media in ViewData["HeaderId"] as IEnumerable<Media>)
+                {
+                    string mediaFileName = string.Join("/", "/images", media.Category.Name.ToLower(), media.FileName + media.Extension);
 
-<h1>Edit</h1>
-
-<h4>Post</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
+                    <label class="media-item" for="@media.Id">
+                        <input type="radio" id="@media.Id" asp-for="HeaderId" value="@media.Id" />
+                        <img src="@mediaFileName" />
+                    </label>
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="HeaderId" class="control-label"></label>
-                <select asp-for="HeaderId" class="form-control" asp-items="ViewBag.HeaderId"></select>
-                <span asp-validation-for="HeaderId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Body" class="control-label"></label>
-                <input asp-for="Body" class="form-control" />
-                <span asp-validation-for="Body" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsVisible" /> @Html.DisplayNameFor(model => model.IsVisible)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Published" class="control-label"></label>
-                <input asp-for="Published" class="form-control" />
-                <span asp-validation-for="Published" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="input blog-body">
+        <textarea asp-for="Body" placeholder="متن مقاله"></textarea>
+    </div>
+    <div class="submit-wrapper">
+        <label class="blog-visibility">
+            <input class="form-check-input" asp-for="IsVisible" />
+            نمایش داده شود
+        </label>
+        <button type="submit" class="btn btn-cta">
+            <span>
+                @* <img src="/icons/post-add-w.svg" /> *@
+                تایید
+            </span>
+        </button>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
