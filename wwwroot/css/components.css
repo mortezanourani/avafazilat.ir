@@ -1791,7 +1791,6 @@ button:disabled.btn-previous {
     }
 
         .panel-blog-add .title-header-wrapper .blog-header {
-            height: 76px;
             margin-bottom: -4px;
         }
 
@@ -1804,7 +1803,7 @@ button:disabled.btn-previous {
             }
 
                 .panel-blog-add .title-header-wrapper .blog-header .media-list .media-item {
-                    min-height: 100%;
+                    min-width: 40%;
                     max-width: none;
                 }
 
