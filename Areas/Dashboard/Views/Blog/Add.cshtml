@@ -1,0 +1,49 @@
+﻿@model Fazilat.Models.Post
+
+<div class="panel-blog-title-bar">
+    <a class="btn btn-icon panel-card" asp-area="Dashboard" asp-controller="Blog" asp-action="Index">
+        <img src="/icons/panel-back.svg" />
+    </a>
+    <h4>نوشتن پست جدید</h4>
+</div>
+<form class="panel-blog-add" asp-action="Add">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="title-header-wrapper">
+        <div class="input blog-title">
+            <span>عنوان</span>
+            <input asp-for="Title" placeholder="عنوان" />
+        </div>
+        <div class="blog-header">
+            <div class="media-list">
+                @foreach (Media media in ViewData["HeaderId"] as IEnumerable<Media>)
+                {
+                    string mediaFileName = string.Join("/", "/images", media.Category.Name.ToLower(), media.FileName + media.Extension);
+
+                    <label class="media-item" for="@media.Id">
+                        <input type="radio" id="@media.Id" asp-for="HeaderId" value="@media.Id" />
+                        <img src="@mediaFileName" />
+                    </label>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="input blog-body">
+        <textarea asp-for="Body" placeholder="متن مقاله"></textarea>
+    </div>
+    <div class="submit-wrapper">
+        <label class="blog-visibility">
+            <input class="form-check-input" asp-for="IsVisible" />
+            نمایش داده شود
+        </label>
+        <button type="submit" class="btn btn-cta">
+            <span>
+                @* <img src="/icons/post-add-w.svg" /> *@
+                تایید
+            </span>
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
