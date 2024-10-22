@@ -37,31 +37,12 @@ public class BlogController : Controller
         return View(await fazilatContext.ToListAsync());
     }
 
-    // GET: Dashboard/Blog/Details/5
-    public async Task<IActionResult> Details(Guid? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var post = await _context.Posts
-            .Include(p => p.Author)
-            .Include(p => p.Header)
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (post == null)
-        {
-            return NotFound();
-        }
-
-        return View(post);
-    }
-
     public async Task<IActionResult> Add()
     {
         ViewData["HeaderId"] = await _context.Medias
             .Include(m => m.Category)
             .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+            .OrderByDescending(m => m.Uploaded)
             .ToListAsync();
 
         return View();
@@ -76,19 +57,18 @@ public class BlogController : Controller
             ViewData["HeaderId"] = await _context.Medias
                 .Include(m => m.Category)
                 .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+                .OrderByDescending(m => m.Uploaded)
                 .ToListAsync();
-     
+
             return View(post);
         }
 
-        //post.Id = Guid.NewGuid();
         post.AuthorId = _userManager.GetUserId(User);
         _context.Add(post);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: Dashboard/Blog/Edit/5
     public async Task<IActionResult> Edit(Guid? id)
     {
         if (id == null)
@@ -105,14 +85,12 @@ public class BlogController : Controller
         ViewData["HeaderId"] = await _context.Medias
             .Include(m => m.Category)
             .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+            .OrderByDescending(m => m.Uploaded)
             .ToListAsync();
 
         return View(post);
     }
 
-    // POST: Dashboard/Blog/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Guid id, [Bind("Id,AuthorId,HeaderId,Title,Body,IsVisible,Published")] Post post)
@@ -142,8 +120,13 @@ public class BlogController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
-        ViewData["AuthorId"] = new SelectList(_context.AspNetUsers, "Id", "Id", post.AuthorId);
-        ViewData["HeaderId"] = new SelectList(_context.Medias, "Id", "Extension", post.HeaderId);
+
+        ViewData["HeaderId"] = await _context.Medias
+            .Include(m => m.Category)
+            .Where(m => m.Category.NormalizedName == "blog".ToUpper())
+            .OrderByDescending(m => m.Uploaded)
+            .ToListAsync();
+
         return View(post);
     }
 

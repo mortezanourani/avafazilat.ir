@@ -156,6 +156,16 @@ button {
         color: #FFFFFF;
     }
 
+    a.btn-danger,
+    button.btn-danger {
+        background: #ff4040;
+    }
+
+        a.btn-danger:hover,
+        button.btn-danger:hover {
+            background: #dd4040;
+        }
+
 a:has(button):hover {
     text-decoration: none;
 }
@@ -1821,3 +1831,57 @@ button:disabled.btn-previous {
         }
 }
 /* Panel Blog Add Page Styles *** END */
+
+/*
+ * Panel Blog Delete Page Styles
+ ******************************/
+.panel-blog-delete {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    max-width: 33.33333%;
+}
+
+    .panel-blog-delete .post-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+        .panel-blog-delete .post-info .post-author,
+        .panel-blog-delete .post-info .post-publish {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: dimgray;
+        }
+
+
+        .panel-blog-delete form {
+            gap: 8px;
+        }
+
+@media (max-width: 1023px) {
+    .panel-blog-delete {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 16px;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .panel-blog-delete {
+        max-width: 100%;
+    }
+}
+/* Panel Blog Delete Page Styles *** END */
