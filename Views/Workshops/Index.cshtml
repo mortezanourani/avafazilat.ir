@@ -10,80 +10,83 @@
 <div class="row d-md-flex flex-wrap text-right" style="margin: 0 -7px">
     @for (var grade = 10; grade <= 12; grade++)
     {
-        <div class="col-lg p-2">
-            @if (grade == 10)
-            {
-                <form asp-controller="Learners" asp-action="Create" method="get" class="card border-primary overflow-hidden">
-                    <div class="card-header d-flex justify-content-between">
-                        <h6 class="m-0 pt-2 text-primary font-weight-bold">پایه دهم</h6>
-                        <input type="submit" class="btn btn-primary" value="ثبت نام" />
-                    </div>
-                    <ul class="list-group list-group-flush p-0">
-                        @foreach (var item in Model.Where(i => i.Grade == grade))
-                        {
-                            <li class="list-group-item d-flex">
-                                <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
-                                <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
-                                    <span>
-                                        <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
-                                        <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
-                                    </span>
-                                    <small class="text-primary pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
-                            </label>
-                            </li>
-                        }
-                    </ul>
-                </form>
-            }
-            else if (grade == 11)
-            {
-                <form asp-controller="Learners" asp-action="Create" method="get" class="card border-warning overflow-hidden">
-                    <div class="card-header d-flex justify-content-between">
-                        <h6 class="m-0 pt-2 text-warning font-weight-bold">پایه یازدهم</h6>
-                        <input type="submit" class="btn btn-warning" value="ثبت نام" />
-                    </div>
-                    <ul class="list-group list-group-flush p-0">
-                        @foreach (var item in Model.Where(i => i.Grade == grade))
-                        {
-                            <li class="list-group-item d-flex">
-                                <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
-                                <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
-                                    <span>
-                                        <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
-                                        <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
-                                    </span>
-                                    <small class="text-warning pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+        if (Model.Count(i => i.Grade == grade) > 0)
+        {
+            <div class="col-lg p-2">
+                @if (grade == 10)
+                {
+                    <form asp-controller="Learners" asp-action="Create" method="get" class="card border-primary overflow-hidden">
+                        <div class="card-header d-flex justify-content-between">
+                            <h6 class="m-0 pt-2 text-primary font-weight-bold">پایه دهم</h6>
+                            <input type="submit" class="btn btn-primary" value="ثبت نام" />
+                        </div>
+                        <ul class="list-group list-group-flush p-0">
+                            @foreach (var item in Model.Where(i => i.Grade == grade))
+                            {
+                                <li class="list-group-item d-flex">
+                                    <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
+                                    <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
+                                        <span>
+                                            <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                            <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                        </span>
+                                        <small class="text-primary pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
                                 </label>
-                            </li>
-                        }
-                    </ul>
-                </form>
-            }
-            else if (grade == 12)
-            {
-                <form asp-controller="Learners" asp-action="Create" method="get" class="card border-success overflow-hidden">
-                    <div class="card-header d-flex justify-content-between">
-                        <h6 class="m-0 pt-2 text-success font-weight-bold">پایه دوازدهم</h6>
-                        <input type="submit" class="btn btn-success" value="ثبت نام" />
-                    </div>
-                    <ul class="list-group list-group-flush p-0">
-                        @foreach (var item in Model.Where(i => i.Grade == grade))
-                        {
-                            <li class="list-group-item d-flex">
-                                <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
-                                <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
-                                    <span>
-                                        <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
-                                        <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
-                                    </span>
-                                    <small class="text-success pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
-                                </label>
-                            </li>
-                        }
-                    </ul>
-                </form>
-            }
-        </div>
+                                </li>
+                            }
+                        </ul>
+                    </form>
+                }
+                else if (grade == 11)
+                {
+                    <form asp-controller="Learners" asp-action="Create" method="get" class="card border-warning overflow-hidden">
+                        <div class="card-header d-flex justify-content-between">
+                            <h6 class="m-0 pt-2 text-warning font-weight-bold">پایه یازدهم</h6>
+                            <input type="submit" class="btn btn-warning" value="ثبت نام" />
+                        </div>
+                        <ul class="list-group list-group-flush p-0">
+                            @foreach (var item in Model.Where(i => i.Grade == grade))
+                            {
+                                <li class="list-group-item d-flex">
+                                    <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
+                                    <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
+                                        <span>
+                                            <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                            <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                        </span>
+                                        <small class="text-warning pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </form>
+                }
+                else if (grade == 12)
+                {
+                    <form asp-controller="Learners" asp-action="Create" method="get" class="card border-success overflow-hidden">
+                        <div class="card-header d-flex justify-content-between">
+                            <h6 class="m-0 pt-2 text-success font-weight-bold">پایه دوازدهم</h6>
+                            <input type="submit" class="btn btn-success" value="ثبت نام" />
+                        </div>
+                        <ul class="list-group list-group-flush p-0">
+                            @foreach (var item in Model.Where(i => i.Grade == grade))
+                            {
+                                <li class="list-group-item d-flex">
+                                    <input type="checkbox" name="workshops" id="@item.Id" value="@item.Id" />
+                                    <label for="@item.Id" class="d-flex justify-content-between flex-fill mr-3">
+                                        <span>
+                                            <h6 class="m-0 text-dark">@Html.DisplayFor(modelItem => item.Title)</h6>
+                                            <small class="text-muted">از @Html.DisplayFor(modelItem => item.StartDate)</small>
+                                        </span>
+                                        <small class="text-success pt-4">@Html.DisplayFor(modelItem => item.Cost) ریال</small>
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </form>
+                }
+            </div>
+        }
     }
 </div>
 

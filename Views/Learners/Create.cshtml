@@ -34,7 +34,18 @@
                     <li class="list-group-item d-flex">
                         <label class="d-flex justify-content-between flex-fill mr-3">
                             <span>
-                                <h6 class="m-0 text-dark">6037-9981-6776-6053</h6>
+                                <h6 class="m-0 text-dark">هزینه نهایی کلاس های انتخاب شده</h6>
+                                <small class="text-muted"></small>
+                            </span>
+                            <small class="text-primary pt-4">
+                                @String.Format("{0:N}", Model.Workshops.Sum(m => Int32.Parse(m.Cost.Replace(",", "")))) ریال
+                            </small>
+                        </label>
+                    </li>
+                    <li class="list-group-item d-flex">
+                        <label class="d-flex justify-content-between flex-fill mr-3">
+                            <span>
+                                <h6 class="m-0 text-dark">6037-9917-1425-9284</h6>
                                 <small class="text-muted">بانک ملی</small>
                             </span>
                             <small class="text-success pt-4">به نام علیرضا ندرلو</small>
